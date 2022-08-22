@@ -16,6 +16,7 @@ hyperlink==21.0.0
 idna==3.3
 incremental==21.3.0
 Jinja2==3.1.2
+joblib==1.1.0
 kiwisolver==1.4.4
 MarkupSafe==2.1.1
 matplotlib==3.5.2
@@ -30,7 +31,11 @@ PyQt5-Qt5==5.15.2
 PyQt5-sip==12.11.0
 python-dateutil==2.8.2
 qt-material==2.12
+scikit-learn==1.1.2
+scipy==1.9.0
 six==1.16.0
+sklearn==0.0
+threadpoolctl==3.1.0
 Twisted==22.4.0
 twisted-iocpsupport==1.0.2
 txaio==22.2.1

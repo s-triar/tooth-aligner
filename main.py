@@ -11,28 +11,44 @@ import sys
 
 import vtkmodules.qt
 import os
+from controller.landmarking_controller import init_var_landmarking
+from controller.rotation_controller import init_var_rotation
+from controller.segmentation_controller import init_var_segmentation
 
 
 vtkmodules.qt.QVTKRWIBase = "QGLWidget"
 
-from ui.setup_ui import setup_ui
+from view.setup_ui import setup_ui
+from controller.vedo_plotter_controller import init_var_vedo_model
+from controller.bolton_controller import init_var_bolton
+from controller.pont_controller import init_var_pont
+from controller.korkhaus_controller import init_var_korkhaus
 
 class Window(QFrame):
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
-        self.models = []
         self.main_layout = QGridLayout()
-        self.click_plot_mode = None
-        self.tooth_selected={
-            "label": None,
-            "mode" : None, # mesial, distal, out (buccal or labial), in (lingual or palatal), cusp, pit
-            "index": None
-        }
-        self.mesh_selected = {
-            'arch_type': '',
-            'arch': None
-        }
+        init_var_vedo_model(self)
+        
+        init_var_bolton(self)
+        init_var_korkhaus(self)
+        init_var_pont(self)
+        # self.click_plot_mode = None
+        # self.tooth_selected={
+        #     "label": None,
+        #     "mode" : None, # mesial, distal, out (buccal or labial), in (lingual or palatal), cusp, pit
+        #     "index": None
+        # }
+        # self.mesh_selected = {
+        #     'arch_type': '',
+        #     'arch': None
+        # }
         setup_ui(self)
+        init_var_rotation(self)
+        init_var_segmentation(self)
+        init_var_landmarking(self)
+        
+        
         
         
 
@@ -45,11 +61,25 @@ class MainWindow(QMainWindow):
         self.mVtkWindow = Window()
         self.setCentralWidget(self.mVtkWindow)
         
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QFile, QIODevice
+import glob
+
+
+
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # apply_stylesheet(app, theme='light_blue.xml')
+    # for j in glob.glob('icons/*.png'):
+    
+    #     p = QPixmap()
+    #     p.load(j)
+
+    #     file = QFile(j)
+    #     file.open(QIODevice.WriteOnly)
+    #     p.save(file,'PNG')
     stylesheet = app.styleSheet()
     with open('custom-style.css') as file:
         app.setStyleSheet(stylesheet + file.read().format(**os.environ))

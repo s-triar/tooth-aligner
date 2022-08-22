@@ -2,6 +2,10 @@
     border: 1px solid rgb(255,255,255);
     padding-bottom:4px;
 }}
+.rotation_group_btn {{
+    border: 1px solid rgb(255,255,255);
+    padding-bottom:4px;
+}}
 * {{
     'font_family': 'Roboto';
 }}
