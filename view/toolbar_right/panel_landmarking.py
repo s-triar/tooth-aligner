@@ -88,26 +88,30 @@ def reset_toggle_btn_landmarking_arch(self, b, toogle_arch_btn):
     
 def toggle_btn_landmarking_max(self, e):
     if e:
-        self.landmark_max.show()
+        remove_not_arch(self, excepts_name_like='attachment')
         set_selected_arch_show_landmarking(self, ArchType.UPPER.value)
+        self.landmark_max.show()
         show_landmark(self)
         draw_eigen_vec(self)
     else:
         self.landmark_max.hide()
-        remove_not_arch(self)
+        remove_not_arch(self, excepts_name_like='attachment')
+        
         
 def toggle_btn_landmarking_man(self, e):
     if e:
-        self.landmark_man.show()
+        remove_not_arch(self, excepts_name_like='attachment')
         set_selected_arch_show_landmarking(self, ArchType.LOWER.value)
+        self.landmark_man.show()
         show_landmark(self)
         draw_eigen_vec(self)
     else:
         self.landmark_man.hide()
-        remove_not_arch(self)
+        remove_not_arch(self, excepts_name_like='attachment')
+        
 
 def draw_eigen_vec(self):
-    remove_not_arch(self,not_archs=self.eigen_landmarking_paints)
+    remove_not_arch(self,not_archs=self.eigen_landmarking_paints, excepts_name_like='attachment')
     eigen_vec, center = draw_eigen_arch(self)
     left_right = eigen_vec[0]
     forward_backward = eigen_vec[1]

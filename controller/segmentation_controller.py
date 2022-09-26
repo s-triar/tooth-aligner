@@ -1,3 +1,4 @@
+from controller.import_data_controller import calculate_studi_model
 from utility.arch import Arch
 from utility.colors import convert_label_to_color
 
@@ -37,13 +38,24 @@ def change_face_label(self, event):
         msh.celldata.select('Color')
         # self.models[self.var_segmentation['index_model']].mesh=msh
         self.model_plot.render()
+    dis_enable_apply_undo_reset_button(self)
 
-
+def dis_enable_apply_undo_reset_button(self):
+    if(len(self.var_history_segmentation)>0):
+        self.btn_apply_segmentation.setEnabled(True)
+        self.btn_undo_segmentation.setEnabled(True)
+        self.btn_reset_segmentation.setEnabled(True)
+    else:
+        self.btn_undo_segmentation.setEnabled(False)
+        self.btn_apply_segmentation.setEnabled(False)
+        self.btn_reset_segmentation.setEnabled(False)
 
 def apply_change_segmantation(self):
     self.var_history_segmentation=[]
+    calculate_studi_model(self)
     # self.model_plot.add(self.models[-1].get_mesh())
     self.model_plot.render()
+    dis_enable_apply_undo_reset_button(self)
     
 
 def reset_change_segmentation(self):
@@ -64,4 +76,7 @@ def undo_change_segmentation(self):
         msh.celldata['Color'][s[2]] = color
         msh.celldata.select('Color')
         self.model_plot.render()
+    calculate_studi_model(self)
+    dis_enable_apply_undo_reset_button(self)
+    
         

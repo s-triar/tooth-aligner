@@ -7,6 +7,9 @@ class PanelMode(enum.Enum):
     KORKHAUS=4
     LANDMARK=5
     SEGMENTATION=6
+    ATTATCHMENT=7
+    COLLISION=8
+    GRID=9
 
 class LandmarkType(enum.Enum):
     MESIAL=1

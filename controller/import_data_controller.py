@@ -8,7 +8,12 @@ def load_model(self, path, id):
     self.model_plot.add(self.models[-1].get_mesh())
     self.model_plot.addGlobalAxes(axtype=8)
     self.model_plot.resetCamera()
+    calculate_studi_model(self)
+
+def calculate_studi_model(self):
     if(Arch._is_complete()):
+        for m in self.models:
+            m.extract_tooth()
         self.bolton_studi_model.calc_anterior_overall(self.models)
         # print("get_anterior_overall",self.bolton_studi_model.get_anterior_overall())
         # print("overjet",self.bolton_studi_model.get_overjet())

@@ -76,7 +76,7 @@ def create_pane_korkhaus(self):
 
 
 def draw_korkhaus_lines(self):
-    remove_not_arch(self)
+    remove_not_arch(self, excepts_name_like='attachment')
     for i in ArchType:
         center_i = self.korkhaus_studi_model.center_incisor_points[i.value]
         perpendi = self.korkhaus_studi_model.perpendicular_points[i.value]

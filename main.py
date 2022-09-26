@@ -11,9 +11,12 @@ import sys
 
 import vtkmodules.qt
 import os
+from controller.attachment_controller import init_var_attachment
+from controller.grid_controller import init_var_grid
 from controller.landmarking_controller import init_var_landmarking
 from controller.rotation_controller import init_var_rotation
 from controller.segmentation_controller import init_var_segmentation
+from controller.step_controller import init_var_step
 
 
 vtkmodules.qt.QVTKRWIBase = "QGLWidget"
@@ -33,6 +36,9 @@ class Window(QFrame):
         init_var_bolton(self)
         init_var_korkhaus(self)
         init_var_pont(self)
+        init_var_step(self)
+        init_var_attachment(self)
+        init_var_grid(self)
         # self.click_plot_mode = None
         # self.tooth_selected={
         #     "label": None,
@@ -72,14 +78,14 @@ import glob
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # apply_stylesheet(app, theme='light_blue.xml')
-    # for j in glob.glob('icons/*.png'):
+    for j in glob.glob('icons/*.png'):
     
-    #     p = QPixmap()
-    #     p.load(j)
+        p = QPixmap()
+        p.load(j)
 
-    #     file = QFile(j)
-    #     file.open(QIODevice.WriteOnly)
-    #     p.save(file,'PNG')
+        file = QFile(j)
+        file.open(QIODevice.WriteOnly)
+        p.save(file,'PNG')
     stylesheet = app.styleSheet()
     with open('custom-style.css') as file:
         app.setStyleSheet(stylesheet + file.read().format(**os.environ))

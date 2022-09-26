@@ -53,7 +53,9 @@ def create_panel_segmentation(self, parent_layout):
     self.btn_apply_segmentation.clicked.connect(lambda e: apply_changed_segmentation(self))
     self.btn_reset_segmentation.clicked.connect(lambda e: reset_changed_segmentation(self))
     self.btn_undo_segmentation.clicked.connect(lambda e: undo_changed_segmentation(self))
-    
+    self.btn_undo_segmentation.setEnabled(False)
+    self.btn_apply_segmentation.setEnabled(False)
+    self.btn_reset_segmentation.setEnabled(False)
     lh_w=QWidget()
     lh= QHBoxLayout()
     lh_w.setLayout(lh)
@@ -68,6 +70,7 @@ def create_panel_segmentation(self, parent_layout):
     # self.panel_segmentation_widget.setSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
     parent_layout.addWidget(self.panel_segmentation_widget,1, 11, 20, 1)
     self.panel_segmentation_widget.hide()
+    
     # self.panel_segmentation_widget.setObjectName('panel_tool_right')
 
 def change_arch_combo_box(self, i):

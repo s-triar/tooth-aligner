@@ -17,9 +17,12 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QColor
 from PyQt5 import QtWidgets
 from constant.enums import ToothType
+from controller.bolton_controller import get_bolton_prediction_line
+from controller.vedo_plotter_controller import remove_not_arch
 from utility.colors import convert_label_to_color
 from constant.enums import ArchType
 from utility.names import convert_arch_val_to_name
+from utility.splineku import SplineKu
 from view.components.landmarking_section_group import LandmarkArchGroup
 from view.components.tool_top_button import ToolTopButton
 from view.components.bolton_section_group import BoltonArchSection
@@ -73,7 +76,8 @@ def create_total_tooth_material_widget(self):
     
     self.bolton_panel_layout.insertWidget(self.bolton_panel_layout.layout().count()-2, self.pane_arch_bolton)
     # self.landmark_panel_widget_container.setObjectName('panel_tool_right')
-    
+
+
     
     
     
@@ -94,3 +98,23 @@ def create_total_tooth_material_widget(self):
 #         self.landmark_man.show()
 #     else:
 #         self.landmark_man.hide()
+
+def draw_bolton_lines(self):
+    remove_not_arch(self, excepts_name_like='attachment')
+    pts, pts_correction, pts_not_affected, pts_correction_not_affected = get_bolton_prediction_line(self)
+    # print( pts)
+    # print(pts_not_affected)
+    draw_spline(self, pts, False)
+    draw_spline(self, pts_correction, True)
+    draw_spline(self, pts_not_affected, False)
+    draw_spline(self, pts_correction_not_affected, True)
+    
+def draw_spline(self, pts, isPred):
+    line = SplineKu(pts, degree=3, smooth=0, res=600)
+    line.ps(8)
+    if(isPred):
+        line.c("green")
+    self.model_plot.add(line)
+    self.model_plot.render()
+    
+    

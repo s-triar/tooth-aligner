@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QSize
 from controller.rotation_controller import pitch, roll, yaw
+from controller.step_controller import add_transform_arch, apply_transform_arch, remove_transform_arch
 from view.components.rotation_btn_group import RotationButtonGroup
 
 
@@ -34,10 +35,17 @@ def create_panel_step_aligner(self, parent_layout):
     self.slider_step_aligner.setTickPosition(QSlider.TicksBothSides)
     self.slider_step_aligner.setTickInterval(1)
     self.slider_step_aligner.setSingleStep(1)
+    self.slider_step_aligner.setMaximum(0)
+    
+    self.slider_step_aligner.valueChanged.connect(lambda e: on_value_change(self, e))
+    
     slider_group_layout.addWidget(self.label_slider_step_aligner)
     slider_group_layout.addWidget(self.slider_step_aligner)
     
     self.btn_addmin_step_aligner = RotationButtonGroup('Delete/Add')
+    self.btn_addmin_step_aligner.btn_increase.clicked.connect(lambda e: add_step(self, e))
+    self.btn_addmin_step_aligner.btn_decrease.clicked.connect(lambda e: delete_step(self, e))
+    
     
     self.panel_step_aligner_layout.addWidget(slider_group)
     self.panel_step_aligner_layout.addWidget(self.btn_addmin_step_aligner)
@@ -46,3 +54,29 @@ def create_panel_step_aligner(self, parent_layout):
     parent_layout.addWidget(self.panel_step_aligner_widget,20, 0, 1, 11)
     
     
+def on_value_change(self, e):
+    print('value change', e)
+    te='Aligner {0}/{1}'.format(str(self.slider_step_aligner.value()), str(self.slider_step_aligner.maximum()))
+    self.label_slider_step_aligner.setText(te)
+    apply_transform_arch(self, e)
+
+def add_step(self,event):
+    max = self.slider_step_aligner.maximum()
+    self.slider_step_aligner.setMaximum(max+1)
+    val = self.slider_step_aligner.value()
+    if(val==max):
+        add_transform_arch(self,self.slider_step_aligner.value()+1)
+        self.slider_step_aligner.setValue(self.slider_step_aligner.maximum())
+    print('add step')
+    apply_transform_arch(self, self.slider_step_aligner.value())
+    
+def delete_step(self, event):
+    max = self.slider_step_aligner.maximum()
+    if(max>0):
+        self.slider_step_aligner.setMaximum(max-1)
+        val = self.slider_step_aligner.value()
+        if(val==max):
+            self.slider_step_aligner.setValue(self.slider_step_aligner.maximum())
+        remove_transform_arch(self,val)   
+    print('delete step')
+    apply_transform_arch(self, self.slider_step_aligner.value())

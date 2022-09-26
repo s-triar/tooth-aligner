@@ -52,6 +52,21 @@ def draw_eigen_vec(eigen_vec, center):
     point_ud2 = Point((center+upward_downward), c="violet", r=15)
     return [line_lr, line_fb, line_ud, point_fb, point_fb2, point_lr, point_lr2, point_ud, point_ud2]
 
+def getEigenAttachment(points):
+    # print("center_incisors",center_incisors)
+    # print("center_molar",center_molar)
+    points_np = np.array(points, dtype=np.float32)
+    points_np_t = points_np.transpose()
+    m = np.matmul(points_np_t, points_np)
+    eig_linal = np.linalg.eig(m)
+    # print(eig_linal)
+    eig_val = eig_linal[0]
+    eig_vec = eig_linal[1]
+    arrindx = eig_val.argsort()
+    # print(arrindx)
+    eig_val = eig_val[arrindx[::-1]]
+    eig_vec =  eig_vec[arrindx[::-1]] 
+    return eig_val, eig_vec
 
 def getEigen(points,idx_faces):
     # print("center_incisors",center_incisors)
@@ -592,9 +607,9 @@ def get_cusp_posterior_first_premolar_lower(is_awal, eigen_vec_mesh, center_toot
         (temp_u < center_u) & (temp_r < center_r+0.25)
     )
     vertices_in=np.where(
-        (temp_u < center_u) & (temp_r > center_r+2) &
+        (temp_u < center_u) & (temp_r > center_r-1) & #center_r+2 #EDITTED
         #  (temp_f > center_f - 0.5)
-        (temp_f > center_f + 0.7) 
+        (temp_f > center_f-1 ) #center_f+0.7 #EDITTED
     )
     # pts=[]
     # for i in vertices_out[0]:
@@ -603,10 +618,15 @@ def get_cusp_posterior_first_premolar_lower(is_awal, eigen_vec_mesh, center_toot
     #     pts.append(Point(vertices_tooth[i],c="pink5"))
         
     vertices_out_new = vertices_tooth[vertices_out[0]]
+    # print('vertices_in',vertices_in)
     vertices_in_new = vertices_tooth[vertices_in[0]]
+    # print('vertices_in_new',vertices_in_new)
     vertices_in_new_up = np.dot(upward_downward, np.transpose(vertices_in_new))
+    # print('vertices_in_new_up',vertices_in_new_up)
     vertices_out_new_up =np.dot(upward_downward, np.transpose(vertices_out_new))
     cusps_in_index_sorted = np.argsort(vertices_in_new_up)
+    # print('cusps_in_index_sorted',cusps_in_index_sorted)
+    
     cusp_in = vertices_in_new[cusps_in_index_sorted[0]]
     
     cusps_out_index_sorted = np.argsort(vertices_out_new_up)
@@ -648,10 +668,10 @@ def get_cusp_posterior_second_premolar_lower(is_awal, eigen_vec_mesh, center_too
     #     (temp_f_out >= center_f-0.5)
     # )
     vertices_in_mesial=np.where(
-        (temp_f_in < center_f+1.5)
+        (temp_f_in < center_f+1) #center_f+1.5 #EDITTED
     )
     vertices_in_distal=np.where(
-        (temp_f_in >= center_f+2)
+        (temp_f_in >= center_f+1) #center_f+2 #EDITTED
     )
     # pts=[]
     # for i in vertices_in_mesial[0]:

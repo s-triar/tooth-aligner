@@ -85,5 +85,57 @@ class Bolton(AnalisaStudiModel):
         print("from bolton", self.anterior, self.overall)
         self.calc_overjet()
         
+    def draw_line_correction_anterior(self,
+            models,
+            correction_arch_anterior,
+            correction_anterior,
+        ):
+        model_idx = Arch._get_index_arch_type(correction_arch_anterior)
+        model = models[model_idx]
+        pts=[]
+        pts_correction=[]
+        for k in self.label_all:
+            if(k in self.label_anterior or k in self.label_canine):
+                center = model.teeth[k].center
+                pts.append(center)
+                center_arch = model.mesh.centerOfMass()
+                v=center-center_arch
+                vv=np.linalg.norm(v)
+                u = v/vv
+                dd=vv-correction_anterior
+                new_center = np.array(center_arch) + (dd*u)
+                pts_correction.append(new_center)
+            else:
+                center = model.teeth[k].center
+                pts.append(center)
+                pts_correction.append(center)
+        return pts, pts_correction
     
+    def draw_line_correction_overall(self,
+            models,
+            correction_arch_overall,
+            correction_overall,
+        ):
+        model_idx = Arch._get_index_arch_type(correction_arch_overall)
+        model = models[model_idx]
+        pts=[]
+        pts_correction=[]
+        for k in self.label_all:
+            if(k in self.label_anterior or k in self.label_canine):
+                center = model.teeth[k].center
+                pts.append(center)
+                center_arch = model.mesh.centerOfMass()
+                v=center-center_arch
+                vv=np.linalg.norm(v)
+                u = v/vv
+                dd=vv-correction_overall
+                new_center = np.array(center_arch) + (dd*u)
+                pts_correction.append(new_center)
+            else:
+                center = model.teeth[k].center
+                pts.append(center)
+                pts_correction.append(center)
+        return pts, pts_correction
+                
+        
             

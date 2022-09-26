@@ -170,12 +170,12 @@ class Pont(AnalisaStudiModel):
         self.cpv[ArchType.UPPER.value]=None
         if Arch._is_complete():
             self.cpv[ArchType.LOWER.value]=self.incisors_width[ArchType.LOWER.value]*100 /self.index_cpv
-            self.cpv[ArchType.UPPER.value]=self.incisors_width[ArchType.LOWER.value]*100 /self.index_cpv
+            self.cpv[ArchType.UPPER.value]=self.incisors_width[ArchType.UPPER.value]*100 /self.index_cpv
 
     def calculate_cmv(self):
             self.cmv[ArchType.LOWER.value]=None
             self.cmv[ArchType.UPPER.value]=None
             if Arch._is_complete():
                 self.cmv[ArchType.LOWER.value]=self.incisors_width[ArchType.LOWER.value]*100 /self.index_cmv
-                self.cmv[ArchType.UPPER.value]=self.incisors_width[ArchType.LOWER.value]*100 /self.index_cmv
+                self.cmv[ArchType.UPPER.value]=self.incisors_width[ArchType.UPPER.value]*100 /self.index_cmv
          

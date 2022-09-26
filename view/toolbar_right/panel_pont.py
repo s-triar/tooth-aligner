@@ -62,7 +62,7 @@ def create_pane_pont(self):
     if(self.pane_arch_pont!=None):
         self.pont_panel_layout.removeWidget(self.pane_arch_pont)
     self.pane_arch_pont=QWidget()
-    pane_arch_layout = QHBoxLayout()
+    pane_arch_layout = QVBoxLayout()
     self.pane_arch_pont.setLayout(pane_arch_layout)
     for i in ArchType:
         arch_section_group = QWidget()
@@ -72,7 +72,7 @@ def create_pane_pont(self):
         # print(self.pont_studi_model.incisors_width)
         incisor_w = self.pont_studi_model.incisors_width[i.value]
         premolar_dist = self.pont_studi_model.mpv[i.value]
-        molar_dist = self.pont_studi_model.mpv[i.value]
+        molar_dist = self.pont_studi_model.mmv[i.value]
         
         arch_section = PontArchSection(incisor_w, premolar_dist, molar_dist)
         arch_section_group_layout.addWidget(label)
@@ -82,7 +82,7 @@ def create_pane_pont(self):
     self.pont_panel_layout.insertWidget(self.pont_panel_layout.layout().count()-2, self.pane_arch_pont)
     
 def draw_pont_lines(self):
-    remove_not_arch(self)
+    remove_not_arch(self,excepts_name_like='attachment')
     for i in ArchType:
         idx = Arch._get_index_arch_type(i.value)
         msh = self.models[idx].mesh

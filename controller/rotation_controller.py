@@ -2,6 +2,8 @@ from constant.root_length import RootLength
 import numpy as np
 from vedo import load, Mesh, Point, vtk2numpy, Spline, KSpline, CSpline, Line
 
+from controller.attachment_controller import transform_attachment_on_tooth
+
 def init_var_rotation(self):
     self.tooth_selected_rotation={
         "label":None,
@@ -105,13 +107,13 @@ def do_rotate(self, type, val_rotate, d_root):
     dd=vv-d_root
     new_center = np.array(root_point) + (dd*u)
 
-    
+    new_new_center=(new_center[0], new_center[1], new_center[2])
     if(type=="pitch"):
-        mesh.rotateX(val_rotate, False, (new_center[0], new_center[1], new_center[2]))
+        mesh.rotateX(val_rotate, False, new_new_center)
     elif(type=="yaw"):
-        mesh.rotateY(val_rotate, False, (new_center[0], new_center[1], new_center[2]))
+        mesh.rotateY(val_rotate, False, new_new_center)
     elif(type=="roll"):
-        mesh.rotateZ(val_rotate, False, (new_center[0], new_center[1], new_center[2]))
+        mesh.rotateZ(val_rotate, False, new_new_center)
     
     # detect collision
     mesh_tooth_before=None
@@ -150,6 +152,9 @@ def do_rotate(self, type, val_rotate, d_root):
     print('after',len(pts_col_after),len(pts_col_after_before_rotation))
     temp_p = self.mesh_selected_rotation['arch'].mesh.points()
     temp_p[faces_unique] = mesh.points()[faces_unique]
+    mesh_transform = mesh.getTransform()
+    
+    transform_attachment_on_tooth(self, self.tooth_selected_rotation['label'], type, val_rotate, False, new_new_center)
     self.mesh_selected_rotation['arch'].mesh.points(temp_p)
     self.mesh_selected_rotation['arch'].extract_tooth()
     self.model_plot.render()
