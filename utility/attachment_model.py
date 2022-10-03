@@ -24,7 +24,14 @@ class AttachmentModel():
         else:
             self.arch[arch_type][step]=[temp]
     
+    def copy_attachment(self, fromstep, tostep):
+        for arch_type in ArchType:
+            if fromstep in self.arch[arch_type.value]:
+                self.arch[arch_type.value][tostep]=self.arch[arch_type.value][fromstep].copy()
+            
+    
     def get_attachment_on_step(self, step):
+        # print('get_attachment_on_step',step, self.arch)
         res={}
         for a in self.arch:
             res[a]=None

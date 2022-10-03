@@ -27,12 +27,15 @@ def add_transform_arch(self, e): #save arch transform when add step
         m = self.models[idx]
         temp[a.value]=m.mesh
     self.step_model.add_step_model(temp)
+    # if(e>0):
+    self.attachment_model.copy_attachment(e,e+1)
 
 def remove_transform_arch(self, e): #remove arch transform when add step
     self.step_model.remove_step_model(self.models)
 
 def change_step(self, e):
     self.step_model.change_current_step(e)
+    apply_transform_arch(self,e)
     
 # def generate_view(self, e): # based on what panel is showing
     
@@ -40,18 +43,24 @@ def change_step(self, e):
 #     self.model_plot.add()
 
 def apply_transform_arch(self,e): # based on what panel is showing
-    if(e<len(self.step_model.step_models)-1):
-        remove_not_arch(self)
-        mdls=self.step_model.get_step_model(e)
-        for a in ArchType:
-            idx = Arch._get_index_arch_type(a.value)
-            self.models[idx].mesh = mdls[a.value]
-        for m in self.models:
-            self.model_plot.add(m.mesh)
-        res = self.attachment_model.get_attachment_on_step(e)
-        for a_res in res:
-            for ee in res[a_res]:
-                self.model_plot.add(ee.mesh)
+    print("ck",len(self.step_model.step_models))
+    if(e<=len(self.step_model.step_models)):
+        try:
+            mdls=self.step_model.get_step_model(e)
+            remove_not_arch(self)
+            for a in ArchType:
+                idx = Arch._get_index_arch_type(a.value)
+                self.models[idx].mesh = mdls[a.value]
+            for m in self.models:
+                self.model_plot.add(m.mesh)
+            res = self.attachment_model.get_attachment_on_step(e)
+            print("resres",res)
+            for a_res in res:
+                if(res[a_res]):
+                    for ee in res[a_res]:
+                        self.model_plot.add(ee.mesh)
+        except:
+            print()
     
     
 

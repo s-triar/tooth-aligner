@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QSize
 from controller.rotation_controller import pitch, roll, yaw
-from controller.step_controller import add_transform_arch, apply_transform_arch, remove_transform_arch
+from controller.step_controller import add_transform_arch, apply_transform_arch, change_step, remove_transform_arch
 from view.components.rotation_btn_group import RotationButtonGroup
 
 
@@ -58,17 +58,21 @@ def on_value_change(self, e):
     print('value change', e)
     te='Aligner {0}/{1}'.format(str(self.slider_step_aligner.value()), str(self.slider_step_aligner.maximum()))
     self.label_slider_step_aligner.setText(te)
-    apply_transform_arch(self, e)
+    # apply_transform_arch(self, e)
+    change_step(self,e)
 
 def add_step(self,event):
     max = self.slider_step_aligner.maximum()
     self.slider_step_aligner.setMaximum(max+1)
     val = self.slider_step_aligner.value()
     if(val==max):
-        add_transform_arch(self,self.slider_step_aligner.value()+1)
+        print("add_transform arch",self.slider_step_aligner.value())
+        add_transform_arch(self,self.slider_step_aligner.value())
         self.slider_step_aligner.setValue(self.slider_step_aligner.maximum())
-    print('add step')
-    apply_transform_arch(self, self.slider_step_aligner.value())
+    print('add step',self.slider_step_aligner.value())
+    # apply_transform_arch(self, self.slider_step_aligner.value())
+    change_step(self,self.slider_step_aligner.value())
+    
     
 def delete_step(self, event):
     max = self.slider_step_aligner.maximum()
@@ -79,4 +83,6 @@ def delete_step(self, event):
             self.slider_step_aligner.setValue(self.slider_step_aligner.maximum())
         remove_transform_arch(self,val)   
     print('delete step')
-    apply_transform_arch(self, self.slider_step_aligner.value())
+    # apply_transform_arch(self, self.slider_step_aligner.value())
+    change_step(self,self.slider_step_aligner.value())
+    

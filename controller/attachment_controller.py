@@ -89,7 +89,7 @@ def mouse_click_attachment(self,event):
                 n = 'attachment_'+str(int(round(time.time() * 1000)))
                 b= Mesh([pts,ids],c=(200,190,200))
                 b.name = n
-                
+                print("add attachment on step",self.var_state_attachment['step'])
                 self.attachment_model.add_attachment(self.var_state_attachment['arch'], self.var_state_attachment['step'], b, n, label)
                 self.model_plot.add(b)
                 self.var_state_attachment['selected']=n
@@ -136,6 +136,7 @@ def mouse_click_attachment(self,event):
         # return
     
     elif(self.var_state_attachment['selected']==None and isinstance(self.model_plot.interactor.GetInteractorStyle(), vtk.vtkInteractorStyleTrackballCamera)):
+        
         return
     
     elif(event.actor in archs) or (not event.actor):
