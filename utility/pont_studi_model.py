@@ -1,3 +1,4 @@
+from typing_extensions import Self
 from utility.analisa_studi_model import AnalisaStudiModel
 from constant.enums import ArchType, ToothType, LandmarkType
 import numpy as np
@@ -51,6 +52,23 @@ class Pont(AnalisaStudiModel):
         self.delta_mp={} #pengukuran
         self.delta_mp[ArchType.LOWER.value]=None
         self.delta_mp[ArchType.UPPER.value]=None
+        
+        self.status_pv={} #status dari hasil pengukuran
+        self.status_pv[ArchType.LOWER.value]=None
+        self.status_pv[ArchType.UPPER.value]=None
+        
+        self.status_mp={} #status dari hasil pengukuran
+        self.status_mp[ArchType.LOWER.value]=None
+        self.status_mp[ArchType.UPPER.value]=None
+        
+        self.degree_status_pv={} #degree status dari hasil pengukuran
+        self.degree_status_pv[ArchType.LOWER.value]=None
+        self.degree_status_pv[ArchType.UPPER.value]=None
+        
+        self.degree_status_mp={} #degree status dari hasil pengukuran
+        self.degree_status_mp[ArchType.LOWER.value]=None
+        self.degree_status_mp[ArchType.UPPER.value]=None
+        
         self.status=None
         super().__init__()
         
@@ -70,10 +88,20 @@ class Pont(AnalisaStudiModel):
             self.delta_mp[ArchType.LOWER.value]=self.mmv[ArchType.LOWER.value]-self.cmv[ArchType.LOWER.value]
             self.delta_mp[ArchType.UPPER.value]=self.mmv[ArchType.UPPER.value]-self.cmv[ArchType.UPPER.value]
             
-            status_pv_lower= '{} => {}/{}'.format(str(self.delta_pv[ArchType.LOWER.value]), self.check_delta(self.delta_pv[ArchType.LOWER.value]),self.check_degree(self.delta_pv[ArchType.LOWER.value]))
-            status_pv_upper= '{} => {}/{}'.format(str(self.delta_pv[ArchType.UPPER.value]), self.check_delta(self.delta_pv[ArchType.UPPER.value]),self.check_degree(self.delta_pv[ArchType.UPPER.value]))
-            status_mp_lower= '{} => {}/{}'.format(str(self.delta_mp[ArchType.LOWER.value]), self.check_delta(self.delta_mp[ArchType.LOWER.value]),self.check_degree(self.delta_mp[ArchType.LOWER.value]))
-            status_mp_upper= '{} => {}/{}'.format(str(self.delta_mp[ArchType.UPPER.value]), self.check_delta(self.delta_mp[ArchType.UPPER.value]),self.check_degree(self.delta_mp[ArchType.UPPER.value]))
+            self.status_pv[ArchType.LOWER.value]=self.check_delta(self.delta_pv[ArchType.LOWER.value])
+            self.status_pv[ArchType.UPPER.value]=self.check_delta(self.delta_pv[ArchType.UPPER.value])
+            self.status_mp[ArchType.LOWER.value]=self.check_delta(self.delta_mp[ArchType.LOWER.value])
+            self.status_mp[ArchType.UPPER.value]=self.check_delta(self.delta_mp[ArchType.UPPER.value])
+            
+            self.degree_status_pv[ArchType.LOWER.value]=self.check_degree(self.delta_pv[ArchType.LOWER.value])
+            self.degree_status_pv[ArchType.UPPER.value]=self.check_degree(self.delta_pv[ArchType.UPPER.value])
+            self.degree_status_mp[ArchType.LOWER.value]=self.check_degree(self.delta_mp[ArchType.LOWER.value])
+            self.degree_status_mp[ArchType.UPPER.value]=self.check_degree(self.delta_mp[ArchType.UPPER.value])
+            
+            status_pv_lower= '{} => {}/{}'.format(str(self.delta_pv[ArchType.LOWER.value]), self.status_pv[ArchType.LOWER.value], self.degree_status_pv[ArchType.LOWER.value] )
+            status_pv_upper= '{} => {}/{}'.format(str(self.delta_pv[ArchType.UPPER.value]), self.status_pv[ArchType.UPPER.value], self.degree_status_pv[ArchType.UPPER.value] )
+            status_mp_lower= '{} => {}/{}'.format(str(self.delta_mp[ArchType.LOWER.value]), self.status_mp[ArchType.LOWER.value], self.degree_status_mp[ArchType.LOWER.value] )
+            status_mp_upper= '{} => {}/{}'.format(str(self.delta_mp[ArchType.UPPER.value]), self.status_mp[ArchType.UPPER.value], self.degree_status_mp[ArchType.UPPER.value] )
             
             self.status = 'Premolar Lower:\n{}\nPremolar Upper:\n{}\nMolar Lower:\n{}\nMolar Upper:\n{}'.format(status_pv_lower, status_pv_upper, status_mp_lower, status_mp_upper)
             print("PONT")

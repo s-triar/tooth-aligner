@@ -14,6 +14,7 @@ from view.components.tool_top_button import ToolTopButton
 from view.toolbar_right.panel_bolton import create_total_tooth_material_widget, draw_bolton_lines
 from view.toolbar_right.panel_korkhaus import create_pane_korkhaus, draw_korkhaus_lines
 from view.toolbar_right.panel_pont import create_pane_pont, draw_pont_lines
+from view.toolbar_right.panel_summary import create_pane_summary, draw_summary_lines
 from view.toolbar_top.reset_toggle_btn import reset_toggle_tooltop_btn
 
 
@@ -38,6 +39,11 @@ def create_analysis_menu(self, parent_layout):
     
     self.container_toogle_arch_btn_layout.addWidget(self.btn_menu_toggle_korkhaus)
     
+    # self.btn_menu_toggle_carey = ToolTopButton("Carey",'icons/carey.png','icons/carey-color.png',True)
+    # self.btn_menu_toggle_carey.toggled.connect(lambda e: toggle_btn_menu_carey(self,e))
+    # self.btn_menu_toggle_carey.clicked.connect(lambda e: click_btn_menu_carey(self,e))
+    
+    # self.container_toogle_arch_btn_layout.addWidget(self.btn_menu_toggle_carey)
     
     self.btn_menu_summary = ToolTopButton("Summary",'icons/info-solid.png','icons/info-solid-colored.png',True)
     self.btn_menu_summary.toggled.connect(lambda e: toggle_btn_menu_summary(self,e))
@@ -112,7 +118,8 @@ def toggle_btn_menu_summary(self, e):
     if e:
         self.summary_panel_widget_container.show()
         # create_pane_summary(self)
-        # draw_summary_lines(self)
+        create_pane_summary(self)
+        draw_summary_lines(self)
     else:
         self.summary_panel_widget_container.hide()
         remove_not_arch(self, excepts_name_like='attachment')
@@ -121,6 +128,17 @@ def toggle_btn_menu_summary(self, e):
 def click_btn_menu_summary(self, e):
     reset_toggle_tooltop_btn(self, self.btn_menu_summary)
     
+    
+def toggle_btn_menu_carey(self, e):
+    if e:
+        self.carey_panel_widget_container.show()
+        # create_pane_carey(self)
 
+    else:
+        self.carey_panel_widget_container.hide()
+        remove_not_arch(self, excepts_name_like='attachment')
 
+def click_btn_menu_carey(self, e):
+    reset_toggle_tooltop_btn(self, self.btn_menu_toggle_carey)
+    
 

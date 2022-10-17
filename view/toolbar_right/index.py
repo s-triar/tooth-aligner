@@ -1,4 +1,5 @@
 
+from view.toolbar_right.panel_carey import create_panel_carey
 from view.toolbar_right.panel_grid import create_panel_grid
 from view.toolbar_right.panel_rotation import create_panel_rotation
 from view.toolbar_right.panel_segmentation import create_panel_segmentation
@@ -19,3 +20,4 @@ def create_right_panel(self, parent_layout):
     create_panel_attatchment(self, parent_layout)
     create_panel_summary(self, parent_layout)
     create_panel_grid(self, parent_layout)
+    create_panel_carey(self, parent_layout)

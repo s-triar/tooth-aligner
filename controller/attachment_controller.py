@@ -1,5 +1,6 @@
+from constant.attachment import AttachmentType
 from utility.attachment_model import AttachmentModel
-from vedo import vtk, Box, Mesh, vtk2numpy
+from vedo import vtk, Box, Mesh, vtk2numpy, load
 import time
 import numpy as np
 
@@ -9,7 +10,8 @@ def init_var_attachment(self):
         'selected':None, # name or 'create' or 'delete'
         'step':None,
         'arch':None,
-        'width':None
+        'width':None,
+        'type':None
     }
 
 def transform_attachment_on_tooth(self, label, rotate_type, val_rot, is_rad, center_pivot):
@@ -29,16 +31,20 @@ def prep_reset_attachment_state(self):
         'selected':None, # name or 'create' or 'delete'
         'step':None,
         'arch':None,
-        'width':None
+        'width':None,
+        'type':None
+        
     }
 
-def prep_new_attachment(self, w):
+def prep_new_attachment(self, w, t):
     self.var_state_attachment['selected']='create'
     self.var_state_attachment['width']=w
+    self.var_state_attachment['type']=t
     
 def prep_delete_attachment(self):
     self.var_state_attachment['selected']='delete'
     self.var_state_attachment['width']=None
+    self.var_state_attachment['type']=None
     
 def change_plot_interaction(self, interaction):
     # self.model_plot.interactor.ExitCallback()
@@ -82,24 +88,54 @@ def mouse_click_attachment(self,event):
                 
                 self.var_state_attachment['arch']=m.arch_type
                 self.var_state_attachment['step']=self.step_model.get_current_step()
-                b = Box(pts,self.var_state_attachment['width'],1,1,c='black')
-                N = b.NCells()
-                pts = vtk2numpy(b.polydata().GetPoints().GetData()) #vertices (coordinate)
-                ids = vtk2numpy(b.polydata().GetPolys().GetData()).reshape((N, -1))[:,1:]
+                print(self.var_state_attachment)
                 n = 'attachment_'+str(int(round(time.time() * 1000)))
-                b= Mesh([pts,ids],c=(200,190,200))
-                b.name = n
+                attachment_path=None
+                if(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    attachment_path='attachment_model/cube 311.stl'
+                elif(self.var_state_attachment['width']==4 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    attachment_path='attachment_model/cube 411.stl'
+                elif(self.var_state_attachment['width']==5 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    attachment_path='attachment_model/cube 511.stl'
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.HALF_MOON.value):
+                    attachment_path='attachment_model/setengahbulan.stl'
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.CRESCENT_MOON.value):
+                    attachment_path="attachment_model/crescent.stl"
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.BULLET.value):
+                    attachment_path="attachment_model/peluru.stl"
+                    
+ 
+                mh = load(attachment_path)
+                ctr = mh.centerOfMass()
+                shifting = pts-ctr
+                mh.points(mh.points()+shifting)
+                mh.name = n
+                # b = Box(pts,self.var_state_attachment['width'],1,1,c='black')
+                # N = b.NCells()
+                # pts = vtk2numpy(b.polydata().GetPoints().GetData()) #vertices (coordinate)
+                # ids = vtk2numpy(b.polydata().GetPolys().GetData()).reshape((N, -1))[:,1:]
+                # n = 'attachment_'+str(int(round(time.time() * 1000)))
+                # b= Mesh([pts,ids],c=(200,190,200))
+                # b.name = n
+                
                 print("add attachment on step",self.var_state_attachment['step'])
-                self.attachment_model.add_attachment(self.var_state_attachment['arch'], self.var_state_attachment['step'], b, n, label)
-                self.model_plot.add(b)
+                self.attachment_model.add_attachment(self.var_state_attachment['arch'], self.var_state_attachment['step'], mh, n, label)
+                self.model_plot.add(mh)
                 self.var_state_attachment['selected']=n
-                if(self.var_state_attachment['width']==3):
-                    self.btn_attachment_rectangular_3.setChecked(False)
-                elif(self.var_state_attachment['width']==4):
-                    self.btn_attachment_rectangular_4.setChecked(False)
-                elif(self.var_state_attachment['width']==5):
-                    self.btn_attachment_rectangular_5.setChecked(False)
                 self.model_plot.render()
+                
+                if(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    self.btn_attachment_rectangular_3.setChecked(False)
+                elif(self.var_state_attachment['width']==4 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    self.btn_attachment_rectangular_4.setChecked(False)
+                elif(self.var_state_attachment['width']==5 and self.var_state_attachment['type']==AttachmentType.BLOCK.value):
+                    self.btn_attachment_rectangular_5.setChecked(False)
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.HALF_MOON.value):
+                    self.btn_attachment_halfmoon_3.setChecked(False)
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.CRESCENT_MOON.value):
+                    self.btn_attachment_crescentmoon_3.setChecked(False)
+                elif(self.var_state_attachment['width']==3 and self.var_state_attachment['type']==AttachmentType.BULLET.value):
+                    self.btn_attachment_bullet_3.setChecked(False)
                 # print('apply attachment')
                 # print(self.var_state_attachment)
                 break

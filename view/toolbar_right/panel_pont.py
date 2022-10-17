@@ -73,8 +73,10 @@ def create_pane_pont(self):
         incisor_w = self.pont_studi_model.incisors_width[i.value]
         premolar_dist = self.pont_studi_model.mpv[i.value]
         molar_dist = self.pont_studi_model.mmv[i.value]
+        premolar_dist_calc = self.pont_studi_model.cpv[i.value]
+        molar_dist_calc = self.pont_studi_model.cmv[i.value]
         
-        arch_section = PontArchSection(incisor_w, premolar_dist, molar_dist)
+        arch_section = PontArchSection(incisor_w, premolar_dist, molar_dist, premolar_dist_calc, molar_dist_calc)
         arch_section_group_layout.addWidget(label)
         arch_section_group_layout.addWidget(arch_section)
         pane_arch_layout.addWidget(arch_section_group)

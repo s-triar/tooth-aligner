@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon
+from constant.attachment import AttachmentType
 
 from controller.attachment_controller import prep_delete_attachment, prep_new_attachment, prep_reset_attachment_state
 
@@ -52,6 +53,32 @@ def create_panel_attatchment(self, parent_layout):
     self.btn_attachment_rectangular_5.toggled.connect(lambda e: on_btn_attachment_rectangular_5_toggled(self, e))
     self.panel_attachment_layout.addWidget(self.btn_attachment_rectangular_5)
     
+    self.btn_attachment_halfmoon_3 = QPushButton("Halfmoon 3 mm")
+    self.btn_attachment_halfmoon_3.setIcon(QIcon('icons/square-solid.png'))
+    self.btn_attachment_halfmoon_3.setCheckable(True)
+    self.btn_attachment_halfmoon_3.setChecked(False)
+    
+    self.btn_attachment_halfmoon_3.clicked.connect(lambda e: on_btn_attachment_halfmoon_3_clicked(self, e))
+    self.btn_attachment_halfmoon_3.toggled.connect(lambda e: on_btn_attachment_halfmoon_3_toggled(self, e))
+    self.panel_attachment_layout.addWidget(self.btn_attachment_halfmoon_3)
+    
+    self.btn_attachment_crescentmoon_3 = QPushButton("Crestcentmoon 3 mm")
+    self.btn_attachment_crescentmoon_3.setIcon(QIcon('icons/square-solid.png'))
+    self.btn_attachment_crescentmoon_3.setCheckable(True)
+    self.btn_attachment_crescentmoon_3.setChecked(False)
+    
+    self.btn_attachment_crescentmoon_3.clicked.connect(lambda e: on_btn_attachment_crescentmoon_3_clicked(self, e))
+    self.btn_attachment_crescentmoon_3.toggled.connect(lambda e: on_btn_attachment_crescentmoon_3_toggled(self, e))
+    self.panel_attachment_layout.addWidget(self.btn_attachment_crescentmoon_3)
+    
+    self.btn_attachment_bullet_3 = QPushButton("Bullet 3 mm")
+    self.btn_attachment_bullet_3.setIcon(QIcon('icons/square-solid.png'))
+    self.btn_attachment_bullet_3.setCheckable(True)
+    self.btn_attachment_bullet_3.setChecked(False)
+    
+    self.btn_attachment_bullet_3.clicked.connect(lambda e: on_btn_attachment_bullet_3_clicked(self, e))
+    self.btn_attachment_bullet_3.toggled.connect(lambda e: on_btn_attachment_bullet_3_toggled(self, e))
+    self.panel_attachment_layout.addWidget(self.btn_attachment_bullet_3)
     
     self.btn_delete_attachment = QPushButton("Delete")
     self.btn_delete_attachment.setIcon(QIcon('icons/trash-solid.png'))
@@ -92,7 +119,7 @@ def on_btn_attachment_rectangular_3_clicked(self, event):
 def on_btn_attachment_rectangular_3_toggled(self, event):
     if event:
         self.btn_attachment_rectangular_3.setIcon(QIcon('icons/square-solid-colored.png'))
-        prep_new_attachment(self,3)
+        prep_new_attachment(self,3,AttachmentType.BLOCK.value)
     else:
         self.btn_attachment_rectangular_3.setIcon(QIcon('icons/square-solid.png'))
         prep_reset_attachment_state(self)
@@ -103,7 +130,7 @@ def on_btn_attachment_rectangular_4_clicked(self, event):
 def on_btn_attachment_rectangular_4_toggled(self, event):
     if event:
         self.btn_attachment_rectangular_4.setIcon(QIcon('icons/square-solid-colored.png'))
-        prep_new_attachment(self,4)
+        prep_new_attachment(self,4,AttachmentType.BLOCK.value)
     else:
         self.btn_attachment_rectangular_4.setIcon(QIcon('icons/square-solid.png'))
         prep_reset_attachment_state(self)
@@ -114,11 +141,45 @@ def on_btn_attachment_rectangular_5_clicked(self, event):
 def on_btn_attachment_rectangular_5_toggled(self, event):
     if event:
         self.btn_attachment_rectangular_5.setIcon(QIcon('icons/square-solid-colored.png'))
-        prep_new_attachment(self,5)
+        prep_new_attachment(self,5,AttachmentType.BLOCK.value)
     else:
         self.btn_attachment_rectangular_5.setIcon(QIcon('icons/square-solid.png'))
         prep_reset_attachment_state(self)
 
+
+def on_btn_attachment_halfmoon_3_clicked(self, event):
+    reset_toggle_btn_attachment(self, self.btn_attachment_halfmoon_3)
+
+def on_btn_attachment_halfmoon_3_toggled(self, event):
+    if event:
+        self.btn_attachment_halfmoon_3.setIcon(QIcon('icons/square-solid-colored.png'))
+        prep_new_attachment(self,3,AttachmentType.HALF_MOON.value)
+    else:
+        self.btn_attachment_halfmoon_3.setIcon(QIcon('icons/square-solid.png'))
+        prep_reset_attachment_state(self)
+
+
+def on_btn_attachment_crescentmoon_3_clicked(self, event):
+    reset_toggle_btn_attachment(self, self.btn_attachment_crescentmoon_3)
+
+def on_btn_attachment_crescentmoon_3_toggled(self, event):
+    if event:
+        self.btn_attachment_crescentmoon_3.setIcon(QIcon('icons/square-solid-colored.png'))
+        prep_new_attachment(self,3,AttachmentType.CRESCENT_MOON.value)
+    else:
+        self.btn_attachment_crescentmoon_3.setIcon(QIcon('icons/square-solid.png'))
+        prep_reset_attachment_state(self)
+        
+def on_btn_attachment_bullet_3_clicked(self, event):
+    reset_toggle_btn_attachment(self, self.btn_attachment_bullet_3)
+
+def on_btn_attachment_bullet_3_toggled(self, event):
+    if event:
+        self.btn_attachment_bullet_3.setIcon(QIcon('icons/square-solid-colored.png'))
+        prep_new_attachment(self,3,AttachmentType.BULLET.value)
+    else:
+        self.btn_attachment_bullet_3.setIcon(QIcon('icons/square-solid.png'))
+        prep_reset_attachment_state(self)
     
     
     

@@ -61,6 +61,12 @@ class Korkhaus(AnalisaStudiModel):
         self.status_line_to_width[ArchType.UPPER.value]=None
         
         self.status_khorkaus=None
+        self.status_khorkaus_meaning=None
+        
+        self.status_expansion_meaning={}
+        self.status_expansion_meaning[ArchType.LOWER.value]=None
+        self.status_expansion_meaning[ArchType.UPPER.value]=None
+        
         if Arch._is_complete():
             self.calculate_incisors(archs)
             self.calculate_d_pre_and_khorkaus_line(archs)
@@ -73,14 +79,19 @@ class Korkhaus(AnalisaStudiModel):
             self.width_ideal[ArchType.UPPER.value]=self.delta_p1_ideal[ArchType.UPPER.value]/2
             
             self.status_line_to_width={}
-            self.status_line_to_width[ArchType.LOWER.value]=self.khorkaus_line[ArchType.LOWER.value]-self.delta_p1_ideal[ArchType.LOWER.value]
-            self.status_line_to_width[ArchType.UPPER.value]=self.khorkaus_line[ArchType.UPPER.value]-self.delta_p1_ideal[ArchType.UPPER.value]
+            self.status_line_to_width[ArchType.LOWER.value]=self.khorkaus_line[ArchType.LOWER.value]-self.width_ideal[ArchType.LOWER.value]
+            self.status_line_to_width[ArchType.UPPER.value]=self.khorkaus_line[ArchType.UPPER.value]-self.width_ideal[ArchType.UPPER.value]
+            
+            self.status_expansion_meaning[ArchType.LOWER.value]=self.check_anterior_expansion_status(self.status_line_to_width[ArchType.LOWER.value])
+            self.status_expansion_meaning[ArchType.UPPER.value]=self.check_anterior_expansion_status(self.status_line_to_width[ArchType.UPPER.value])
             
             self.status_khorkaus=self.khorkaus_line[ArchType.UPPER.value]-self.khorkaus_line[ArchType.LOWER.value]
+            self.status_khorkaus_meaning = self.check_anterior_klinasi_status(self.status_khorkaus)
             
-            status_lower = '{} => {}'.format(str(self.status_line_to_width[ArchType.LOWER.value]), self.check_anterior_expansion_status(self.status_line_to_width[ArchType.LOWER.value]))
-            status_upper = '{} => {}'.format(str(self.status_line_to_width[ArchType.UPPER.value]), self.check_anterior_expansion_status(self.status_line_to_width[ArchType.UPPER.value]))
-            status_khor  = '{} => {}'.format(str(self.status_khorkaus),self.check_anterior_klinasi_status(self.status_khorkaus))
+            
+            status_lower = '{} => {}'.format(str(self.status_line_to_width[ArchType.LOWER.value]), self.status_expansion_meaning[ArchType.LOWER.value])
+            status_upper = '{} => {}'.format(str(self.status_line_to_width[ArchType.UPPER.value]), self.status_expansion_meaning[ArchType.UPPER.value])
+            status_khor  = '{} => {}'.format(str(self.status_khorkaus),self.status_khorkaus_meaning)
             
             status = 'Lower:\n{}\nUpper:\n{}\nKhorkaus Line:\n{}'.format(status_lower,status_upper,status_khor)
             print("KHORKAUS")
@@ -98,7 +109,7 @@ class Korkhaus(AnalisaStudiModel):
         else:
             return 'Terdapat Retroklinasi anterior atas'
         
-    def calculate_d_pre_and_khorkaus_line(self,archs):
+    def calculate_d_pre_and_khorkaus_line(self,archs): 
         self.khorkaus_line[ArchType.LOWER.value]=None
         self.khorkaus_line[ArchType.UPPER.value]=None
         self.d_premolar[ArchType.LOWER.value]=None

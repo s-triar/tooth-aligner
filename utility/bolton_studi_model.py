@@ -23,6 +23,12 @@ class Bolton(AnalisaStudiModel):
         self.kmxo = None
         self.kmna = None
         self.kmxa = None
+        
+        self.correction_anterior=None
+        self.correction_arch_anterior = None
+        self.correction_overall=None
+        self.correction_arch_overall = None
+        
         super().__init__()
         
     def get_anterior_overall(self):
@@ -45,6 +51,8 @@ class Bolton(AnalisaStudiModel):
             self.kmxo = self.overal_width[ArchType.UPPER.value] - (( self.overal_width[ArchType.LOWER.value] *100)/91.3)
             self.kmna = self.anterior_width[ArchType.LOWER.value] - (( self.anterior_width[ArchType.UPPER.value] *77.2)/100)
             self.kmxa = self.anterior_width[ArchType.UPPER.value] - (( self.anterior_width[ArchType.LOWER.value] *100)/77.2)
+            self.calc_correction_anterior()
+            self.calc_correction_overall()
         
         
     def calc_anterior_overall(self, archs):
@@ -137,5 +145,26 @@ class Bolton(AnalisaStudiModel):
                 pts_correction.append(center)
         return pts, pts_correction
                 
-        
-            
+    def calc_correction_anterior(self):
+        self.correction_anterior=None
+        self.correction_arch_anterior = None
+        if(self.anterior > 77.2):
+            # mandibular terlalu besar
+            self.correction_arch_anterior = ArchType.LOWER.value
+            self.correction_anterior = self.kmna
+        elif(self.anterior < 77.2):
+            # maxillary terlalu besar
+            self.correction_arch_anterior = ArchType.UPPER.value
+            self.correction_anterior = self.kmxa
+    
+    def calc_correction_overall(self):
+        self.correction_overall=None
+        self.correction_arch_overall = None
+        if(self.overall > 91.3):
+            # mandibular terlalu besar
+            self.correction_arch_overall = ArchType.LOWER.value
+            self.correction_overall = self.kmno
+        elif(self.overall < 91.3):
+            # maxillary terlalu besar
+            self.correction_arch_overall = ArchType.UPPER.value
+            self.correction_overall = self.kmxo
