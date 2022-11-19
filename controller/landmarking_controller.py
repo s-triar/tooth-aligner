@@ -51,7 +51,8 @@ def change_point(self, event):
         coordinate = event.picked3d
         id_pt = msh.closestPoint(coordinate, N=1, returnPointId=True)
         # old_id = tooth.landmark_index[self.var_landmarking['selected_landmark']]
-        tooth.landmark_index[self.var_landmarking['selected_landmark']]=id_pt
+        # tooth.landmark_index[self.var_landmarking['selected_landmark']]=id_pt
+        tooth.landmark_pt[self.var_landmarking['selected_landmark']]=coordinate
     # self.var_history_landmarking.push([self.var_landmarking['index_model'], self.var_landmarking['selected_arch'], self.var_landmarking['selected_label'], self.var_landmarking['selected_landmark'], old_id])
     
     # render?
@@ -122,8 +123,9 @@ def show_landmark(self):
                 tooth_label = int(obj_names[3])
                 landmark_label = int(obj_names[4])
                 tooth = teeth[tooth_label]
-                landmark = tooth.landmark_index[landmark_label]
-                coordinate = arch.mesh.points(landmark)
+                # landmark = tooth.landmark_index[landmark_label]
+                # coordinate = arch.mesh.points(landmark)
+                coordinate = tooth.landmark_pt[landmark_label]
                 text = "[ {0:.3f} ; {1:.3f} ; {2:.3f} ]".format(coordinate[0],coordinate[1],coordinate[2])
                 child.setText(text)
                 p=Point(coordinate,c=convert_landmark_to_color(landmark_label))

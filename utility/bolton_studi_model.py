@@ -72,8 +72,10 @@ class Bolton(AnalisaStudiModel):
             for arch in archs:
                 for label in arch.teeth:
                     tooth = arch.teeth[label]
-                    mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
-                    distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    # mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
+                    # distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    mesial_pt = tooth.landmark_pt[LandmarkType.MESIAL.value]
+                    distal_pt = tooth.landmark_pt[LandmarkType.DISTAL.value]
                     w = np.linalg.norm(mesial_pt - distal_pt)
                     self.teeth_width[arch.arch_type][label]=w
                     if(tooth.label in self.label_all):

@@ -1,3 +1,4 @@
+
 import numpy as np
 import os
 # from dotenv import load_dotenv
@@ -18,7 +19,9 @@ class Tooth():
         self.vertices=vertices
         self.index_vertice_cells=index_vertice_cells
         self.center=center
-        self.landmark_index = landmark
+        self.landmark_pt = landmark
+        
+        # self.landmark_index = landmark
         # self.mesial_index=mesial_index
         # self.distal_index=distal_index
         # self.buccal_or_labial_index = buccal_or_labial_index # buccal or labial # out

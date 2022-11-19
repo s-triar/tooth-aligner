@@ -140,8 +140,10 @@ class Pont(AnalisaStudiModel):
             for arch in archs:
                 for label in arch.teeth:
                     tooth = arch.teeth[label]
-                    mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
-                    distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    # mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
+                    # distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    mesial_pt = tooth.landmark_pt[LandmarkType.MESIAL.value]
+                    distal_pt = tooth.landmark_pt[LandmarkType.DISTAL.value]
                     w = np.linalg.norm(mesial_pt - distal_pt)
                     if(tooth.label in self.label_anterior):
                         self.teeth_width[arch.arch_type][label]=w
@@ -153,28 +155,42 @@ class Pont(AnalisaStudiModel):
         if Arch._is_complete():
             UPPER_IDX=Arch._get_index_arch_type(ArchType.UPPER.value)
             LOWER_IDX=Arch._get_index_arch_type(ArchType.LOWER.value)
-            idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
-            idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
             
-            maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
-            maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            # maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
+            # maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            
+            maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.PIT.value]
+            maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.PIT.value]
             self.premolar_pts[ArchType.UPPER.value]=[maxi_l,maxi_r]
             
-            idx_mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.DISTAL.value]
-            idx_mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.MESIAL.value]
-            idx_mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.DISTAL.value]
-            idx_mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.MESIAL.value]
+            # idx_mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.DISTAL.value]
+            # idx_mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.MESIAL.value]
+            # idx_mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.DISTAL.value]
+            # idx_mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.MESIAL.value]
 
-            idx_mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
-            idx_mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.PIT.value]
-            idx_mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
-            idx_mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.PIT.value]
+            
+            
+            mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.DISTAL.value]
+            mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.MESIAL.value]
+            mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.DISTAL.value]
+            mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.MESIAL.value]
+
+            mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.PIT.value]
+            mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.PIT.value]
+            mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.PIT.value]
+            mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.PIT.value]
 
 
-            mandi_l2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l1_pit]
-            mandi_l1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l2_pit]
-            mandi_r1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r1_pit]
-            mandi_r2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r2_pit]
+            # mandi_l1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l1_pit]
+            # mandi_l2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l2_pit]
+            # mandi_r1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r1_pit]
+            # mandi_r2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r2_pit]
             
             mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].center
             mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].center
@@ -183,10 +199,10 @@ class Pont(AnalisaStudiModel):
             
             
 
-            mandi_l1 = archs[LOWER_IDX].mesh.points()[idx_mandi_l1]
-            mandi_r1 = archs[LOWER_IDX].mesh.points()[idx_mandi_r1]
-            mandi_l2 = archs[LOWER_IDX].mesh.points()[idx_mandi_l2]
-            mandi_r2 = archs[LOWER_IDX].mesh.points()[idx_mandi_r2]
+            # mandi_l1 = archs[LOWER_IDX].mesh.points()[idx_mandi_l1]
+            # mandi_r1 = archs[LOWER_IDX].mesh.points()[idx_mandi_r1]
+            # mandi_l2 = archs[LOWER_IDX].mesh.points()[idx_mandi_l2]
+            # mandi_r2 = archs[LOWER_IDX].mesh.points()[idx_mandi_r2]
             
             mandi_l = np.mean([mandi_l1, mandi_l2],axis=0)
             mandi_r = np.mean([mandi_r1, mandi_r2],axis=0)
@@ -207,17 +223,22 @@ class Pont(AnalisaStudiModel):
         if Arch._is_complete():
             UPPER_IDX=Arch._get_index_arch_type(ArchType.UPPER.value)
             LOWER_IDX=Arch._get_index_arch_type(ArchType.LOWER.value)
-            idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
-            idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
-            maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
-            maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            # idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
+            # idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
+            # maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
+            # maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            maxi_l = archs[UPPER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.PIT.value]
+            maxi_r = archs[UPPER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.PIT.value]
             self.molar_pts[ArchType.UPPER.value]=[maxi_l,maxi_r]
             
-            idx_mandi_l = archs[LOWER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
-            idx_mandi_r = archs[LOWER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_l = archs[LOWER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
+            # idx_mandi_r = archs[LOWER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
 
-            mandi_l = archs[LOWER_IDX].mesh.points()[idx_mandi_l]
-            mandi_r = archs[LOWER_IDX].mesh.points()[idx_mandi_r]    
+            # mandi_l = archs[LOWER_IDX].mesh.points()[idx_mandi_l]
+            # mandi_r = archs[LOWER_IDX].mesh.points()[idx_mandi_r]    
+            
+            mandi_l = archs[LOWER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.PIT.value]
+            mandi_r = archs[LOWER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.PIT.value]
             self.molar_pts[ArchType.LOWER.value]=[mandi_l,mandi_r]
             
             

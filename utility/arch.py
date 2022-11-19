@@ -106,6 +106,13 @@ class Arch():
             center_tooth = np.mean(points_tooth,axis=0)
             center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
             
+            point_tooth_index_map = ll.map_point_index(points_tooth_index)
+            cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, cells_tooth)
+            tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
+            points_tooth_normalized = tooth_mesh.points()-center_mesh
+            center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+            
+            
             landmark ={}
             landmark[LandmarkType.MESIAL.value]=None
             landmark[LandmarkType.DISTAL.value]=None
@@ -146,16 +153,17 @@ class Arch():
                     buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_anterior(label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     cusp = ll.get_cusp_anterior(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
-                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_mesh_normalized)
-                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_mesh_normalized)
-                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_mesh_normalized)
-                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_mesh_normalized)
-                    cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_mesh_normalized)
-                    landmark[LandmarkType.MESIAL.value]=mesial_index
-                    landmark[LandmarkType.DISTAL.value]=distal_index
-                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=buccal_or_labial_index
-                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=lingual_or_palatal_index
-                    landmark[LandmarkType.CUSP.value]=cusp_index
+                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized
+                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_tooth_normalized) #points_mesh_normalized
+                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_tooth_normalized) #points_mesh_normalized
+                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_tooth_normalized) #points_mesh_normalized
+                    cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_tooth_normalized) #points_mesh_normalized
+                    
+                    landmark[LandmarkType.MESIAL.value]=tooth_mesh.points()[mesial_index]
+                    landmark[LandmarkType.DISTAL.value]=tooth_mesh.points()[distal_index]
+                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=tooth_mesh.points()[buccal_or_labial_index]
+                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=tooth_mesh.points()[lingual_or_palatal_index]
+                    landmark[LandmarkType.CUSP.value]=tooth_mesh.points()[cusp_index]
                     tooth = Tooth(
                                 label, 
                                 points_tooth,
@@ -172,16 +180,16 @@ class Arch():
                     buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     cusp= ll.get_cusp_anterior(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
-                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_mesh_normalized)
-                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_mesh_normalized)
-                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_mesh_normalized)
-                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_mesh_normalized)
-                    cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_mesh_normalized)
-                    landmark[LandmarkType.MESIAL.value]=mesial_index
-                    landmark[LandmarkType.DISTAL.value]=distal_index
-                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=buccal_or_labial_index
-                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=lingual_or_palatal_index
-                    landmark[LandmarkType.CUSP.value]=cusp_index
+                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized
+                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_tooth_normalized) #points_mesh_normalized
+                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_tooth_normalized) #points_mesh_normalized
+                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_tooth_normalized) #points_mesh_normalized
+                    cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_tooth_normalized) #points_mesh_normalized
+                    landmark[LandmarkType.MESIAL.value]=tooth_mesh.points()[mesial_index]
+                    landmark[LandmarkType.DISTAL.value]=tooth_mesh.points()[distal_index]
+                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=tooth_mesh.points()[buccal_or_labial_index]
+                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=tooth_mesh.points()[lingual_or_palatal_index]
+                    landmark[LandmarkType.CUSP.value]=tooth_mesh.points()[cusp_index]
                     tooth = Tooth(
                                 label, 
                                 points_tooth,
@@ -197,30 +205,30 @@ class Arch():
                     cusps = ll.get_cusp_posterior(is_upper, label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     pit = ll.get_pit(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
-                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_mesh_normalized)
-                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_mesh_normalized)
-                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_mesh_normalized)
-                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_mesh_normalized)
+                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized
+                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_tooth_normalized) #points_mesh_normalized
+                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_tooth_normalized) #points_mesh_normalized
+                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_tooth_normalized) #points_mesh_normalized
                     cusp_indexes=[]
                     for cusp in cusps:
-                        cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_mesh_normalized)            
+                        cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_tooth_normalized)  #points_mesh_normalized           
                         cusp_indexes.append(cusp_index)
                             
-                    pit_index = ll.get_index_point_from_mesh_vertices(pit, points_mesh_normalized)            
-                    landmark[LandmarkType.MESIAL.value]=mesial_index
-                    landmark[LandmarkType.DISTAL.value]=distal_index
-                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=buccal_or_labial_index
-                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=lingual_or_palatal_index
-                    landmark[LandmarkType.PIT.value]=pit_index
+                    pit_index = ll.get_index_point_from_mesh_vertices(pit, points_tooth_normalized) #points_mesh_normalized            
+                    landmark[LandmarkType.MESIAL.value]=tooth_mesh.points()[mesial_index]
+                    landmark[LandmarkType.DISTAL.value]=tooth_mesh.points()[distal_index]
+                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=tooth_mesh.points()[buccal_or_labial_index]
+                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=tooth_mesh.points()[lingual_or_palatal_index]
+                    landmark[LandmarkType.PIT.value]=tooth_mesh.points()[pit_index]
                     if(len(cusp_indexes)==3):
                         # in mesial, in distal, out
-                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=cusp_indexes[0]
-                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=cusp_indexes[1]
-                        landmark[LandmarkType.CUSP_OUT.value]=cusp_indexes[2]
+                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=tooth_mesh.points()[cusp_indexes[0]]
+                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=tooth_mesh.points()[cusp_indexes[1]]
+                        landmark[LandmarkType.CUSP_OUT.value]=tooth_mesh.points()[cusp_indexes[2]]
                     else:
                         # in, out
-                        landmark[LandmarkType.CUSP_IN.value]=cusp_indexes[0]
-                        landmark[LandmarkType.CUSP_OUT.value]=cusp_indexes[1]
+                        landmark[LandmarkType.CUSP_IN.value]=tooth_mesh.points()[cusp_indexes[0]]
+                        landmark[LandmarkType.CUSP_OUT.value]=tooth_mesh.points()[cusp_indexes[1]]
                     
                     tooth = Tooth(
                                 label, 
@@ -237,35 +245,35 @@ class Arch():
                     cusps = ll.get_cusp_posterior(is_upper, label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     pit = ll.get_pit(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
-                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_mesh_normalized)
-                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_mesh_normalized)
-                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_mesh_normalized)
-                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_mesh_normalized)
+                    mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized
+                    distal_index = ll.get_index_point_from_mesh_vertices(distal, points_tooth_normalized) #points_mesh_normalized
+                    buccal_or_labial_index = ll.get_index_point_from_mesh_vertices(buccal_or_labial, points_tooth_normalized) #points_mesh_normalized
+                    lingual_or_palatal_index = ll.get_index_point_from_mesh_vertices(lingual_or_palatal, points_tooth_normalized) #points_mesh_normalized
                     cusp_indexes=[]
                     for cusp in cusps:
-                        cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_mesh_normalized)            
+                        cusp_index = ll.get_index_point_from_mesh_vertices(cusp, points_tooth_normalized) #points_mesh_normalized            
                         cusp_indexes.append(cusp_index)
                             
                     # print("pit molar", label, pit)
-                    pit_index = ll.get_index_point_from_mesh_vertices(pit, points_mesh_normalized)            
-                    landmark[LandmarkType.MESIAL.value]=mesial_index
-                    landmark[LandmarkType.DISTAL.value]=distal_index
-                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=buccal_or_labial_index
-                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=lingual_or_palatal_index
-                    landmark[LandmarkType.PIT.value]=pit_index
+                    pit_index = ll.get_index_point_from_mesh_vertices(pit, points_tooth_normalized) #points_mesh_normalized            
+                    landmark[LandmarkType.MESIAL.value]=tooth_mesh.points()[mesial_index]
+                    landmark[LandmarkType.DISTAL.value]=tooth_mesh.points()[distal_index]
+                    landmark[LandmarkType.BUCCAL_OR_LABIAL.value]=tooth_mesh.points()[buccal_or_labial_index]
+                    landmark[LandmarkType.LINGUAL_OR_PALATAL.value]=tooth_mesh.points()[lingual_or_palatal_index]
+                    landmark[LandmarkType.PIT.value]=tooth_mesh.points()[pit_index]
                     if(len(cusp_indexes)==5):
                         # in mesial, in distal, out mesial, out middle, out distal
-                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=cusp_indexes[0]
-                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=cusp_indexes[1]
-                        landmark[LandmarkType.CUSP_OUT_MESIAL.value]=cusp_indexes[2]
-                        landmark[LandmarkType.CUSP_OUT_MIDDLE.value]=cusp_indexes[3]
-                        landmark[LandmarkType.CUSP_OUT_DISTAL.value]=cusp_indexes[4]
+                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=tooth_mesh.points()[cusp_indexes[0]]
+                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=tooth_mesh.points()[cusp_indexes[1]]
+                        landmark[LandmarkType.CUSP_OUT_MESIAL.value]=tooth_mesh.points()[cusp_indexes[2]]
+                        landmark[LandmarkType.CUSP_OUT_MIDDLE.value]=tooth_mesh.points()[cusp_indexes[3]]
+                        landmark[LandmarkType.CUSP_OUT_DISTAL.value]=tooth_mesh.points()[cusp_indexes[4]]
                     else:
                         # in mesial, in distal, out mesial, out distal
-                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=cusp_indexes[0]
-                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=cusp_indexes[1]
-                        landmark[LandmarkType.CUSP_OUT_MESIAL.value]=cusp_indexes[2]
-                        landmark[LandmarkType.CUSP_OUT_DISTAL.value]=cusp_indexes[3]
+                        landmark[LandmarkType.CUSP_IN_MESIAL.value]=tooth_mesh.points()[cusp_indexes[0]]
+                        landmark[LandmarkType.CUSP_IN_DISTAL.value]=tooth_mesh.points()[cusp_indexes[1]]
+                        landmark[LandmarkType.CUSP_OUT_MESIAL.value]=tooth_mesh.points()[cusp_indexes[2]]
+                        landmark[LandmarkType.CUSP_OUT_DISTAL.value]=tooth_mesh.points()[cusp_indexes[3]]
                    
                     tooth = Tooth(
                                 label, 

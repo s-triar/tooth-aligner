@@ -117,33 +117,46 @@ class Korkhaus(AnalisaStudiModel):
         if Arch._is_complete():
             UPPER_IDX=Arch._get_index_arch_type(ArchType.UPPER.value)
             LOWER_IDX=Arch._get_index_arch_type(ArchType.LOWER.value)
-            idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
-            idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
+            # idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
             
-            maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
-            maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            # maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
+            # maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            
+            maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.PIT.value]
+            maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.PIT.value]
+            
             self.premolar_points[ArchType.UPPER.value]=[maxi_l, maxi_r]
-            idx_mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.DISTAL.value]
-            idx_mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.DISTAL.value]
-            idx_mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.MESIAL.value]
-            idx_mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.MESIAL.value]
+            # idx_mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.DISTAL.value]
+            # idx_mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.DISTAL.value]
+            # idx_mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.MESIAL.value]
+            # idx_mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.MESIAL.value]
 
-            mandi_l1 = archs[LOWER_IDX].mesh.points()[idx_mandi_l1]
-            mandi_r1 = archs[LOWER_IDX].mesh.points()[idx_mandi_r1]
-            mandi_l2 = archs[LOWER_IDX].mesh.points()[idx_mandi_l2]
-            mandi_r2 = archs[LOWER_IDX].mesh.points()[idx_mandi_r2]
+            # mandi_l1 = archs[LOWER_IDX].mesh.points()[idx_mandi_l1]
+            # mandi_r1 = archs[LOWER_IDX].mesh.points()[idx_mandi_r1]
+            # mandi_l2 = archs[LOWER_IDX].mesh.points()[idx_mandi_l2]
+            # mandi_r2 = archs[LOWER_IDX].mesh.points()[idx_mandi_r2]
+            
+            mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.DISTAL.value]
+            mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.DISTAL.value]
+            mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.MESIAL.value]
+            mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.MESIAL.value]
             
             mandi_l = (mandi_l1+mandi_l2)/2
             mandi_r = (mandi_r1+mandi_r2)/2
             self.premolar_points[ArchType.LOWER.value]=[mandi_l, mandi_r]
             center_incisor_max=np.mean([
-                    archs[UPPER_IDX].mesh.points()[archs[UPPER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],    
-                    archs[UPPER_IDX].mesh.points()[archs[UPPER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]],
+                    # archs[UPPER_IDX].mesh.points()[archs[UPPER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],    
+                    # archs[UPPER_IDX].mesh.points()[archs[UPPER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]],
+                    archs[UPPER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.MESIAL.value],    
+                    archs[UPPER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.MESIAL.value],
                 ],axis=0)
             self.center_incisor_points[ArchType.UPPER.value]=center_incisor_max
             center_incisor_man=np.mean([
-                    archs[LOWER_IDX].mesh.points()[archs[LOWER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],    
-                    archs[LOWER_IDX].mesh.points()[archs[LOWER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]],
+                    # archs[LOWER_IDX].mesh.points()[archs[LOWER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],    
+                    # archs[LOWER_IDX].mesh.points()[archs[LOWER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]],
+                    archs[LOWER_IDX].teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.MESIAL.value],    
+                    archs[LOWER_IDX].teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.MESIAL.value],
                 ],axis=0)
             self.center_incisor_points[ArchType.LOWER.value]=center_incisor_man
             self.d_premolar[ArchType.LOWER.value]=np.linalg.norm(mandi_l - mandi_r)
@@ -174,8 +187,10 @@ class Korkhaus(AnalisaStudiModel):
             for arch in archs:
                 for label in arch.teeth:
                     tooth = arch.teeth[label]
-                    mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
-                    distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    # mesial_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.MESIAL.value]]
+                    # distal_pt = arch.mesh.points()[tooth.landmark_index[LandmarkType.DISTAL.value]]
+                    mesial_pt = tooth.landmark_pt[LandmarkType.MESIAL.value]
+                    distal_pt = tooth.landmark_pt[LandmarkType.DISTAL.value]
                     w = np.linalg.norm(mesial_pt - distal_pt)
                     if(tooth.label in self.label_anterior):
                         self.incisors_width[arch.arch_type]+=w

@@ -301,8 +301,10 @@ def draw_summary_lines(self):
                     # calc korkhaus
                     batas_awal = msh.centerOfMass()
                     batas_akhir = np.mean([
-                        msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
-                        msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                        # msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
+                        # msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.MESIAL.value],
+                        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.MESIAL.value]
                     ], axis=0)
                     d=(batas_awal - batas_akhir) / np.linalg.norm(batas_awal - batas_akhir)
                     v = new_center - batas_akhir
@@ -334,8 +336,10 @@ def draw_summary_lines(self):
                     
                     batas_awal = msh.centerOfMass()
                     batas_akhir = np.mean([
-                        msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
-                        msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                        # msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
+                        # msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.MESIAL.value],
+                        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.MESIAL.value]
                     ], axis=0)
                     d=(batas_awal - batas_akhir) / np.linalg.norm(batas_awal - batas_akhir)
                     v = new_center - batas_akhir
@@ -355,8 +359,10 @@ def draw_summary_lines(self):
             elif(tooth_type in teeth_type_pont):
                 batas_awal = msh.centerOfMass()
                 batas_akhir = np.mean([
-                    msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
-                    msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                    # msh.points()[teeth[ToothType.INCISOR_UL1_LR1.value].landmark_index[LandmarkType.MESIAL.value]],
+                    # msh.points()[teeth[ToothType.INCISOR_UR1_LL1.value].landmark_index[LandmarkType.MESIAL.value]]
+                    teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.MESIAL.value],
+                    teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.MESIAL.value]
                 ], axis=0)
                 d=(batas_awal - batas_akhir) / np.linalg.norm(batas_awal - batas_akhir)
                 v = teeth[tooth_type].center - batas_akhir
