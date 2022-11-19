@@ -42,7 +42,7 @@ def mapping_point_index(map, indexes):
     
 # get tooth point
 
-label = 5
+label = 7
 
 cells_tooth_index = np.where(teeth_label == label)
 label = math.floor(label)
@@ -71,7 +71,7 @@ points_tooth = points_tooth - center_tooth
 
 tooth_mesh = Mesh([points_tooth, cells_tooth_mapped])
 
-tooth_mesh = tooth_mesh.subdivide(1)
+tooth_mesh = tooth_mesh.subdivide(1, method=0)
 print(len(tooth_mesh.cells()))
 
 eigen_val_tooth, eigen_vec_tooth = ll.getEigenPlain(points_tooth)
@@ -80,7 +80,7 @@ eig_draw = ll.draw_eigen_vec(eigen_vec_tooth, center_tooth)
 
 plt = Plotter(axes=1)
 plt.show(
-    arch.alpha(0.5), 
+    arch, 
     tooth_mesh,
     eig_draw
     )

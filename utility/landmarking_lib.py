@@ -127,6 +127,21 @@ def getEigen(points,idx_faces):
     # upward_downward = eig_vec[2]
     return eig_val, eig_vec
 
+def map_point_index(unique_indexes):
+    temp = {}
+    for i in range(len(unique_indexes)):
+        temp[unique_indexes[i]]=i
+    return temp
+    
+def mapping_point_index(map, indexes):
+    temp = []
+    for i in range(len(indexes)):
+        temp_j = []
+        for j in range (len(indexes[i])):
+            temp_j.append(map[indexes[i][j]])
+        temp.append(temp_j)
+    return temp
+
 def get_index_point_from_mesh_vertices(point, points):
     return np.argwhere(np.isin(points, point).all(axis=1))[0][0]
 
