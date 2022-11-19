@@ -1,5 +1,7 @@
 import enum
 
+
+
 class PanelMode(enum.Enum):
     ROTATION=1
     BOLTON=2

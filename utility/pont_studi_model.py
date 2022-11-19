@@ -3,17 +3,18 @@ from utility.analisa_studi_model import AnalisaStudiModel
 from constant.enums import ArchType, ToothType, LandmarkType
 import numpy as np
 from utility.arch import Arch
+from utility.calculation import find_closest_point_between_a_point_and_a_line, find_distance_between_two_points
 
 class Pont(AnalisaStudiModel):
     
     def __init__(self) -> None:
        
-        self.premolar_index={
+        self.premolar_pts={
             ArchType.LOWER.value:None,
             ArchType.UPPER.value:None,
         }
        
-        self.molar_index={
+        self.molar_pts={
             ArchType.LOWER.value:None,
             ArchType.UPPER.value:None,
         }
@@ -154,20 +155,49 @@ class Pont(AnalisaStudiModel):
             LOWER_IDX=Arch._get_index_arch_type(ArchType.LOWER.value)
             idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
             idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
-            self.premolar_index[ArchType.UPPER.value]=[idx_maxi_l,idx_maxi_r]
             
             maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
             maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
-            idx_mandi_l = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
-            idx_mandi_r = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
-            self.premolar_index[ArchType.LOWER.value]=[idx_mandi_l,idx_mandi_r]
-
-            mandi_l = archs[LOWER_IDX].mesh.points()[idx_mandi_l]
-            mandi_r = archs[LOWER_IDX].mesh.points()[idx_mandi_r]
+            self.premolar_pts[ArchType.UPPER.value]=[maxi_l,maxi_r]
             
+            idx_mandi_l1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.DISTAL.value]
+            idx_mandi_l2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.MESIAL.value]
+            idx_mandi_r1 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.DISTAL.value]
+            idx_mandi_r2 = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.MESIAL.value]
+
+            idx_mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_index[LandmarkType.PIT.value]
+            idx_mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_index[LandmarkType.PIT.value]
+            idx_mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_index[LandmarkType.PIT.value]
+            idx_mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_index[LandmarkType.PIT.value]
+
+
+            mandi_l2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l1_pit]
+            mandi_l1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_l2_pit]
+            mandi_r1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r1_pit]
+            mandi_r2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r2_pit]
+            
+            mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].center
+            mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].center
+            mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].center
+            mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].center
+            
+            
+
+            mandi_l1 = archs[LOWER_IDX].mesh.points()[idx_mandi_l1]
+            mandi_r1 = archs[LOWER_IDX].mesh.points()[idx_mandi_r1]
+            mandi_l2 = archs[LOWER_IDX].mesh.points()[idx_mandi_l2]
+            mandi_r2 = archs[LOWER_IDX].mesh.points()[idx_mandi_r2]
+            
+            mandi_l = np.mean([mandi_l1, mandi_l2],axis=0)
+            mandi_r = np.mean([mandi_r1, mandi_r2],axis=0)
+            
+            mandi_l = find_closest_point_between_a_point_and_a_line(mandi_l, np.array([mandi_l1_pit,mandi_l2_pit]))
+            mandi_r = find_closest_point_between_a_point_and_a_line(mandi_r, np.array([mandi_r1_pit,mandi_r2_pit]))
+            
+            self.premolar_pts[ArchType.LOWER.value]=[mandi_l,mandi_r]
         
-            self.mpv[ArchType.LOWER.value]=np.linalg.norm(mandi_l - mandi_r)
-            self.mpv[ArchType.UPPER.value]=np.linalg.norm(maxi_l - maxi_r)
+            self.mpv[ArchType.LOWER.value]=find_distance_between_two_points(mandi_l, mandi_r)
+            self.mpv[ArchType.UPPER.value]=find_distance_between_two_points(maxi_l, maxi_r)
             
         
             
@@ -179,16 +209,18 @@ class Pont(AnalisaStudiModel):
             LOWER_IDX=Arch._get_index_arch_type(ArchType.LOWER.value)
             idx_maxi_l = archs[UPPER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
             idx_maxi_r = archs[UPPER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
-            self.molar_index[ArchType.UPPER.value]=[idx_maxi_l,idx_maxi_r]
             maxi_l = archs[UPPER_IDX].mesh.points()[idx_maxi_l]
             maxi_r = archs[UPPER_IDX].mesh.points()[idx_maxi_r]
+            self.molar_pts[ArchType.UPPER.value]=[maxi_l,maxi_r]
             
             idx_mandi_l = archs[LOWER_IDX].teeth[ToothType.MOLAR_UL6_LR6.value].landmark_index[LandmarkType.PIT.value]
             idx_mandi_r = archs[LOWER_IDX].teeth[ToothType.MOLAR_UR6_LL6.value].landmark_index[LandmarkType.PIT.value]
-            self.molar_index[ArchType.LOWER.value]=[idx_mandi_l,idx_mandi_r]
 
             mandi_l = archs[LOWER_IDX].mesh.points()[idx_mandi_l]
             mandi_r = archs[LOWER_IDX].mesh.points()[idx_mandi_r]    
+            self.molar_pts[ArchType.LOWER.value]=[mandi_l,mandi_r]
+            
+            
         
             self.mmv[ArchType.LOWER.value]=np.linalg.norm(mandi_l - mandi_r)
             self.mmv[ArchType.UPPER.value]=np.linalg.norm(maxi_l - maxi_r)

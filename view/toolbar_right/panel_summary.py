@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import (
 import numpy as np
 from PyQt5.QtCore import Qt, QSize
 from constant.enums import ArchType, LandmarkType, ToothType
+from controller.summary_controller import get_flat_plane
 from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.names import convert_arch_val_to_name
@@ -74,7 +75,13 @@ def create_pane_summary(self):
         create_korkhaus_summary(self)
         self.pane_archs_summary_layout.addWidget(QHSeperationLine())
         create_bolton_summary(self)
-        
+        self.pane_archs_summary_layout.addWidget(QHSeperationLine())
+        create_carey_summay(self)
+        # get_flat_plane(self)
+
+
+
+
 def create_bolton_summary(self):
     bolton_lbl = QLabel("Bolton")
     self.pane_archs_summary_layout.addWidget(bolton_lbl)
@@ -157,7 +164,28 @@ def create_korkhaus_summary(self):
     korkhaus_summary_layout.addWidget(korkhaus_line_val,2,1)
     korkhaus_line_expansion_meaning = QLabel(self.korkhaus_studi_model.status_khorkaus_meaning)
     korkhaus_summary_layout.addWidget(korkhaus_line_expansion_meaning,2,2)
+
+
+
+def create_carey_summay(self):
+    carey_lbl = QLabel("Carey")
+    self.pane_archs_summary_layout.addWidget(carey_lbl)
+    carey_summary_widget = QWidget()
+    self.pane_archs_summary_layout.addWidget(carey_summary_widget)
+    carey_summary_layout = QGridLayout()
+    carey_summary_widget.setLayout(carey_summary_layout)
     
+    carey_max_lbl = QLabel("Max")
+    carey_summary_layout.addWidget(carey_max_lbl,0,0,1,1)
+    carey_max_meaning_lbl = QLabel(self.carey_studi_model.arch_length_descrepancy_meaning[ArchType.UPPER.value])
+    carey_summary_layout.addWidget(carey_max_meaning_lbl,1,0,1,3)
+    
+    carey_man_lbl = QLabel("Man")
+    carey_summary_layout.addWidget(carey_man_lbl,2,0,1,1)
+    carey_man_meaning_lbl = QLabel(self.carey_studi_model.arch_length_descrepancy_meaning[ArchType.LOWER.value])
+    carey_summary_layout.addWidget(carey_man_meaning_lbl,3,0,1,3)
+
+
 def create_pont_summary(self):
     pont_lbl = QLabel("Pont")
     self.pane_archs_summary_layout.addWidget(pont_lbl)
@@ -359,15 +387,33 @@ def draw_summary_lines(self):
         print("legacies", legacies)
         print("preds",preds)
         
-        draw_spline(self, legacies, False)
-        draw_spline(self, preds, True)
+        draw_spline(self, legacies, False, i.value)
+        draw_spline(self, preds, True, i.value)
 
-def draw_spline(self, pts, isPred):
+def draw_spline(self, pts, isPred, arch):
+    c = 'orange'
+    if(isPred):
+        c='green'
+    if(arch == ArchType.UPPER.value):
+        c+='5'
     line = SplineKu(pts, degree=3, smooth=0, res=600)
     line.ps(8)
-    if(isPred):
-        line.c("green")
+    line.c(c)
     self.model_plot.add(line)
     for pt in pts:
         self.model_plot.add(Point(pt))
     self.model_plot.render()
+    
+def draw_spline_flat(self):
+    coords = get_flat_plane(self)
+    for pts in coords:
+        print(pts)
+        c = 'blue4'
+        line = SplineKu(pts, degree=3, smooth=0, res=600)
+        line.ps(8)
+        line.c(c)
+        self.model_plot.add(line)
+        for pt in pts:
+            self.model_plot.add(Point(pt))
+        self.model_plot.render()
+    

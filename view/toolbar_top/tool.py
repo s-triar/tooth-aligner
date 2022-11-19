@@ -18,7 +18,7 @@ from view.components.tool_top_button import ToolTopButton
 # from controller.landmarking_controller import init_var_landmarking
 from controller.vedo_plotter_controller import remove_not_arch, set_plot_click_mode, reset_plot_click_mode
 from view.toolbar_right.panel_bite_contact import draw_bite_contact
-from view.toolbar_right.panel_grid import draw_grid_lines
+from view.toolbar_right.panel_grid import draw_grid_lines, draw_grid_lines_overlay
 from view.toolbar_top.reset_toggle_btn import reset_toggle_tooltop_btn
 
 def create_tool(self, parent_layout):
@@ -38,7 +38,7 @@ def create_tool(self, parent_layout):
     self.btn_landmark.toggled.connect(lambda e: toggle_btn_landmark(self,e))
     self.container_tool_btn_layout.addWidget(self.btn_landmark)
 
-    self.btn_rotate = ToolTopButton('Rotate','icons/tooth-rotate.png','icons/tooth-rotate-colors.png',True)
+    self.btn_rotate = ToolTopButton('Movement','icons/tooth-rotate.png','icons/tooth-rotate-colors.png',True)
     # self.btn_rotate.setObjectName('btn_toolbar_tool_rotate')
     self.btn_rotate.clicked.connect(lambda e: click_btn_rotate(self,e))
     self.btn_rotate.toggled.connect(lambda e: toggle_btn_rotate(self,e))
@@ -129,7 +129,7 @@ def click_btn_grid(self, e):
 def toggle_btn_grid(self, e):
     if e:
         self.grid_panel_widget_container.show()
-        draw_grid_lines(self)
+        draw_grid_lines_overlay(self)
         set_plot_click_mode(self, PanelMode.GRID.value)
     else:
         self.grid_panel_widget_container.hide()

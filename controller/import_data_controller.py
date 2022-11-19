@@ -19,6 +19,7 @@ def calculate_studi_model(self):
         # print("overjet",self.bolton_studi_model.get_overjet())
         self.korkhaus_studi_model.calculate_khorkaus(self.models)
         self.pont_studi_model.calculate_pont(self.models)
+        self.carey_studi_model.calculate_carey(self.models)
 
 def reset_model(self):
     self.model_plot.clear()

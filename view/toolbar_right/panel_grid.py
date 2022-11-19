@@ -66,6 +66,21 @@ def draw_grid_lines(self):
     gr2.name = "Grid Board"
     self.model_plot.add(gr2)
     self.model_plot.render()
+    
+def draw_grid_lines_overlay(self):
+    position = (0, 0, 0)
+    gridSize = 500
+    fineGrid = Grid(pos=position, s=(gridSize, gridSize), res=(gridSize, gridSize), c='k4')
+    fineGrid.name = "Grid Board Fine"
+    largeGrid = Grid(pos=position, s=(gridSize, gridSize), res=((int)(gridSize / 10), (int)(gridSize / 10)), lw=2, c='k2')
+    largeGrid.name = "Grid Board Large"
+    
+    fineGrid.followCamera(self.model_plot.camera)
+    largeGrid.followCamera(self.model_plot.camera)
+    self.model_plot.parallelProjection(True)
+    self.model_plot.add(fineGrid)
+    self.model_plot.add(largeGrid)
+    self.model_plot.render()
 
         
         

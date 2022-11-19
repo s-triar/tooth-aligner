@@ -1,6 +1,6 @@
 from constant.attachment import AttachmentType
 from utility.attachment_model import AttachmentModel
-from vedo import vtk, Box, Mesh, vtk2numpy, load
+from vedo import vtk, Box, Mesh, vtk2numpy, load, Point
 import time
 import numpy as np
 
@@ -11,20 +11,38 @@ def init_var_attachment(self):
         'step':None,
         'arch':None,
         'width':None,
-        'type':None
+        'type':None,
+        'tooth_label':None
     }
 
-def transform_attachment_on_tooth(self, label, rotate_type, val_rot, is_rad, center_pivot):
+def move_attachment_on_tooth(self, label, val_movement):
+    print("move_attachment_on_tooth",label, val_movement)
     attachs, archs, steps, index_k = self.attachment_model.get_attachment_from_label(label)
     for at, ar, st, idx in zip(attachs, archs, steps, index_k):
         mesh =at.mesh
+        mesh.points(mesh.points()+val_movement)
+        # self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh)
+
+def transform_attachment_on_tooth(self, label, rotate_type, val_rot, is_rad, center_pivot):
+    print("transform attachment",label, rotate_type, val_rot, is_rad, center_pivot)
+    self.model_plot.add(Point(center_pivot, c='red',r=25,alpha=0.5))
+    self.model_plot.render()
+    
+    attachs, archs, steps, index_k = self.attachment_model.get_attachment_from_label(label)
+    for at, ar, st, idx in zip(attachs, archs, steps, index_k):
+        mesh =at.mesh
+        mesh_new = Mesh([mesh.points(),mesh.cells()])
         if(rotate_type=="pitch"):
-            mesh.rotateX(val_rot, is_rad, center_pivot)
+            mesh_new.rotateX(val_rot, is_rad, center_pivot)
+            print("rotate x aatchment")
         elif(rotate_type=="yaw"):
-            mesh.rotateY(val_rot, is_rad, center_pivot)
+            mesh_new.rotateY(val_rot, is_rad, center_pivot)
+            print("rotate y aatchment")
         elif(rotate_type=="roll"):
-            mesh.rotateZ(val_rot, is_rad, center_pivot)
-        self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh)
+            mesh_new.rotateZ(val_rot, is_rad, center_pivot)
+            print("rotate z aatchment")
+        mesh.points(mesh_new.points())
+        # self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh)
 
 def prep_reset_attachment_state(self):
     self.var_state_attachment={
@@ -32,8 +50,8 @@ def prep_reset_attachment_state(self):
         'step':None,
         'arch':None,
         'width':None,
-        'type':None
-        
+        'type':None,
+        'tooth_label':None
     }
 
 def prep_new_attachment(self, w, t):
@@ -85,7 +103,7 @@ def mouse_click_attachment(self,event):
                 sm = np.sum(diff, axis=1)
                 index = np.argmin(sm)
                 label = m.teeth[index+1].label
-                
+                self.var_state_attachment['tooth_label'] = label
                 self.var_state_attachment['arch']=m.arch_type
                 self.var_state_attachment['step']=self.step_model.get_current_step()
                 print(self.var_state_attachment)
@@ -156,12 +174,23 @@ def mouse_click_attachment(self,event):
         
     # select attachment first
     elif event.actor and (not (event.actor in archs)) and self.var_state_attachment['selected'] != event.actor.name:
+        pts = event.picked3d
+        label = None
+        for m in self.models:
+            if (m.mesh == event.actor):
+                teeth_center=[m.teeth[k].center for k in m.teeth]
+                diff = np.abs(np.subtract(teeth_center, [event.picked3d]))
+                sm = np.sum(diff, axis=1)
+                index = np.argmin(sm)
+                label = m.teeth[index+1].label
+                break
         ar, st = self.attachment_model.get_arch_and_step_from_name(event.actor.name)
         self.var_state_attachment={
             'selected':event.actor.name, # name or 'create'
             'step':st,
             'arch':ar,
-            'width':None
+            'width':None,
+            'tooth_label':label
         }
         # print('touch attachment')
         # print(self.var_state_attachment)
@@ -176,12 +205,25 @@ def mouse_click_attachment(self,event):
         return
     
     elif(event.actor in archs) or (not event.actor):
+        for a in self.model_plot.actors:
+            if(a.name == self.var_state_attachment['selected']):
+                t = a.getTransform()
+                attachs, archs, steps, index_k = self.attachment_model.get_attachment_from_label(self.var_state_attachment['tooth_label'])
+                for at, ar, st, idx in zip(attachs, archs, steps, index_k):
+                    mesh =at.mesh
+                    if(mesh.name == a.name):
+                        mesh.applyTransform(t)
+                        print(mesh.points())
+                        
+                        break
+                break
         # print('not touch attachment')
         self.var_state_attachment={
             'selected':None, # name or 'create'
             'step':None,
             'arch':None,
-            'width':None
+            'width':None,
+            'tooth_label':None
         }
         vsty = vtk.vtkInteractorStyleTrackballCamera()
         change_plot_interaction(self, vsty)

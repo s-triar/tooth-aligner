@@ -12,6 +12,7 @@ import sys
 import vtkmodules.qt
 import os
 from controller.attachment_controller import init_var_attachment
+from controller.carey_controller import init_var_carey
 from controller.grid_controller import init_var_grid
 from controller.landmarking_controller import init_var_landmarking
 from controller.rotation_controller import init_var_rotation
@@ -36,6 +37,7 @@ class Window(QFrame):
         init_var_bolton(self)
         init_var_korkhaus(self)
         init_var_pont(self)
+        init_var_carey(self)
         init_var_step(self)
         init_var_attachment(self)
         init_var_grid(self)

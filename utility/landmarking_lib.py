@@ -68,6 +68,20 @@ def getEigenAttachment(points):
     eig_vec =  eig_vec[arrindx[::-1]] 
     return eig_val, eig_vec
 
+def getEigenPlain(points):
+    points_np = np.array(points, dtype=np.float32)
+    points_np_t = points_np.transpose()
+    m = np.matmul(points_np_t, points_np)
+    eig_linal = np.linalg.eig(m)
+    # print(eig_linal)
+    eig_val = eig_linal[0]
+    eig_vec = eig_linal[1]
+    arrindx = eig_val.argsort()
+    # print(arrindx)
+    eig_val = eig_val[arrindx[::-1]]
+    eig_vec =  eig_vec[arrindx[::-1]]
+    return eig_val, eig_vec
+
 def getEigen(points,idx_faces):
     # print("center_incisors",center_incisors)
     # print("center_molar",center_molar)
@@ -1008,8 +1022,10 @@ if __name__ == "__main__":
     
     # pt_chosen_mesh, pt_neigh, idx_pt_neigh = faces_side_from_selected_face(ids,2001)
     # additional_mesh = _DEBUG_faces_side_from_selected_face(points, pt_chosen_mesh, pt_neigh)
-    
+    eigen_val, eigen_vec = getEigen(points, ids)
+    draw_ei = draw_eigen_vec(eigen_vec, mesh.centerOfMass())
     show(mesh,
         additional_mesh,
+        draw_ei,
         #  spline,
         axes=1)

@@ -88,15 +88,11 @@ def draw_pont_lines(self):
     for i in ArchType:
         idx = Arch._get_index_arch_type(i.value)
         msh = self.models[idx].mesh
-        idx_premolar1l = self.pont_studi_model.premolar_index[i.value][0]
-        idx_premolar1r= self.pont_studi_model.premolar_index[i.value][1]
-        idx_molar1l= self.pont_studi_model.molar_index[i.value][0]
-        idx_molar1r= self.pont_studi_model.molar_index[i.value][1]
+        premolar1l = self.pont_studi_model.premolar_pts[i.value][0]
+        premolar1r= self.pont_studi_model.premolar_pts[i.value][1]
+        molar1l= self.pont_studi_model.molar_pts[i.value][0]
+        molar1r= self.pont_studi_model.molar_pts[i.value][1]
         
-        premolar1l = msh.points()[idx_premolar1l]
-        premolar1r= msh.points()[idx_premolar1r]
-        molar1l= msh.points()[idx_molar1l]
-        molar1r= msh.points()[idx_molar1r]
         color = 'orange'
         if(i.value == ArchType.UPPER.value):
             color='green'
