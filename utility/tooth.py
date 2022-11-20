@@ -40,9 +40,29 @@ class Tooth():
         for sp,p in zip(sorted_index_points_index, points_index):
             map_sorted2ori[sp]=p
             map_ori2sorted[p]=sp
+    
+    def update_landmark_rotation(self, type, val_rotate, new_new_center):
+        print("do rotate landmark",type, val_rotate, new_new_center)
+        for k in self.landmark_pt:
+            pt = self.landmark_pt[k.value]
+            PT = Point(pt)
+            if(type=="pitch"):
+                PT.rotateX(val_rotate, False, new_new_center)
+                print("rotate x tooth landmark")
+            elif(type=="yaw"):
+                PT.rotateY(val_rotate, False, new_new_center)
+                print("rotate y tooth landmark")
+            elif(type=="roll"):
+                PT.rotateZ(val_rotate, False, new_new_center)
+                print("rotate z tooth landmark")
+            self.landmark_pt[k.value]=PT.points()
         
-        
-            
+    def update_landmark_moving(self, val_direction):
+        print("do moving landmark",val_direction)
+        for k in self.landmark_pt:
+            pt = self.landmark_pt[k.value]
+            pt = pt+val_direction
+            self.landmark_pt[k.value]=pt
             
         
         

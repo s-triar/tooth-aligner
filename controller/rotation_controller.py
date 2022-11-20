@@ -131,11 +131,13 @@ def do_moving(self, val_direction):
     print('after',len(pts_col_after),len(pts_col_after_before_rotation))
     temp_p = self.mesh_selected_rotation['arch'].mesh.points()
     temp_p[faces_unique] = mesh.points()[faces_unique]
-    mesh_transform = mesh.getTransform()
+    # mesh_transform = mesh.getTransform()
     
     move_attachment_on_tooth(self, self.tooth_selected_rotation['label'], val_direction)
     self.mesh_selected_rotation['arch'].mesh.points(temp_p)
-    self.mesh_selected_rotation['arch'].extract_tooth()
+    # self.mesh_selected_rotation['arch'].extract_tooth()
+    self.mesh_selected_rotation['arch'].update_teeth_point_moving(self.tooth_selected_rotation['label'], val_direction)
+    
     self.model_plot.render()
 
 def do_rotate(self, type, val_rotate):
@@ -199,6 +201,7 @@ def do_rotate(self, type, val_rotate):
     u = v/vv
     dd=vv-d_root
     new_center = np.array(root_point) + (dd*u)
+    
 
     new_new_center=(new_center[0], new_center[1], new_center[2])
     self.model_plot.add(Point(new_new_center,c='green',r=20))
@@ -253,11 +256,13 @@ def do_rotate(self, type, val_rotate):
     print('after',len(pts_col_after),len(pts_col_after_before_rotation))
     temp_p = self.mesh_selected_rotation['arch'].mesh.points()
     temp_p[faces_unique] = mesh.points()[faces_unique]
-    mesh_transform = mesh.getTransform()
+    # mesh_transform = mesh.getTransform()
     
     transform_attachment_on_tooth(self, self.tooth_selected_rotation['label'], type, val_rotate, False, new_new_center)
     self.mesh_selected_rotation['arch'].mesh.points(temp_p)
-    self.mesh_selected_rotation['arch'].extract_tooth()
+    # self.mesh_selected_rotation['arch'].extract_tooth()
+    self.mesh_selected_rotation['arch'].update_teeth_point_rotation(self.tooth_selected_rotation['label'], type, val_rotate, new_new_center)
+      
     self.model_plot.render()
     
     # remove_not_arch(self)
@@ -331,6 +336,7 @@ def mouse_click_rotation(self, event):
             self.slider_pivot_root.setMaximum(d)
             
             self.slider_pivot_root.setValue(0)
+            change_pivot_point(self, self.slider_pivot_root.value())
             
     
     
