@@ -31,7 +31,7 @@ class Arch():
         return idx
         
     # class
-    def __init__(self, arch_type:ArchType, mesh) -> None:
+    def __init__(self, arch_type:ArchType, mesh, teeth=None) -> None:
         if(arch_type not in Arch.ids):
             Arch.ids.append(arch_type)
         else:
@@ -41,8 +41,10 @@ class Arch():
         self.right_left_vec = None
         self.forward_backward_vec = None
         self.upward_downward_vec = None
-        self.teeth={}
+        
         self.gingiva=None
+        
+        self.teeth={}
         self.extract_tooth()
         self.convert_to_colors()
     
@@ -149,8 +151,12 @@ class Arch():
                 is_upper = True if self.arch_type == ArchType.UPPER.value else False
                 
                 if(label in incisor_teeth):
-                    mesial, distal = ll.get_mesial_distal_anterior(is_awal, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
-                    buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_anterior(label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
+                    if(label in [ToothType.INCISOR_UL1_LR1.value, ToothType.INCISOR_UR1_LL1.value]):
+                        mesial, distal = ll.get_mesial_distal_anterior(is_awal, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
+                        buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_anterior(label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
+                    else:
+                        mesial, distal = ll.get_mesial_distal_anterior_second(is_awal, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
+                        buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_anterior_second(is_awal, is_upper, label, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     cusp = ll.get_cusp_anterior(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
                     mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized
@@ -177,7 +183,7 @@ class Arch():
                 
                 elif(label in canine_teeth):
                     mesial, distal = ll.get_mesial_distal_canine(is_awal, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
-                    buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
+                    buccal_or_labial, lingual_or_palatal = ll.get_buccal_or_labial_andlingual_or_palatal_canine(is_awal, is_upper,eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     cusp= ll.get_cusp_anterior(eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized)
                     
                     mesial_index = ll.get_index_point_from_mesh_vertices(mesial, points_tooth_normalized) #points_mesh_normalized

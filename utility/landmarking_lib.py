@@ -145,6 +145,7 @@ def mapping_point_index(map, indexes):
 def get_index_point_from_mesh_vertices(point, points):
     return np.argwhere(np.isin(points, point).all(axis=1))[0][0]
 
+
 def get_buccal_or_labial_andlingual_or_palatal_anterior(label, eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
     forward_backward = eigen_vec_mesh[1]
@@ -181,8 +182,55 @@ def get_buccal_or_labial_andlingual_or_palatal_anterior(label, eigen_vec_mesh, c
     buccal_or_labial = vertices_new[ins_outs_index_sorted[0]]
     lingual_or_palatal =vertices_new[ins_outs_index_sorted[-1]]
     return buccal_or_labial, lingual_or_palatal #, pts
+def get_buccal_or_labial_andlingual_or_palatal_anterior_second(is_awal, is_upper, label, eigen_vec_mesh, center_tooth, vertices_tooth):
+    left_right = eigen_vec_mesh[0]
+    forward_backward = eigen_vec_mesh[1]
+    upward_downward = eigen_vec_mesh[2]
+    center_u = np.dot(center_tooth, upward_downward)
+    center_r = np.dot(center_tooth, left_right)
+    vertices_tooth_trans = np.transpose(vertices_tooth)
+    temp_u = np.matmul(upward_downward, vertices_tooth_trans)
+    temp_r = np.matmul(left_right, vertices_tooth_trans)
+    # pts=[]
+    # rr = np.where(temp_r>center_r-0.75)
+    # ll = np.where(temp_r<center_r+0.75)
+    # uu = np.where(temp_u>center_u-0.75)
+    # dd = np.where(temp_u<center_u+0.75)
+    # rrll = np.intersect1d(np.intersect1d(rr[0],ll[0]),np.intersect1d(uu[0],dd[0]))
+    if(label in [6,9]):
+        cntr = np.where((temp_r>center_r-0.75) & (temp_r<center_r+0.75) & (temp_u>center_u-0.75) &(temp_u<center_u+0.75))
+    else:
+        cntr = np.where((temp_r>center_r-0.75) & (temp_r<center_r+0.75) & (temp_u>center_u-2.75) &(temp_u<center_u+0.75))
 
-def get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,eigen_vec_mesh, center_tooth, vertices_tooth):
+    cntr=cntr[0]
+    # for i in cntr: 
+    #     pts.append(Point(vertices_tooth[i],c="violet"))
+    vertices_new = vertices_tooth[cntr]
+    
+    ins = [] #lingual or palatal and buccal or labial
+    outs = [] #lingual or palatal and buccal or labial
+    inv = 1
+    if(is_awal==False):
+        inv = -1
+    for v in vertices_new:
+        # biru = np.dot(v,upward_downward)
+        hijau = np.dot(v,forward_backward)
+        hijau_muda = np.dot(v,forward_backward * -1)
+        merah = np.dot(v, (left_right*inv) )
+        pink = np.dot(v, (left_right *inv) * -1)
+        if(is_upper):
+            ins.append(np.mean([hijau_muda*0.1,pink*0.25,merah*0.65]))
+        else:
+            ins.append(np.mean([hijau_muda*0.15,pink*0.425,merah*0.425]))
+        outs.append(np.mean([hijau*0.15,pink*0.85]))
+    ins_index_sorted = np.argsort(ins)
+    outs_index_sorted = np.argsort(outs)
+    buccal_or_labial = vertices_new[outs_index_sorted[0]]
+    lingual_or_palatal =vertices_new[ins_index_sorted[0]]
+    return buccal_or_labial, lingual_or_palatal #, pts
+
+
+def get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,is_upper, eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
     forward_backward = eigen_vec_mesh[1]
     upward_downward = eigen_vec_mesh[2]
@@ -197,14 +245,14 @@ def get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,eigen_vec_mesh, ce
     if is_awal==True:
         inv=-1
         cntr = np.where(
-            (temp_r>center_r-2) & (temp_r<center_r+2.3) & 
+            (temp_r>center_r-4) & (temp_r<center_r+4) & 
             (temp_u>center_u-1.5) &(temp_u<center_u+1.5) &
             (temp_f>center_f-2.1) &(temp_f<center_f+2) 
         )
     else:
         inv=1
         cntr = np.where(
-            (temp_r>center_r-2.3) & (temp_r<center_r+2) & 
+            (temp_r>center_r-4) & (temp_r<center_r+4) & 
             (temp_u>center_u-1.5) &(temp_u<center_u+1.5) &
             (temp_f>center_f-2) &(temp_f<center_f+2.1) 
         )
@@ -215,16 +263,26 @@ def get_buccal_or_labial_andlingual_or_palatal_canine(is_awal,eigen_vec_mesh, ce
     vertices_new = vertices_tooth[cntr]
     
     ins_outs = [] #lingual or palatal and buccal or labial
+    ins_outs_upper = [] #lingual or palatal and buccal or labial
     for v in vertices_new:
         biru = np.dot(v,upward_downward)
         hijau = np.dot(v,forward_backward)
         merah = np.dot(v, (left_right * inv) )
         pink = np.dot(v, (left_right * inv)  * -1)
-        ins_outs.append(np.mean([biru*0.1,pink*0.3,merah*0.4, hijau*0.2]))
-    ins_outs_index_sorted = np.argsort(ins_outs)
-    buccal_or_labial = vertices_new[ins_outs_index_sorted[0]]
-    lingual_or_palatal =vertices_new[ins_outs_index_sorted[-1]]
-    return buccal_or_labial, lingual_or_palatal #, pts
+        if(is_upper):
+            ins_outs_upper.append(np.mean([biru*0.1,pink*0.3,merah*0.5, hijau*0.1]))
+        else:
+            ins_outs.append(np.mean([biru*0.1,pink*0.25,merah*0.35, hijau*0.3]))
+    if is_upper:
+        ins_outs_index_sorted = np.argsort(ins_outs_upper)
+        buccal_or_labial = vertices_new[ins_outs_index_sorted[0]]
+        lingual_or_palatal =vertices_new[ins_outs_index_sorted[-1]]
+        return buccal_or_labial, lingual_or_palatal #, pts
+    else:        
+        ins_outs_index_sorted = np.argsort(ins_outs)
+        buccal_or_labial = vertices_new[ins_outs_index_sorted[0]]
+        lingual_or_palatal =vertices_new[ins_outs_index_sorted[-1]]
+        return buccal_or_labial, lingual_or_palatal #, pts
 
 def get_buccal_or_labial_andlingual_or_palatal_premolar(is_awal,is_upper, label, eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
@@ -315,6 +373,7 @@ def get_buccal_or_labial_andlingual_or_palatal_molar(is_awal,is_upper, label, ei
     return buccal_or_labial, lingual_or_palatal #, pts
 
 
+
 def get_mesial_distal_anterior(is_awal, eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
     # forward_backward = eigen_vec_mesh[1]
@@ -346,6 +405,45 @@ def get_mesial_distal_anterior(is_awal, eigen_vec_mesh, center_tooth, vertices_t
         pink = np.dot(v, (left_right *inv) * -1)
         mesials.append(np.mean([merah*0.7,biru*0.3]))
         distals.append(np.mean([pink*0.7,biru*0.3]))
+        
+        
+    mesials_index_sorted = np.argsort(mesials)
+    mesial = vertices_new[mesials_index_sorted[0]]
+    distals_index_sorted = np.argsort(distals)
+    distal = vertices_new[distals_index_sorted[0]]
+    return mesial, distal #, pts
+
+def get_mesial_distal_anterior_second(is_awal, eigen_vec_mesh, center_tooth, vertices_tooth):
+    left_right = eigen_vec_mesh[0]
+    forward_backward = eigen_vec_mesh[1]
+    upward_downward = eigen_vec_mesh[2]
+    center_h = np.dot(center_tooth, upward_downward)
+    # most_h =0
+    vertices_tooth_trans = np.transpose(vertices_tooth)
+    temp_h = np.matmul(upward_downward, vertices_tooth_trans)
+    
+    # most = np.argsort(temp_h)
+    # most_h = vertices_tooth[most[0]]
+    # pts=[]
+    # pts.append(Point(most_h, c="white"))
+    ww = np.where(temp_h < center_h) #temp[most[0]]+2.5
+    # for i in ww[0]:
+    #     pts.append(Point(vertices_tooth[i],c="violet"))
+        
+    vertices_new = vertices_tooth[ww[0]]
+    mesials=[]
+    distals=[]
+    
+    inv = 1
+    if(is_awal==False):
+        inv = -1
+    for v in vertices_new:
+        biru = np.dot(v,upward_downward)
+        hijau = np.dot(v,forward_backward)
+        merah = np.dot(v, (left_right*inv) )
+        pink = np.dot(v, (left_right *inv) * -1)
+        mesials.append(np.mean([merah*0.45,hijau*0.2,biru*0.35]))
+        distals.append(np.mean([pink*0.75,biru*0.25]))
         
         
     mesials_index_sorted = np.argsort(mesials)
@@ -390,7 +488,6 @@ def get_mesial_distal_canine(is_awal, eigen_vec_mesh, center_tooth, vertices_too
     distals_index_sorted = np.argsort(distals)
     distal = vertices_new[distals_index_sorted[0]]
     return mesial, distal #, pts
-
 
 def get_mesial_distal_premolar(is_awal, is_upper, label, eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
@@ -455,15 +552,18 @@ def get_mesial_distal_molar(is_awal, is_upper, label, eigen_vec_mesh, center_too
         inv = -1
     for v in vertices_new:
         biru = np.dot(v,upward_downward)
+        # biru_muda = np.dot(v,upward_downward * -1)
         hijau = np.dot(v,forward_backward)
         hijau_muda = np.dot(v,forward_backward * -1)
         merah = np.dot(v, (left_right*inv) )
         pink = np.dot(v, (left_right *inv) * -1)
         mesials.append(np.mean([pink*0.2,biru*0.15,hijau*0.45, merah*0.2]))
         if(is_upper==False and (label == 2 or label == 13)):
-            distals.append(np.mean([pink*0.5,hijau_muda*0.5]))
+            distals.append(np.mean([pink*0.7,hijau_muda*0.3]))
         else:
-            distals.append(np.mean([pink*0.4,biru*0.1,hijau_muda*0.5]))
+            # distals.append(np.mean([pink*0.4,biru*0.1,hijau_muda*0.5]))
+            distals.append(np.mean([pink*0.65,hijau_muda*0.35]))
+            # distals.append(np.mean([pink]))
         
         
     mesials_index_sorted = np.argsort(mesials)
@@ -471,6 +571,8 @@ def get_mesial_distal_molar(is_awal, is_upper, label, eigen_vec_mesh, center_too
     distals_index_sorted = np.argsort(distals)
     distal = vertices_new[distals_index_sorted[0]]
     return mesial, distal #, pts
+
+
 
 def get_cusp_anterior(eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
@@ -572,10 +674,6 @@ def get_cusp_posterior_third_fourth_upper(is_awal, eigen_vec_mesh, center_tooth,
     cusp_out_distal = vertices_out_distal_new[cusps_out_distal_index_sorted[0]]
     
     return [cusp_in_mesial, cusp_in_distal, cusp_out_mesial, cusp_out_distal] #, pts
-    
-    
-
-    
 
 def get_cusp_posterior_first_second_upper(is_awal, eigen_vec_mesh, center_tooth, vertices_tooth):
     # n_cusp = 2
@@ -1015,6 +1113,8 @@ def get_pit(eigen_vec_mesh, center_tooth, vertices_tooth):
     grooves_index_sorted = np.argsort(temp_uu)
     groove = vertices_new[grooves_index_sorted[0]]
     return groove #,pts
+
+
 
 if __name__ == "__main__":
     filepath = 'D:/NyeMan/KULIAH S2/Thesis/MeshSegNet-master/MeshSegNet-master/down_segment/BA LowerJawScan_d_predicted_refined.vtp'
