@@ -75,7 +75,7 @@ class Carey(AnalisaStudiModel):
                 self.ttm_points[a.value]=ttm_pts
                 
                 temp_eigenvec_arch = [archs[idx].right_left_vec, archs[idx].forward_backward_vec,archs[idx].upward_downward_vec]
-                print(brasswire_pts)
+                # print(brasswire_pts)
                 brasswire_pts = convert_to_2d(FaceTypeConversion.UP.value, temp_eigenvec_arch, brasswire_pts)
                 ttm_pts = convert_to_2d(FaceTypeConversion.UP.value, temp_eigenvec_arch, ttm_pts)
                 

@@ -105,8 +105,8 @@ class Pont(AnalisaStudiModel):
             status_mp_upper= '{} => {}/{}'.format(str(self.delta_mp[ArchType.UPPER.value]), self.status_mp[ArchType.UPPER.value], self.degree_status_mp[ArchType.UPPER.value] )
             
             self.status = 'Premolar Lower:\n{}\nPremolar Upper:\n{}\nMolar Lower:\n{}\nMolar Upper:\n{}'.format(status_pv_lower, status_pv_upper, status_mp_lower, status_mp_upper)
-            print("PONT")
-            print(self.status)
+            # print("PONT")
+            # print(self.status)
             # delta => negative = kontraksi, positif = distraksi, 0 = normal
             # degree=>0-5mm = mild, 5-10mm = medium, >10mm = extreme
         

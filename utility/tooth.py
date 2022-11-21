@@ -42,27 +42,32 @@ class Tooth():
             map_ori2sorted[p]=sp
     
     def update_landmark_rotation(self, type, val_rotate, new_new_center):
-        print("do rotate landmark",type, val_rotate, new_new_center)
+        new_new_center = [new_new_center[0],new_new_center[1],new_new_center[2]]
+        # print("do rotate landmark",type, val_rotate, new_new_center)
         for k in self.landmark_pt:
-            pt = self.landmark_pt[k.value]
-            PT = Point(pt)
-            if(type=="pitch"):
-                PT.rotateX(val_rotate, False, new_new_center)
-                print("rotate x tooth landmark")
-            elif(type=="yaw"):
-                PT.rotateY(val_rotate, False, new_new_center)
-                print("rotate y tooth landmark")
-            elif(type=="roll"):
-                PT.rotateZ(val_rotate, False, new_new_center)
-                print("rotate z tooth landmark")
-            self.landmark_pt[k.value]=PT.points()
+            pt = self.landmark_pt[k]
+            if(pt is not None):
+                PT = Point(pt)
+                if(type=="pitch"):
+                    PT.rotateX(val_rotate, False, new_new_center)
+                    # print("rotate x tooth landmark")
+                elif(type=="yaw"):
+                    PT.rotateY(val_rotate, False, new_new_center)
+                    # print("rotate y tooth landmark")
+                elif(type=="roll"):
+                    PT.rotateZ(val_rotate, False, new_new_center)
+                    # print("rotate z tooth landmark")
+                # print("self.landmark_pt[k]=PT.points()",PT.points()[0])
+                self.landmark_pt[k]=PT.points()[0]
         
     def update_landmark_moving(self, val_direction):
-        print("do moving landmark",val_direction)
+        # print("do moving landmark",val_direction)
+        val_direction = [val_direction[0],val_direction[1],val_direction[2]]
         for k in self.landmark_pt:
-            pt = self.landmark_pt[k.value]
-            pt = pt+val_direction
-            self.landmark_pt[k.value]=pt
+            pt = self.landmark_pt[k]
+            if(pt is not None):
+                pt = pt+val_direction
+                self.landmark_pt[k]=pt
             
         
         

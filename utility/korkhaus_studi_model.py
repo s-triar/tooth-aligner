@@ -93,9 +93,9 @@ class Korkhaus(AnalisaStudiModel):
             status_upper = '{} => {}'.format(str(self.status_line_to_width[ArchType.UPPER.value]), self.status_expansion_meaning[ArchType.UPPER.value])
             status_khor  = '{} => {}'.format(str(self.status_khorkaus),self.status_khorkaus_meaning)
             
-            status = 'Lower:\n{}\nUpper:\n{}\nKhorkaus Line:\n{}'.format(status_lower,status_upper,status_khor)
-            print("KHORKAUS")
-            print(status)
+            # status = 'Lower:\n{}\nUpper:\n{}\nKhorkaus Line:\n{}'.format(status_lower,status_upper,status_khor)
+            # print("KHORKAUS")
+            # print(status)
     
     def check_anterior_expansion_status(self, val):
         if(val>0):

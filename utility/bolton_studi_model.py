@@ -92,7 +92,7 @@ class Bolton(AnalisaStudiModel):
             # else:
             #     self.anterior= self.anterior_width[ArchType.LOWER] * 100 / self.anterior_width[ArchType.UPPER]
             #     self.overall= self.overal_width[ArchType.LOWER] * 100 / self.overal_width[ArchType.UPPER]
-        print("from bolton", self.anterior, self.overall)
+        # print("from bolton", self.anterior, self.overall)
         self.calc_overjet()
         
     def draw_line_correction_anterior(self,
