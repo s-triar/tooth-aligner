@@ -45,6 +45,24 @@ def remove_transform_arch(self, e): #remove arch transform when add step
     self.step_model.remove_step_model(self.models)
 
 def change_step(self, e):
+    
+    temp={
+        ArchType.LOWER.value:None,
+        ArchType.UPPER.value:None
+    }
+    temp_teeth={
+        ArchType.LOWER.value:None,
+        ArchType.UPPER.value:None
+    }
+    for a in ArchType:
+        idx = Arch._get_index_arch_type(a.value)
+        m = self.models[idx]
+        temp[a.value]=m.mesh
+        temp[a.value]=m.mesh.clone()
+        temp_teeth[a.value]=m.teeth.copy()
+        
+    self.step_model.update_current(temp, temp_teeth)
+    
     self.step_model.change_current_step(e)
     apply_transform_arch(self,e)
     

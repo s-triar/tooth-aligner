@@ -1,6 +1,12 @@
 from controller.import_data_controller import calculate_studi_model
+from utility.app_tool import get_saved_path
 from utility.arch import Arch
 from utility.colors import convert_label_to_color
+import pandas as pd
+from pathlib import Path  
+from constant.enums import ArchType, ToothType,LandmarkType
+from vedo import write
+
 
 def init_var_segmentation(self):
     self.var_segmentation={
@@ -78,5 +84,16 @@ def undo_change_segmentation(self):
         self.model_plot.render()
     calculate_studi_model(self)
     dis_enable_apply_undo_reset_button(self)
-    
+
+
+def save_segmentation(self):
+    cur_step = self.step_model.get_current_step()
+    for a in ArchType:
+        idx = Arch._get_index_arch_type(a.value)
+        path_model = self.model_paths[idx]
+        model = self.models[idx]
+        path_save = get_saved_path(path_model,".vtp",self.step_model.get_current_step(),False)
+        filepath = Path(path_save)  
+        filepath.parent.mkdir(parents=True, exist_ok=True) 
+        write(model.mesh,path_save)
         

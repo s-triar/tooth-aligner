@@ -13,7 +13,11 @@ class StepModel():
     def add_step_model(self, models, teeth):
         self.step_models.append(models.copy())
         self.step_teeth.append(teeth.copy())
-        
+    
+    def update_current(self, models, teeth):
+        self.step_models[self.get_current_step()]=models.copy()
+        self.step_teeth[self.get_current_step()]=teeth.copy()
+    
     def remove_step_model(self, index):
         # self.step_models.pop(index)
         self.step_models = [element for (i,element) in enumerate(self.step_models) if i != index]

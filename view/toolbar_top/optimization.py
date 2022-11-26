@@ -34,7 +34,15 @@ def create_optimization_menu(self, parent_layout):
 
 
 def click_btn_de_optimization(self, e):
+    self.btn_addmin_step_aligner.btn_increase.click()
     new_models = start_de(self.models)
-    self.model_plot.add(new_models[0].mesh)
-    self.model_plot.add(new_models[1].mesh)
-    self.model_plot.render()
+    for i in range(len(self.models)):
+        self.models[i].mesh = new_models[i].mesh
+        self.models[i].right_left_vec = new_models[i].right_left_vec
+        self.models[i].forward_backward_vec = new_models[i].forward_backward_vec
+        self.models[i].upward_downward_vec = new_models[i].upward_downward_vec
+        self.models[i].gingiva=new_models[i].gingiva
+        self.models[i].teeth=new_models[i].teeth
+    # self.model_plot.add(new_models[0].mesh)
+    # self.model_plot.add(new_models[1].mesh)
+    # self.model_plot.render()

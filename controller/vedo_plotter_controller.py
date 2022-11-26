@@ -7,6 +7,7 @@ from controller.segmentation_controller import change_face_label
 
 def init_var_vedo_model(self):
     self.models = []
+    self.model_paths=[]
     self.plot_click_mode=None
 
 def remove_not_arch(self, not_archs=None, excepts=None, excepts_name_like=None):

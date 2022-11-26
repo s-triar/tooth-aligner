@@ -21,7 +21,7 @@ def move_attachment_on_tooth(self, label, val_movement):
     for at, ar, st, idx in zip(attachs, archs, steps, index_k):
         mesh =at.mesh
         mesh.points(mesh.points()+val_movement)
-        # self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh)
+        self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh.clone())
 
 def transform_attachment_on_tooth(self, label, rotate_type, val_rot, is_rad, center_pivot):
     print("transform attachment",label, rotate_type, val_rot, is_rad, center_pivot)
@@ -42,7 +42,7 @@ def transform_attachment_on_tooth(self, label, rotate_type, val_rot, is_rad, cen
             mesh_new.rotateZ(val_rot, is_rad, center_pivot)
             print("rotate z aatchment")
         mesh.points(mesh_new.points())
-        # self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh)
+        self.attachment_model.update_attachment_with_new_mesh(ar, st, idx, mesh.clone())
 
 def prep_reset_attachment_state(self):
     self.var_state_attachment={

@@ -38,10 +38,11 @@ class ArchCopy():
         else:
             raise Exception("Duplicate id on class Model")
         self.arch_type = arch_type
-        temp_mesh = Mesh([mesh.points(), mesh.cells()])
-        temp_mesh.celldata['Label'] = mesh.celldata['Label']
-        temp_mesh.celldata['Color'] = mesh.celldata['Color']
-        self.mesh = temp_mesh
+        # temp_mesh = Mesh([mesh.points(), mesh.cells()])
+        # temp_mesh.celldata['Label'] = mesh.celldata['Label']
+        # temp_mesh.celldata['Color'] = mesh.celldata['Color']
+        # self.mesh = temp_mesh
+        self.mesh = mesh.copy()
         self.right_left_vec = eigenvec[0]
         self.forward_backward_vec = eigenvec[1]
         self.upward_downward_vec = eigenvec[2]

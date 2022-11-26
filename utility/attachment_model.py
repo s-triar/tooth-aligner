@@ -98,3 +98,6 @@ class AttachmentModel():
             i+=1
         return attachs, archs, steps, index_k
         
+    # def update_current(self, step):
+    #     res = self.get_attachment_on_step(step)
+        

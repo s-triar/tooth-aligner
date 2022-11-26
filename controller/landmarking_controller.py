@@ -1,3 +1,4 @@
+from utility.app_tool import get_saved_path
 from utility.arch import Arch
 from constant.enums import ArchType, ToothType,LandmarkType
 from vedo import Line, Point
@@ -5,6 +6,8 @@ from PyQt5.QtWidgets import (
     QLabel
 )
 from utility.colors import convert_landmark_to_color
+import pandas as pd
+from pathlib import Path  
 
 def init_var_landmarking(self):
     self.selected_q_label_landmark=None
@@ -131,3 +134,36 @@ def show_landmark(self):
                 p=Point(coordinate,c=convert_landmark_to_color(landmark_label))
                 self.model_plot.add(p) 
     self.model_plot.render()
+    
+def save_landmark(self):
+    cur_step = self.step_model.get_current_step()
+    for a in ArchType:
+        idx = Arch._get_index_arch_type(a.value)
+        path_model = self.model_paths[idx]
+        path_save_landmark=get_saved_path(path_model,".csv",cur_step,False)
+        # path_save_landmark = path_model.split(".")
+        # path_save_landmark = ".".join(path_save_landmark[:-1])
+        # path_save_landmark = path_save_landmark+"_step_"+cur_step+".csv"
+        landmark_dict = {}
+        landmark_dict["label"]=[]
+        landmark_dict["landmark"]=[]
+        landmark_dict["x"]=[]
+        landmark_dict["y"]=[]
+        landmark_dict["z"]=[]
+        model = self.models[idx]
+        teeth = model.teeth
+        for tooth in teeth:
+            for ld in teeth[tooth].landmark_pt:
+                pt = teeth[tooth].landmark_pt[ld]
+                if(pt is not None):
+                    landmark_dict["x"].append(pt[0])
+                    landmark_dict["y"].append(pt[1])
+                    landmark_dict["z"].append(pt[2])
+                    landmark_dict["landmark"].append(ld)
+                    landmark_dict["label"].append(tooth)
+        df = pd.DataFrame(data=landmark_dict)
+        filepath = Path(path_save_landmark)  
+        filepath.parent.mkdir(parents=True, exist_ok=True)  
+        df.to_csv(filepath)  
+        
+        
