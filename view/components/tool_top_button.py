@@ -17,6 +17,7 @@ class ToolTopButton(QToolButton):
         self.setSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
         self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.setText(title)
+        
         if is_checkable==True:
             self.setCheckable(True)
             

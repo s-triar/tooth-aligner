@@ -11,7 +11,7 @@ class ArchType(enum.Enum):
 
 
 
-def get_saved_path(path_model, extendsion,cur_step=None, isProject=False):
+def get_saved_path(path_model, extendsion,more_info='',cur_step=None, isProject=False):
     load_dotenv()
     save_path = os.getenv("SAVE")
     c=path_model.split(os.altsep)
@@ -27,8 +27,9 @@ def get_saved_path(path_model, extendsion,cur_step=None, isProject=False):
         if(person!=''):
             person+=" "
         person+=f
+    str_cur_step = str(cur_step)
     if(isProject==False):
-        return os.path.join(save_path,person,"step_"+str(cur_step),person+"_step_"+str(cur_step)+extendsion)
+        return os.path.join(save_path,person,"step_"+str_cur_step,person+more_info+"_step_"+str_cur_step+extendsion)
     else:
         return os.path.join(save_path,person,person+extendsion)
     

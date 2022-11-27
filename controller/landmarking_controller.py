@@ -140,7 +140,7 @@ def save_landmark(self):
     for a in ArchType:
         idx = Arch._get_index_arch_type(a.value)
         path_model = self.model_paths[idx]
-        path_save_landmark=get_saved_path(path_model,".csv",cur_step,False)
+        path_save_landmark=get_saved_path(path_model,".csv","_landmark_"+a.name+"_",cur_step,False)
         # path_save_landmark = path_model.split(".")
         # path_save_landmark = ".".join(path_save_landmark[:-1])
         # path_save_landmark = path_save_landmark+"_step_"+cur_step+".csv"

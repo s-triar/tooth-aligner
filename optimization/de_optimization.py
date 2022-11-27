@@ -5,12 +5,15 @@ from vedo import Mesh
 from constant.enums import ToothType, ArchType, LandmarkType
 from utility.arch_copy import ArchCopy
 from utility.bolton_studi_model import Bolton
+from utility.calculation import FaceTypeConversion, convert_to_2d, find_distance_between_two_points
 from utility.pont_studi_model import Pont
 from utility.korkhaus_studi_model import Korkhaus
 from utility.carey_studi_model import Carey
 import numpy as np
 import math
 
+from utility.splineku import SplineKu
+import time
     
     
     
@@ -114,6 +117,8 @@ def get_total_error_studi_model(st):
 
 def get_new_model(models,chromosome):
     models_cp = []
+    ArchCopy._clear()
+    
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         
@@ -123,8 +128,10 @@ def get_new_model(models,chromosome):
         models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*6)):(i+1)*(14*6)]) # 6 chromosome per tooth
     return models_cp
 
-def minimize_function(models, chromosome):
+def minimize_function_using_recalculation_studi_model(models, chromosome):
     models_cp = []
+    ArchCopy._clear()
+    
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         # c =copy.deepcopy(m.teeth)
@@ -136,8 +143,69 @@ def minimize_function(models, chromosome):
 
     studimodels = get_new_perhitungan_studi_model(models_cp)
     total_studi_error = get_total_error_studi_model(studimodels)
-    ArchCopy._clear()
     return total_studi_error
+
+def minimize_function_using_delta_current_to_the_first_studi_model_calculation( models, chromosome, flat_pts, summary_pts):
+    error_flat=0
+    error_summary=0
+    error_flat_i=0
+    error_summary_i=0
+    i=0
+    ArchCopy._clear()
+    
+    for m in models:
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*6)):(i+1)*(14*6)])
+        i+=1
+        
+        # models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
+        
+        # begin calc error flat
+        teeth = copy.deepcopy(model_cp.teeth)
+        pts_cusps=np.array([
+                teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+                
+                teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+            ])
+        pts_flat = flat_pts[model_cp.arch_type]
+        for ipt in range(len(pts_cusps)):
+            a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
+            b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_flat+=(dst**2)
+            error_flat_i+=1
+        # end calc error flat
+        
+        # begin calc error summary
+        # print("summary_pts[model_cp.arch_type]", summary_pts[model_cp.arch_type][1])
+        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=3, smooth=0, res=600)
+        for tooth_type in teeth:
+            pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
+            a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pt_in_line])[0]
+            b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [teeth[tooth_type].center])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_summary+=(dst**2)
+            error_summary_i+=1
+        # end calc error summary
+        
+        # calculate punishment
+    error_summary = math.sqrt(error_summary/error_summary_i)
+    error_flat = math.sqrt(error_flat/error_flat_i)
+    return error_flat+error_summary
+    
 
 def mutation(x, F):
     return x[0] + F * (x[1] - x[2])
@@ -154,12 +222,12 @@ def crossover(mutated, target, dims, cr):
     trial = [mutated[i] if p[i] < cr else target[i] for i in range(dims)]
     return trial
 
-def de_optimization(models, pop_size, bounds, iter, F, cr):
+def de_optimization(models, pop_size, bounds, iter, F, cr, flats, summaries):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     # print("pop",pop)
     # evaluate initial population of candidate solutions
-    obj_all = [minimize_function(models, ind) for ind in pop]
+    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, ind, flats, summaries) for ind in pop]
     # find the best performing vector of initial population
     best_vector = pop[np.argmin(obj_all)]
     best_obj = np.min(obj_all)
@@ -173,18 +241,18 @@ def de_optimization(models, pop_size, bounds, iter, F, cr):
             candidates = [candidate for candidate in range(pop_size) if candidate != j]
             a, b, c = pop[np.random.choice(candidates, 3 , replace=False)]
             # perform mutation
-            print("mutation", "j", j)
+            # print("mutation", "j", j)
             mutated = mutation([a, b, c], F)
             # check that lower and upper bounds are retained after mutation
-            print("check_bounds", "j", j)
+            # print("check_bounds", "j", j)
             mutated = check_bounds(mutated, bounds)
             # perform crossover
-            print("crossover", "j", j)
+            # print("crossover", "j", j)
             trial = crossover(mutated, pop[j], len(bounds), cr)
             # compute objective function value for target vector
-            obj_target = minimize_function(models, pop[j])
+            obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, pop[j],flats, summaries)
             # compute objective function value for trial vector
-            obj_trial = minimize_function(models, trial)
+            obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, trial,flats, summaries)
             # perform selection
             if obj_trial < obj_target:
                 # replace the target vector with the trial vector
@@ -198,26 +266,32 @@ def de_optimization(models, pop_size, bounds, iter, F, cr):
             best_vector = pop[np.argmin(obj_all)]
             prev_obj = best_obj
             # report progress at each iteration
-            print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
+            print('Iteration: %d = %.5f' % (i, best_obj))
+            # print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
     return [best_vector, best_obj]
     
     # dilakukan de dan return models yang paling optimum
     # return de models yang paling optimum
     
 
-def start_de(models):
-    pop_size = 10
+def start_de(models, flats, summaries):
+    
+    
+    pop_size = 5
     n_tooth = 14
     n_chromosome = 6
     individu_bounds= [[-0.3, 0.3]]*n_tooth*2*n_chromosome
     bounds = np.asarray(individu_bounds)
     # define number of iterations
-    iter = 10
+    iter = 15
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
     cr = 0.7
-    solution = de_optimization(models, pop_size, bounds, iter, F, cr)
+    seconds_start = time.time()
+    solution = de_optimization(models, pop_size, bounds, iter, F, cr, flats, summaries)
+    seconds_finish = time.time()
+    print("waktu de opt", (seconds_finish-seconds_start),"detik")
     new_model = get_new_model(models, solution[0])
-    return new_model
+    return new_model, solution[1]
     

@@ -1,4 +1,5 @@
-from controller.import_data_controller import calculate_studi_model
+
+from controller.summary_controller import calculate_studi_model
 from utility.app_tool import get_saved_path
 from utility.arch import Arch
 from utility.colors import convert_label_to_color
@@ -92,7 +93,7 @@ def save_segmentation(self):
         idx = Arch._get_index_arch_type(a.value)
         path_model = self.model_paths[idx]
         model = self.models[idx]
-        path_save = get_saved_path(path_model,".vtp",self.step_model.get_current_step(),False)
+        path_save = get_saved_path(path_model,".vtp","_"+a.name+"_",cur_step,False)
         filepath = Path(path_save)  
         filepath.parent.mkdir(parents=True, exist_ok=True) 
         write(model.mesh,path_save)

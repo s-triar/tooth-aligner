@@ -22,27 +22,27 @@ def find_distance_between_a_point_and_a_3pts_plane(pt, plane_pts):
 
 def find_closest_point_between_a_point_and_a_3pts_plane(pt, plane_pts):
     u = plane_pts[1] - plane_pts[0]
-    print("pts u",u)
+    # print("pts u",u)
     v = plane_pts[2] - plane_pts[0]
-    print("pts v",v)
+    # print("pts v",v)
     # vector normal to plane
     n = np.cross(u, v)
-    print("n cross",n)
-    print("n norm",np.linalg.norm(n))
+    # print("n cross",n)
+    # print("n norm",np.linalg.norm(n))
     n = n / np.linalg.norm(n)
-    print("n bagi b norm",n)
+    # print("n bagi b norm",n)
     p_ = pt - plane_pts[0]
-    print("p_",p_)
+    # print("p_",p_)
     dist_to_plane = np.dot(p_, n)
-    print("dist_to_plane",dist_to_plane)
+    # print("dist_to_plane",dist_to_plane)
     p_normal = np.dot(p_, n) * n
-    print("p_normal",p_normal)
+    # print("p_normal",p_normal)
     p_tangent = p_ - p_normal
-    print("p_tangent",p_tangent)
+    # print("p_tangent",p_tangent)
     
 
     closest_point = p_tangent + plane_pts[0]
-    print("closest_point",closest_point)
+    # print("closest_point",closest_point)
     
     # coords = np.linalg.lstsq(np.column_stack((u, v)), p_tangent)[0]
     # print("coords all",np.linalg.lstsq(np.column_stack((u, v)), p_tangent))

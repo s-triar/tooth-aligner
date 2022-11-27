@@ -34,7 +34,7 @@ def add_transform_arch(self, e): #save arch transform when add step
     for a in ArchType:
         idx = Arch._get_index_arch_type(a.value)
         m = self.models[idx]
-        temp[a.value]=m.mesh
+        # temp[a.value]=m.mesh
         temp[a.value]=m.mesh.clone()
         temp_teeth[a.value]=m.teeth.copy()
     self.step_model.add_step_model(temp, temp_teeth)
@@ -57,7 +57,7 @@ def change_step(self, e):
     for a in ArchType:
         idx = Arch._get_index_arch_type(a.value)
         m = self.models[idx]
-        temp[a.value]=m.mesh
+        # temp[a.value]=m.mesh
         temp[a.value]=m.mesh.clone()
         temp_teeth[a.value]=m.teeth.copy()
         
@@ -76,18 +76,24 @@ def apply_transform_arch(self,e): # based on what panel is showing
     if(e<=len(self.step_model.step_models)):
         try:
             mdls, teeth=self.step_model.get_step_model(e)
-            remove_not_arch(self)
+            # remove_not_arch(self)
+            self.model_plot.clear(at=0)
+            self.model_plot.render()
             for a in ArchType:
                 idx = Arch._get_index_arch_type(a.value)
                 self.models[idx].mesh = mdls[a.value].clone()
                 self.models[idx].teeth = teeth[a.value].copy()
             for m in self.models:
-                self.model_plot.add(m.mesh)
+                if(self.btn_menu_toggle_max.isChecked() and m.arch_type == ArchType.UPPER.value):
+                    self.model_plot.add(m.mesh)
+                elif(self.btn_menu_toggle_man.isChecked() and m.arch_type == ArchType.LOWER.value):
+                    self.model_plot.add(m.mesh)
+                    
                 m.mesh.celldata.select('Color')
             res = self.attachment_model.get_attachment_on_step(e)
-            print("resres",res)
+            # print("resres",res)
             for a_res in res:
-                if(res[a_res]):
+                if(res[a_res] and ((self.btn_menu_toggle_max.isChecked() and a_res == ArchType.UPPER.value) or (self.btn_menu_toggle_max.isChecked() and a_res == ArchType.UPPER.value))):
                     for ee in res[a_res]:
                         self.model_plot.add(ee.mesh)
             self.model_plot.render()

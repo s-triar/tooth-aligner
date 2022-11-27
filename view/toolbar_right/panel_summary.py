@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import (
 import numpy as np
 from PyQt5.QtCore import Qt, QSize
 from constant.enums import ArchType, LandmarkType, ToothType
-from controller.summary_controller import get_flat_plane
+from controller.summary_controller import calculate_studi_model_summary_pts, get_studi_model_summary_pts, get_summary_flat_pts
 from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.names import convert_arch_val_to_name
@@ -234,7 +234,7 @@ def create_pont_summary(self):
     pont_summary_layout.addWidget(pont_man_m_degree_status,5,3,1,1)
 
 
-def draw_summary_lines(self):
+def draw_summary_lines_DEPRECATED(self): #deprecated
     remove_not_arch(self,excepts_name_like='attachment')
     for i in ArchType:
         idx = Arch._get_index_arch_type(i.value)
@@ -396,6 +396,13 @@ def draw_summary_lines(self):
         draw_spline(self, legacies, False, i.value)
         draw_spline(self, preds, True, i.value)
 
+def draw_summary_lines(self):
+    # pts = calculate_studi_model_summary_pts(self)
+    pts = get_studi_model_summary_pts(self)
+    for a in pts:
+        draw_spline(self, pts[a][0], False, a)
+        draw_spline(self, pts[a][1], True, a)
+
 def draw_spline(self, pts, isPred, arch):
     c = 'orange'
     if(isPred):
@@ -411,8 +418,9 @@ def draw_spline(self, pts, isPred, arch):
     self.model_plot.render()
     
 def draw_spline_flat(self):
-    coords = get_flat_plane(self)
-    for pts in coords:
+    coords = get_summary_flat_pts(self)
+    for a in coords:
+        pts = coords[a]
         print(pts)
         c = 'blue4'
         line = SplineKu(pts, degree=3, smooth=0, res=600)

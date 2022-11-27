@@ -38,5 +38,6 @@ def click_btn_save_project(self, e):
         change_step(self,i)
         save_segmentation(self) # save model
         save_landmark(self)
+    self.btn_save_project.setChecked(False)
     
     

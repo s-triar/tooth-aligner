@@ -20,7 +20,8 @@ class ArchCopy():
     def _is_complete():
         return True if ArchType.LOWER.value in ArchCopy.ids and  ArchType.UPPER.value in ArchCopy.ids else False
     def _clear()->None:
-        ArchCopy.ids.clear()
+        # ArchCopy.ids.clear()
+        ArchCopy.ids=[]
     def _remove_arch(arch_type:ArchType, models)->object:
         if(len(ArchCopy.ids)>0):
             idx = ArchCopy.ids.index(arch_type)
@@ -42,7 +43,7 @@ class ArchCopy():
         # temp_mesh.celldata['Label'] = mesh.celldata['Label']
         # temp_mesh.celldata['Color'] = mesh.celldata['Color']
         # self.mesh = temp_mesh
-        self.mesh = mesh.copy()
+        self.mesh = mesh.clone()
         self.right_left_vec = eigenvec[0]
         self.forward_backward_vec = eigenvec[1]
         self.upward_downward_vec = eigenvec[2]

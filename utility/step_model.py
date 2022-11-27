@@ -26,10 +26,11 @@ class StepModel():
         return self.step_models[index], self.step_teeth[index]
     
     def update_step_model(self, index, models, teeth):
-        mdls = self.step_models[0:index]
-        mdls.append(models.copy())
-        self.step_models = mdls
-        
-        steps = self.step_teeth[0:index]
-        steps.append(teeth.copy())
-        self.step_models = steps
+        # mdls = self.step_models[0:index]
+        # mdls.append(models.copy())
+        # self.step_models = mdls
+        self.step_models[index]=models.copy()
+        # steps = self.step_teeth[0:index]
+        # steps.append(teeth.copy())
+        # self.step_teeth = steps
+        self.step_teeth[index]=teeth.copy()
