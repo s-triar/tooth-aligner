@@ -85,22 +85,6 @@ class Arch():
         self.teeth[label].update_landmark_moving(val_direction)
     
     def extract_tooth(self):
-        N = self.mesh.NCells()
-        labels = np.unique(self.mesh.celldata['Label'])
-        # points = vtk2numpy(self.mesh.polydata().GetPoints().GetData()) #vertices (coordinate)
-        # ids = vtk2numpy(self.mesh.polydata().GetPolys().GetData()).reshape((N, -1))[:,1:] #faces (list of index of vertices)
-        
-        center_mesh = self.mesh.centerOfMass()
-        points_mesh = np.array(self.mesh.points())
-        idx_faces_mesh = np.array(self.mesh.cells())
-        points_mesh_normalized = points_mesh-center_mesh
-        # print(points_mesh[:10], points_mesh_normalized[:10])
-        # print(idx_faces_mesh)
-        eigen_val_mesh, eigen_vec_mesh = ll.getEigen(points_mesh_normalized, idx_faces_mesh)
-        self.right_left_vec = eigen_vec_mesh[0]
-        self.forward_backward_vec = eigen_vec_mesh[1]
-        self.upward_downward_vec = eigen_vec_mesh[2]
-        # print("eigen vec mesh", eigen_vec_mesh)
         incisor_teeth = [
             ToothType.INCISOR_UL2_LR2.value, 
             ToothType.INCISOR_UL1_LR1.value,
@@ -126,6 +110,24 @@ class Arch():
             ToothType.MOLAR_UR6_LL6.value,
             ToothType.MOLAR_UR7_LL7.value
         ]
+        
+        N = self.mesh.NCells()
+        labels = np.unique(self.mesh.celldata['Label'])
+        # points = vtk2numpy(self.mesh.polydata().GetPoints().GetData()) #vertices (coordinate)
+        # ids = vtk2numpy(self.mesh.polydata().GetPolys().GetData()).reshape((N, -1))[:,1:] #faces (list of index of vertices)
+        
+        center_mesh = self.mesh.centerOfMass()
+        points_mesh = np.array(self.mesh.points())
+        idx_faces_mesh = np.array(self.mesh.cells())
+        points_mesh_normalized = points_mesh-center_mesh
+        # print(points_mesh[:10], points_mesh_normalized[:10])
+        # print(idx_faces_mesh)
+        eigen_val_mesh, eigen_vec_mesh = ll.getEigen(points_mesh_normalized, idx_faces_mesh, self.mesh.celldata['Label'], incisor_teeth)
+        self.right_left_vec = eigen_vec_mesh[0]
+        self.forward_backward_vec = eigen_vec_mesh[1]
+        self.upward_downward_vec = eigen_vec_mesh[2]
+        # print("eigen vec mesh", eigen_vec_mesh)
+        
         for label in labels:
             cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
             label = math.floor(label)
@@ -136,11 +138,7 @@ class Arch():
             center_tooth = np.mean(points_tooth,axis=0)
             center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
             
-            point_tooth_index_map = ll.map_point_index(points_tooth_index)
-            cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, cells_tooth)
-            tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
-            points_tooth_normalized = tooth_mesh.points()-center_mesh
-            center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+            
             
             
             landmark ={}
@@ -168,6 +166,12 @@ class Arch():
                     )
                 self.gingiva = gingiva
             else:
+                point_tooth_index_map = ll.map_point_index(points_tooth_index)
+                cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, cells_tooth)
+                tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
+                
+                points_tooth_normalized = tooth_mesh.points()-center_mesh
+                center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
                 
                 is_awal = True if label in [ToothType.INCISOR_UR1_LL1.value,
                                             ToothType.INCISOR_UR2_LL2.value, 

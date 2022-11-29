@@ -82,7 +82,7 @@ def getEigenPlain(points):
     eig_vec =  eig_vec[arrindx[::-1]]
     return eig_val, eig_vec
 
-def getEigen(points,idx_faces):
+def getEigen(points,idx_faces, cell_data, label_anterior):
     # print("center_incisors",center_incisors)
     # print("center_molar",center_molar)
     points_np = np.array(points, dtype=np.float32)
@@ -102,14 +102,31 @@ def getEigen(points,idx_faces):
     # ============================================
     
     # Fixing position Eigen vector
-    p_bottom_indicator = nl.get_bottom(points,np.array(idx_faces))
+    
     # depan belakang
-    ori_fb = np.dot(p_bottom_indicator,eig_vec[1])
-    inv_fb = np.dot(p_bottom_indicator,eig_vec[1]*-1)
+    
+    # ori_fb = np.dot(p_bottom_indicator,eig_vec[1]) # DEPRECATED
+    # inv_fb = np.dot(p_bottom_indicator,eig_vec[1]*-1) # DEPRECATED
     # DONE TODO CHECK THE DISTANCE WITH INCISOR 1ST LEFT AND RIGHT TEETH WITH LABEL 7 AND 8 INSTEAD
+    center_anteriors = []
+    center_anterior = 0
+    for label in label_anterior:
+        cells_tooth_index = np.where(cell_data == label)
+        label = math.floor(label)
+        cells_tooth = idx_faces[cells_tooth_index]
+        points_tooth_index = np.unique(cells_tooth)
+        points_tooth = points[points_tooth_index]
+        center_tooth = np.mean(points_tooth,axis=0)
+        center_anteriors.append(center_tooth)
+    center_anterior = np.mean(center_anteriors,axis=0)
+    
+    ori_fb = np.dot(center_anterior,eig_vec[1]) 
+    inv_fb = np.dot(center_anterior,eig_vec[1]*-1) 
     if(ori_fb>inv_fb):
         eig_vec[1] *=-1   
+        
     # atas bawah
+    p_bottom_indicator = nl.get_bottom(points,np.array(idx_faces))
     temp_eig_up_down = eig_vec[2] * -1
     if(
         np.dot(eig_vec[2], p_bottom_indicator) < np.dot(temp_eig_up_down, p_bottom_indicator)

@@ -105,7 +105,6 @@ class LandmarkToothSection(QWidget):
         btn_toggle_landmark = QPushButton("Open")
         
         # btn_toggle_landmark.clicked.connect(lambda e: )
-        # btn_toggle_landmark.toggled.connect(lambda e: )
         btn_toggle_landmark.setCheckable(True)
         btn_toggle_landmark.setChecked(False)
         btn_toggle_landmark.setObjectName('btn_toggle_ld_'+str(arch_id)+'_'+str(tooth_id))
@@ -116,10 +115,17 @@ class LandmarkToothSection(QWidget):
         section_ld = LandmarksSection(main_win, arch_id, tooth_id,landmarks)
         section_ld.setObjectName('ld_section_'+str(arch_id)+'_'+str(tooth_id))
         layout.addWidget(section_ld)
-        # section_ld.hide()
+        section_ld.hide()
+        btn_toggle_landmark.toggled.connect(lambda e: self.toggle_open(e, section_ld))
+        
         self.setLayout(layout)
 
-
+    def toggle_open(self, e, section_ld):
+        if(e == True):
+            section_ld.show()
+        else:
+            section_ld.hide()
+        
 
 class LandmarkArchGroup(QGroupBox):
     def __init__(self, main_win, arch_id, *args, **kwargs) -> None:
