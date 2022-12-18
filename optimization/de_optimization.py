@@ -96,8 +96,65 @@ def get_total_error_studi_model(st):
     
     return total_studi
     
+def get_collision_teeth_status(model, new_model):
     
-    
+    for i in range(1,15):
+        label_before=i-1
+        label_current = i
+        label_after=i+1
+        
+        archmesh_verts = model.mesh.points()
+        new_archmesh_verts = new_model.mesh.points()
+        
+        mesh_tooth_before_before_rotation=None
+        mesh_tooth_after_before_rotation=None
+        
+        faces_current = model.teeth[label_current].index_vertice_cells
+        mesh_tooth_current_current_rotation = Mesh([archmesh_verts, faces_current])
+        new_faces_current = new_model.teeth[label_current].index_vertice_cells
+        new_mesh_tooth_current_current_rotation = Mesh([new_archmesh_verts, new_faces_current])
+        
+        if(label_before>0):
+            faces_before = model.teeth[label_before].index_vertice_cells
+            mesh_tooth_before_before_rotation = Mesh([archmesh_verts, faces_before])
+            new_faces_before = new_model.teeth[label_before].index_vertice_cells
+            new_mesh_tooth_before_before_rotation = Mesh([new_archmesh_verts, new_faces_before])
+            
+        pts_col_before_before_rotation=[]
+        new_pts_col_before_before_rotation=[]
+            
+        if(mesh_tooth_before_before_rotation!=None):
+            col_before = mesh_tooth_current_current_rotation.clone().cutWithMesh(mesh_tooth_before_before_rotation)
+            pts_col_before_before_rotation=col_before.points()
+            new_col_before = new_mesh_tooth_current_current_rotation.clone().cutWithMesh(new_mesh_tooth_before_before_rotation)
+            new_pts_col_before_before_rotation=new_col_before.points()    
+        
+        if(len(new_pts_col_before_before_rotation) > len(pts_col_before_before_rotation)):
+            return 10000
+            
+        
+        
+        if(label_after<15):
+            faces_after = model.teeth[label_after].index_vertice_cells
+            mesh_tooth_after_before_rotation = Mesh([archmesh_verts, faces_after])
+            new_faces_after = model.teeth[label_after].index_vertice_cells
+            new_mesh_tooth_after_before_rotation = Mesh([new_archmesh_verts, new_faces_after])
+
+        pts_col_after_before_rotation=[]
+        new_pts_col_after_before_rotation=[]
+        
+
+        if(mesh_tooth_after_before_rotation!=None):
+            col_after = mesh_tooth_current_current_rotation.clone().cutWithMesh(mesh_tooth_after_before_rotation)
+            pts_col_after_before_rotation=col_after.points()
+            new_col_after = new_mesh_tooth_current_current_rotation.clone().cutWithMesh(new_mesh_tooth_after_before_rotation)
+            new_pts_col_after_before_rotation=new_col_after.points()
+        
+        if(len(new_pts_col_after_before_rotation) > len(pts_col_after_before_rotation)):
+            return 10000
+        
+    return 0
+        
 # def get_punishment(models, splines):
 #     idx_max = 0 if models[0].arch_type == ArchType.UPPER.value else 1
 #     idx_man = 1 if idx_max == 0 else 0
@@ -150,6 +207,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
     error_summary=0
     error_flat_i=0
     error_summary_i=0
+    punish_collision = 0
     i=0
     ArchCopy._clear()
     
@@ -204,9 +262,11 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
         # end calc error summary
         
         # calculate punishment
+        punish_collision += get_collision_teeth_status(m, model_cp)
+        
     error_summary = math.sqrt(error_summary/error_summary_i)
     error_flat = math.sqrt(error_flat/error_flat_i)
-    return error_flat+error_summary
+    return error_flat+error_summary+punish_collision
     
 
 def mutation(x, F):

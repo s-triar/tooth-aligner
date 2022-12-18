@@ -36,16 +36,21 @@ def create_optimization_menu(self, parent_layout):
 
 
 def click_btn_de_optimization(self, e):
-    error_opt = 30
+    error_opt = 1200000
     step_i = 1
     gen = None
+    new_models=None
     while(step_i<24):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
-        new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
-        print("eror", error_opt)
+        # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
+        # print("eror", error_opt)
+        while(error_opt>5000):
+            new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
+            print("eror in while", error_opt)
+            
         for i in range(len(self.models)):
             self.models[i].mesh = new_models[i].mesh.clone()
             self.models[i].right_left_vec = new_models[i].right_left_vec
