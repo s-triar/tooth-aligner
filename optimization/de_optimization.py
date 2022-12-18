@@ -287,7 +287,7 @@ def crossover(mutated, target, dims, cr):
 def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
-    if(gen!=None):
+    if(len(gen)>0):
         pop[0]=gen
     # print("pop",pop)
     # evaluate initial population of candidate solutions

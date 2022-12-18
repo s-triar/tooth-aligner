@@ -38,7 +38,7 @@ def create_optimization_menu(self, parent_layout):
 def click_btn_de_optimization(self, e):
     error_opt = 1200000
     step_i = 1
-    gen = None
+    gen = []
     new_models=None
     while(step_i<24):
     # while(error_opt > 1):
