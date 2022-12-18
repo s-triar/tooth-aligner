@@ -97,7 +97,7 @@ def get_total_error_studi_model(st):
     return total_studi
     
 def get_collision_teeth_status(model, new_model):
-    
+    total = 0
     for i in range(1,15):
         label_before=i-1
         label_current = i
@@ -130,7 +130,7 @@ def get_collision_teeth_status(model, new_model):
             new_pts_col_before_before_rotation=new_col_before.points()    
         
         if(len(new_pts_col_before_before_rotation) > len(pts_col_before_before_rotation)):
-            return 10000
+            total+= 10000
             
         
         
@@ -151,9 +151,10 @@ def get_collision_teeth_status(model, new_model):
             new_pts_col_after_before_rotation=new_col_after.points()
         
         if(len(new_pts_col_after_before_rotation) > len(pts_col_after_before_rotation)):
-            return 10000
+            total+= 10000
+
         
-    return 0
+    return total
         
 # def get_punishment(models, splines):
 #     idx_max = 0 if models[0].arch_type == ArchType.UPPER.value else 1
