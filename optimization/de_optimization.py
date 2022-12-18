@@ -342,7 +342,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
 def start_de(models, flats, summaries, gen):
     
     
-    pop_size = 5
+    pop_size = 15
     n_tooth = 14
     n_chromosome = 6
     individu_bounds= [[-0.3, 0.3]]*n_tooth*2*n_chromosome
