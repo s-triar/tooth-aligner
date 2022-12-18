@@ -224,9 +224,11 @@ def crossover(mutated, target, dims, cr):
     trial = [mutated[i] if p[i] < cr else target[i] for i in range(dims)]
     return trial
 
-def de_optimization(models, pop_size, bounds, iter, F, cr, flats, summaries):
+def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
+    if(gen!=None):
+        pop[0]=gen
     # print("pop",pop)
     # evaluate initial population of candidate solutions
     obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, ind, flats, summaries) for ind in pop]
@@ -276,7 +278,7 @@ def de_optimization(models, pop_size, bounds, iter, F, cr, flats, summaries):
     # return de models yang paling optimum
     
 
-def start_de(models, flats, summaries):
+def start_de(models, flats, summaries, gen):
     
     
     pop_size = 5
@@ -291,9 +293,9 @@ def start_de(models, flats, summaries):
     # define crossover rate for recombination
     cr = 0.7
     seconds_start = time.time()
-    solution = de_optimization(models, pop_size, bounds, iter, F, cr, flats, summaries)
+    solution = de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries)
     seconds_finish = time.time()
     print("waktu de opt", (seconds_finish-seconds_start),"detik")
     new_model = get_new_model(models, solution[0])
-    return new_model, solution[1]
+    return new_model,solution[0], solution[1]
     

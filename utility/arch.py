@@ -129,7 +129,7 @@ class Arch():
         # print("eigen vec mesh", eigen_vec_mesh)
         
         for label in labels:
-            print("label",label)
+            # print("label",label)
             cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
             label = math.floor(label)
             cells_tooth = idx_faces_mesh[cells_tooth_index]
