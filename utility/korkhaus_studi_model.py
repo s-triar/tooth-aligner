@@ -85,7 +85,7 @@ class Korkhaus(AnalisaStudiModel):
             self.status_expansion_meaning[ArchType.LOWER.value]=self.check_anterior_expansion_status(self.status_line_to_width[ArchType.LOWER.value])
             self.status_expansion_meaning[ArchType.UPPER.value]=self.check_anterior_expansion_status(self.status_line_to_width[ArchType.UPPER.value])
             
-            self.status_khorkaus=self.khorkaus_line[ArchType.UPPER.value]-self.khorkaus_line[ArchType.LOWER.value]
+            self.status_khorkaus=(self.khorkaus_line[ArchType.UPPER.value]-2)-self.khorkaus_line[ArchType.LOWER.value]
             self.status_khorkaus_meaning = self.check_anterior_klinasi_status(self.status_khorkaus)
             
             
@@ -104,7 +104,7 @@ class Korkhaus(AnalisaStudiModel):
             return 'Dapat dilakukan ekspansi anterior'
     
     def check_anterior_klinasi_status(self,val):
-        if(val>2):
+        if(val>0):
             return 'Terdapat Proklinasi anterior atas'
         else:
             return 'Terdapat Retroklinasi anterior atas'

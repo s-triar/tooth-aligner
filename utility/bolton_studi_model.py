@@ -1,5 +1,5 @@
 from utility.analisa_studi_model import AnalisaStudiModel
-from constant.enums import ArchType, LandmarkType
+from constant.enums import ArchType, LandmarkType, ToothType
 import numpy as np
 from utility.arch import Arch
 
@@ -51,6 +51,10 @@ class Bolton(AnalisaStudiModel):
             self.kmxo = self.overal_width[ArchType.UPPER.value] - (( self.overal_width[ArchType.LOWER.value] *100)/91.3)
             self.kmna = self.anterior_width[ArchType.LOWER.value] - (( self.anterior_width[ArchType.UPPER.value] *77.2)/100)
             self.kmxa = self.anterior_width[ArchType.UPPER.value] - (( self.anterior_width[ArchType.LOWER.value] *100)/77.2)
+            # self.kmno = self.overal_width[ArchType.LOWER.value] - (( self.overal_width[ArchType.UPPER.value] *91.3)/100)
+            # self.kmxo = self.overal_width[ArchType.UPPER.value] - (( self.overal_width[ArchType.LOWER.value] *100)/19.3)
+            # self.kmna = self.anterior_width[ArchType.LOWER.value] - (( self.anterior_width[ArchType.UPPER.value] *77.2)/100)
+            # self.kmxa = self.anterior_width[ArchType.UPPER.value] - (( self.anterior_width[ArchType.UPPER.value] *100)/77.2)
             self.calc_correction_anterior()
             self.calc_correction_overall()
         
@@ -78,7 +82,7 @@ class Bolton(AnalisaStudiModel):
                     distal_pt = tooth.landmark_pt[LandmarkType.DISTAL.value]
                     w = np.linalg.norm(mesial_pt - distal_pt)
                     self.teeth_width[arch.arch_type][label]=w
-                    if(tooth.label in self.label_all):
+                    if(tooth.label in self.label_all and (tooth.label != ToothType.MOLAR_UL7_LR7.value and tooth.label != ToothType.MOLAR_UR7_LL7.value)):
                         self.overal_width[arch.arch_type]+=w
                     if(tooth.label in self.label_anterior or tooth.label in self.label_canine):
                         self.anterior_width[arch.arch_type]+=w

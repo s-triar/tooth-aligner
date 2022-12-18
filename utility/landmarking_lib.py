@@ -648,7 +648,7 @@ def get_cusp_posterior_third_fourth_upper(is_awal, eigen_vec_mesh, center_tooth,
     temp_f_out = np.matmul(forward_backward, np.transpose(vertices_out_new))
 
     vertices_out_mesial=np.where(
-        (temp_f_out < center_f-1.75)
+        (temp_f_out < center_f-1.75) #-1.75
     )
     vertices_out_distal=np.where(
         (temp_f_out >= center_f-0.5)
@@ -973,7 +973,7 @@ def get_cusp_posterior_second_molar_lower(is_awal, eigen_vec_mesh, center_tooth,
         (temp_f_out >= center_f-0.5)
     )
     vertices_in_mesial=np.where(
-        (temp_f_in < center_f+1)
+        (temp_f_in < center_f+1) #+1
     )
     vertices_in_distal=np.where(
         (temp_f_in >= center_f+2)
@@ -987,15 +987,18 @@ def get_cusp_posterior_second_molar_lower(is_awal, eigen_vec_mesh, center_tooth,
     #     pts.append(Point(vertices_out_new[i],c="pink5"))
     # for i in vertices_out_distal[0]:
     #     pts.append(Point(vertices_out_new[i],c="pink7"))
-    
+    # print("vertices_in_mesial")
+    # print(vertices_in_mesial)
     vertices_in_mesial_new = vertices_in_new[vertices_in_mesial[0]]
     vertices_in_distal_new = vertices_in_new[vertices_in_distal[0]]
     vertices_out_mesial_new = vertices_out_new[vertices_out_mesial[0]]
     vertices_out_distal_new = vertices_out_new[vertices_out_distal[0]]
-    
+    # print("vertices_in_mesial_new")
+    # print(vertices_in_mesial_new)
     # vertices_in_mesial_new_up = np.dot(upward_downward, np.transpose(vertices_in_mesial_new))
     vertices_in_mesial_new_up = np.add(np.dot(upward_downward, np.transpose(vertices_in_mesial_new))*0.5,
                                        np.dot(left_right*-1, np.transpose(vertices_in_mesial_new))*0.5)
+    
     cusps_in_mesial_index_sorted = np.argsort(vertices_in_mesial_new_up)
     cusp_in_mesial = vertices_in_mesial_new[cusps_in_mesial_index_sorted[0]]
     
@@ -1110,7 +1113,7 @@ def get_cusp_posterior_backup(is_upper,label, eigen_vec_mesh, center_tooth, vert
 def get_pit(eigen_vec_mesh, center_tooth, vertices_tooth):
     left_right = eigen_vec_mesh[0]
     forward_backward = eigen_vec_mesh[1]
-    # upward_downward = eigen_vec_mesh[2]
+    upward_downward = eigen_vec_mesh[2]
     # center_u = np.dot(center_tooth, upward_downward)
     center_r = np.dot(center_tooth, left_right)
     center_f = np.dot(center_tooth, forward_backward)
@@ -1124,9 +1127,10 @@ def get_pit(eigen_vec_mesh, center_tooth, vertices_tooth):
     )
     # pts=[]
     # for i in crcl[0]:
+    #     pts.append(i)
     #     pts.append(Point(vertices_tooth[i],c="violet"))
     vertices_new = vertices_tooth[crcl[0]]
-    temp_uu=np.matmul(left_right, np.transpose(vertices_new))
+    temp_uu=np.matmul(upward_downward*-1, np.transpose(vertices_new))
     grooves_index_sorted = np.argsort(temp_uu)
     groove = vertices_new[grooves_index_sorted[0]]
     return groove #,pts

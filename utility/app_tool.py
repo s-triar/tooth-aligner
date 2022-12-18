@@ -39,7 +39,18 @@ def get_saved_path(path_model, extendsion,more_info='',cur_step=None, isProject=
         return os.path.join(save_path,person,person+extendsion)
     
 
-
+def get_landmark(arch_type, personname):
+    load_dotenv()
+    save_path = os.getenv("SAVE")
+    arch_name = ArchType.UPPER.name if arch_type == ArchType.UPPER.value else ArchType.LOWER.name
+    df=None
+    for person_folder in glob.glob(save_path+"/*"):
+        if personname in person_folder:
+            for step in glob.glob(person_folder+"/*"):
+                for file_step in glob.glob(step+"/*"+arch_name+"*.csv"):
+                    df = pd.read_csv(file_step, index_col=0)
+                    break
+    return df
 # untuk proses landmark model
 def load_all_landmarks(arch_type, tooth_label, landmark_type):
     load_dotenv()

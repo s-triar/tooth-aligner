@@ -196,6 +196,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
             pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
             a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pt_in_line])[0]
             b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [teeth[tooth_type].center])[0]
+            # a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pt_in_line])[0]
+            # b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [teeth[tooth_type].center])[0]
             dst = find_distance_between_two_points(a,b)
             error_summary+=(dst**2)
             error_summary_i+=1

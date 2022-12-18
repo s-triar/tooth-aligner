@@ -175,6 +175,7 @@ def get_bottom(points, idx_faces):
     kk = math.floor(len(points)/2)
     mm = math.floor(len(points)/4)
     for p in range(kk-mm, kk):
+    # for p in range(len(points)):
         index_selected_point = p
         chosen_point, index_of_neighbor_faces_of_selected_point, couple_points_beside_selected = faces_neighbor_from_selected_points(points,idx_faces, index_selected_point)
         total_angle = 0

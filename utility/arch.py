@@ -129,6 +129,7 @@ class Arch():
         # print("eigen vec mesh", eigen_vec_mesh)
         
         for label in labels:
+            print("label",label)
             cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
             label = math.floor(label)
             cells_tooth = idx_faces_mesh[cells_tooth_index]
@@ -168,8 +169,12 @@ class Arch():
             else:
                 point_tooth_index_map = ll.map_point_index(points_tooth_index)
                 cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, cells_tooth)
-                tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
-                
+                try:
+                    tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
+                    if(len(tooth_mesh.points())==0):
+                        raise Exception("Possibility of there is a non-manyfold")
+                except:
+                    tooth_mesh = Mesh([points_tooth, cells_tooth_mapped])
                 points_tooth_normalized = tooth_mesh.points()-center_mesh
                 center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
                 

@@ -73,10 +73,6 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QFile, QIODevice
 import glob
 
-
-
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # apply_stylesheet(app, theme='light_blue.xml')

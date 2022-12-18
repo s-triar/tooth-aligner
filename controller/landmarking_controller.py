@@ -1,13 +1,17 @@
+from controller.summary_controller import calculate_studi_model
 from utility.app_tool import get_saved_path
 from utility.arch import Arch
 from constant.enums import ArchType, ToothType,LandmarkType
 from vedo import Line, Point
 from PyQt5.QtWidgets import (
-    QLabel
+    QLabel,
+    QFileDialog
+    
 )
 from utility.colors import convert_landmark_to_color
 import pandas as pd
 from pathlib import Path  
+from numpy import array
 
 def init_var_landmarking(self):
     self.selected_q_label_landmark=None
@@ -125,14 +129,16 @@ def show_landmark(self):
             if(arch.arch_type == arch_id):
                 tooth_label = int(obj_names[3])
                 landmark_label = int(obj_names[4])
-                tooth = teeth[tooth_label]
-                # landmark = tooth.landmark_index[landmark_label]
-                # coordinate = arch.mesh.points(landmark)
-                coordinate = tooth.landmark_pt[landmark_label]
-                text = "[ {0:.3f} ; {1:.3f} ; {2:.3f} ]".format(coordinate[0],coordinate[1],coordinate[2])
-                child.setText(text)
-                p=Point(coordinate,c=convert_landmark_to_color(landmark_label))
-                self.model_plot.add(p) 
+                if(tooth_label in teeth):
+                    # if landmark_label!= 3 and landmark_label!=4:
+                        tooth = teeth[tooth_label]
+                        # landmark = tooth.landmark_index[landmark_label]
+                        # coordinate = arch.mesh.points(landmark)
+                        coordinate = tooth.landmark_pt[landmark_label]
+                        text = "[ {0:.3f} ; {1:.3f} ; {2:.3f} ]".format(coordinate[0],coordinate[1],coordinate[2])
+                        child.setText(text)
+                        p=Point(coordinate,c=convert_landmark_to_color(landmark_label),r=20)
+                        self.model_plot.add(p) 
     self.model_plot.render()
     
 def save_landmark(self):
@@ -166,4 +172,24 @@ def save_landmark(self):
         filepath.parent.mkdir(parents=True, exist_ok=True)  
         df.to_csv(filepath)  
         
+def load_landmark(self, typearch):
+    dlg = QFileDialog()
+    dlg.setFileMode(QFileDialog.AnyFile)
+    dlg.setNameFilters(["*.csv"])
+    filenames = []
+    if dlg.exec_():
+        filenames = dlg.selectedFiles()
+        print(filenames)
         
+        df = pd.read_csv(filenames[0], index_col=0)
+        
+        
+        index_in_models = Arch._get_index_arch_type(typearch)
+        arch = self.models[index_in_models]
+        for index, row in df.iterrows():
+            tooth = arch.teeth[row['label']]
+            tooth.landmark_pt[row['landmark']]=array([row['x'],row['y'],row['z']])
+        calculate_studi_model(self)
+        # load_model(self, filenames[0], arch_type)
+        # btn.setDisabled(True)
+        # check_btn_toggle_arch(self, arch_type, True)
