@@ -263,7 +263,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
         # end calc error summary
         
         # calculate punishment
-        punish_collision += get_collision_teeth_status(m, model_cp)
+        # punish_collision += get_collision_teeth_status(m, model_cp)
         
     error_summary = math.sqrt(error_summary/error_summary_i)
     error_flat = math.sqrt(error_flat/error_flat_i)
