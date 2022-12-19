@@ -17,6 +17,7 @@ from optimization.de_optimization2 import start_de
 
 from view.components.toolbar_top_section import ToolbarTopSection
 from view.components.tool_top_button import ToolTopButton
+import copy
 
 def create_optimization_menu(self, parent_layout):
     self.container_tool_btn = QWidget()
@@ -41,6 +42,8 @@ def click_btn_de_optimization(self, e):
     step_i = 1
     gen = []
     new_models=self.models
+    flats = copy.deepcopy(get_summary_flat_pts(self))
+    summary = copy.deepcopy(get_studi_model_summary_pts(self))
     while(step_i<24):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
@@ -49,7 +52,7 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt = start_de(new_models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
+        new_models, gen, error_opt = start_de(new_models, flats, summary, gen)
         print("eror in while", error_opt)
         print(gen)
             
@@ -61,7 +64,7 @@ def click_btn_de_optimization(self, e):
             self.models[i].gingiva=new_models[i].gingiva
             self.models[i].teeth=new_models[i].teeth
             update_transform_arch(self,self.step_model.get_current_step())
-            calculate_studi_model(self)
+            # calculate_studi_model(self)
         # self.btn_addmin_step_aligner.btn_increase.click()
     self.btn_de_optimization.setChecked(False)
     # self.model_plot.add(new_models[0].mesh)

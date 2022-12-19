@@ -319,6 +319,9 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
         pop[0]=gen
+    myinitIndividu = new_crossover(models, summaries)
+    pop[-1]=myinitIndividu
+    
     # print("pop",pop)
     # evaluate initial population of candidate solutions
     obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, ind, flats, summaries) for ind in pop]
@@ -344,9 +347,9 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             mutated = check_bounds(mutated, bounds)
             # perform crossover
             # print("crossover", "j", j)
-            # trial = crossover(mutated, pop[j], len(bounds), cr)
-            trial = new_crossover(models, summaries)
-            trial = check_bounds(trial, bounds)
+            trial = crossover(mutated, pop[j], len(bounds), cr)
+            
+            # trial = check_bounds(trial, bounds)
             
             # compute objective function value for target vector
             obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, pop[j],flats, summaries)
