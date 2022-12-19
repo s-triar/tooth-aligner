@@ -61,7 +61,7 @@ def click_btn_de_optimization(self, e):
             self.models[i].gingiva=new_models[i].gingiva
             self.models[i].teeth=new_models[i].teeth
             update_transform_arch(self,self.step_model.get_current_step())
-            # calculate_studi_model(self)
+            calculate_studi_model(self)
         # self.btn_addmin_step_aligner.btn_increase.click()
     self.btn_de_optimization.setChecked(False)
     # self.model_plot.add(new_models[0].mesh)
