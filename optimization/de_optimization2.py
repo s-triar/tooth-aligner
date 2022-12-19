@@ -55,7 +55,7 @@ def de_rotation_and_moving(model, chrs):
             
             temp_p = model.mesh.points()
             temp_p[faces_unique] = mesh.points()[faces_unique]
-            model.mesh.clone().points(temp_p)
+            model.mesh.points(temp_p)
     return model
         
         
