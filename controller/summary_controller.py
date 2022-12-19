@@ -153,10 +153,10 @@ def calculate_studi_model_summary_pts(self):
                     val_cor = None
                     val_cor_status=None
                     if(tooth_type in [ToothType.MOLAR_UL6_LR6.value, ToothType.MOLAR_UR6_LL6.value]):
-                        val_cor = self.pont_studi_model.delta_mp[i.value]/2.0
+                        val_cor = -1*(self.pont_studi_model.delta_mp[i.value]/2.0)
                         val_cor_status = self.pont_studi_model.status_mp[i.value]
                     elif(tooth_type in [ToothType.PREMOLAR_UL4_LR4.value, ToothType.PREMOLAR_UR4_LL4.value]):
-                        val_cor = self.pont_studi_model.delta_pv[i.value]/2.0
+                        val_cor = -1*(self.pont_studi_model.delta_pv[i.value]/2.0)
                         val_cor_status=self.pont_studi_model.status_pv[i.value]
                     new_center = find_new_point_in_a_line_with_delta_distance(center_arch, center, val_cor)
                     preds.append(new_center)
