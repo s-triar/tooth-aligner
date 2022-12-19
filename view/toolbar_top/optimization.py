@@ -12,8 +12,8 @@ from constant.enums import PanelMode
 from controller.bite_contact_controller import reset_bite_contact
 from controller.segmentation_controller import set_selected_arch, set_selected_label
 from controller.step_controller import update_transform_arch
-from controller.summary_controller import get_studi_model_summary_pts, get_summary_flat_pts
-from optimization.de_optimization import start_de
+from controller.summary_controller import calculate_studi_model, get_studi_model_summary_pts, get_summary_flat_pts
+from optimization.de_optimization2 import start_de
 
 from view.components.toolbar_top_section import ToolbarTopSection
 from view.components.tool_top_button import ToolTopButton
@@ -59,6 +59,7 @@ def click_btn_de_optimization(self, e):
             self.models[i].gingiva=new_models[i].gingiva
             self.models[i].teeth=new_models[i].teeth
             update_transform_arch(self,self.step_model.get_current_step())
+            # calculate_studi_model(self)
         # self.btn_addmin_step_aligner.btn_increase.click()
     self.btn_de_optimization.setChecked(False)
     # self.model_plot.add(new_models[0].mesh)

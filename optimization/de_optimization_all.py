@@ -262,6 +262,12 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
             error_summary_i+=1
         # end calc error summary
         
+        # begin calc error rotate
+        
+        
+        
+        # end calc error rotate
+        
         # calculate punishment
         # punish_collision += get_collision_teeth_status(m, model_cp)
         
@@ -273,9 +279,15 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
 def mutation(x, F):
     return x[0] + F * (x[1] - x[2])
 
+
+
 def check_bounds(mutated, bounds):
     mutated_bound = [np.clip(mutated[i], bounds[i, 0], bounds[i, 1]) for i in range(len(bounds))]
     return mutated_bound
+
+def new_crossover(mutated, target, dims, models):
+    pass
+    
 
 def crossover(mutated, target, dims, cr):
     

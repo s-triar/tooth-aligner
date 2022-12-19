@@ -54,16 +54,20 @@
 # show(cone, axes=1)
 
 
-from vedo import dataurl, Plotter, Mesh, Sphere
+# from vedo import dataurl, Plotter, Mesh, Sphere
 
-msh1 = Mesh(dataurl+'motor.byu')
-cutmesh = Sphere().y(-0.4).scale(0.4).alpha(0.4)
+# msh1 = Mesh(dataurl+'motor.byu')
+# cutmesh = Sphere().y(-0.4).scale(0.4).alpha(0.4)
 
-msh2 = msh1.clone().cutWithMesh(cutmesh)
-redcap = msh2.cap(returnCap=False).color("r4")
+# msh2 = msh1.clone().cutWithMesh(cutmesh)
+# redcap = msh2.cap(returnCap=False).color("r4")
 
 
-plt = Plotter(N=2, axes=1)
-plt.at(0).show(msh1, cutmesh)
-plt.at(1).show(msh2, redcap, viewup="z")
-plt.interactive().close()
+# plt = Plotter(N=2, axes=1)
+# plt.at(0).show(msh1, cutmesh)
+# plt.at(1).show(msh2, redcap, viewup="z")
+# plt.interactive().close()
+
+
+r={}
+r[1]=
