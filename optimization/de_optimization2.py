@@ -365,13 +365,13 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
 def start_de(models, flats, summaries, gen):
     
     
-    pop_size = 15
+    pop_size = 6
     n_tooth = 14
     n_chromosome = 3
     individu_bounds= [[-0.3, 0.3]]*n_tooth*2*n_chromosome
     bounds = np.asarray(individu_bounds)
     # define number of iterations
-    iter = 15
+    iter = 5
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
