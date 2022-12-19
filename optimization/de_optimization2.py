@@ -23,7 +23,7 @@ import time
 def de_rotation_and_moving(model, chrs):
     for i in ToothType:    
         if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
-            chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
+            chr=chrs[(i.value-1)*3:((i.value-1)+1)*3]
             verts =  model.mesh.points()
             # print(model.teeth[i.value].index_vertice_cells, i.value)
             faces = model.teeth[i.value].index_vertice_cells
@@ -36,19 +36,19 @@ def de_rotation_and_moving(model, chrs):
                 for jb in np.unique(itemp[0]):
                     idx_for_faces.append(jb)
             faces_unique = np.delete(faces_unique, idx_for_faces)
-            teeth_center = model.teeth[i.value].center
+            # teeth_center = model.teeth[i.value].center
             
             # rotation
-            mesh.rotateX(chr[0], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
-            mesh.rotateY(chr[1], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
-            mesh.rotateZ(chr[2], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            # mesh.rotateX(chr[0], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            # mesh.rotateY(chr[1], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            # mesh.rotateZ(chr[2], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
             # end rotation
             
             # movement
-            val_direction=[chr[3],chr[4],chr[5]]
+            val_direction=[chr[0],chr[1],chr[2]]
             mesh.points(mesh.points()+val_direction)
             model.update_teeth_point_moving(i.value, val_direction)
             # end moving
@@ -183,7 +183,7 @@ def get_new_model(models,chromosome):
         models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
         
     for i in range(len(models_cp)):
-        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*6)):(i+1)*(14*6)]) # 6 chromosome per tooth
+        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*3)):(i+1)*(14*3)]) # 6 chromosome per tooth
     return models_cp
 
 def minimize_function_using_recalculation_studi_model(models, chromosome):
@@ -197,7 +197,7 @@ def minimize_function_using_recalculation_studi_model(models, chromosome):
         models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
         
     for i in range(len(models_cp)):
-        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*14*6):(i+1)*14*6]) # 6 chromosome per tooth
+        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*14*3):(i+1)*14*3]) # 6 chromosome per tooth
 
     studimodels = get_new_perhitungan_studi_model(models_cp)
     total_studi_error = get_total_error_studi_model(studimodels)
@@ -215,7 +215,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
-        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*6)):(i+1)*(14*6)])
+        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*3)):(i+1)*(14*3)])
         i+=1
         
         # models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
@@ -295,6 +295,8 @@ def new_crossover(models, summary_pts):
         for tooth_type in teeth:
             pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
             tempGen.append(pt_in_line[0]-teeth[tooth_type].center[0])
+            tempGen.append(pt_in_line[1]-teeth[tooth_type].center[1])
+            tempGen.append(pt_in_line[2]-teeth[tooth_type].center[2])
         
     return tempGen
     
