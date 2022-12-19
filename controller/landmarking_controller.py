@@ -172,24 +172,17 @@ def save_landmark(self):
         filepath.parent.mkdir(parents=True, exist_ok=True)  
         df.to_csv(filepath)  
         
-def load_landmark(self, typearch):
-    dlg = QFileDialog()
-    dlg.setFileMode(QFileDialog.AnyFile)
-    dlg.setNameFilters(["*.csv"])
-    filenames = []
-    if dlg.exec_():
-        filenames = dlg.selectedFiles()
-        print(filenames)
+def load_landmark(self, typearch, filename):
         
-        df = pd.read_csv(filenames[0], index_col=0)
-        
-        
-        index_in_models = Arch._get_index_arch_type(typearch)
-        arch = self.models[index_in_models]
-        for index, row in df.iterrows():
-            tooth = arch.teeth[row['label']]
-            tooth.landmark_pt[row['landmark']]=array([row['x'],row['y'],row['z']])
-        calculate_studi_model(self)
-        # load_model(self, filenames[0], arch_type)
-        # btn.setDisabled(True)
-        # check_btn_toggle_arch(self, arch_type, True)
+    df = pd.read_csv(filename, index_col=0)
+    
+    
+    index_in_models = Arch._get_index_arch_type(typearch)
+    arch = self.models[index_in_models]
+    for index, row in df.iterrows():
+        tooth = arch.teeth[row['label']]
+        tooth.landmark_pt[row['landmark']]=array([row['x'],row['y'],row['z']])
+    calculate_studi_model(self)
+    # load_model(self, filenames[0], arch_type)
+    # btn.setDisabled(True)
+    # check_btn_toggle_arch(self, arch_type, True)

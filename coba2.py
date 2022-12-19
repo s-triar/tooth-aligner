@@ -50,7 +50,22 @@
 #     app.aboutToQuit.connect(window.onClose)
 #     app.exec_()
 
-import numpy as np
+# import numpy as np
 
-a = [4,65,7,7,6,6,33,]
-print(a)
+# a = [4,65,7,7,6,6,33,]
+# print(a)
+import os
+from pathlib import Path
+import glob
+path = "D:/NyeMan/KULIAH S2/Thesis/tooth-aligner/saved_landmark_predict_manual/AE/AE.json"
+c=path.split(os.altsep)
+a=os.altsep.join(c[:-1])
+for step_folder in glob.glob(a+"/*"):
+    if(".json" not in step_folder):
+        index = step_folder.split("step_")[-1]
+        for model in glob.glob(step_folder+"/*.vtp"):
+            print(model)
+            # load model
+        for ld in glob.glob(step_folder+"/*.csv"):
+            print(ld)
+            # load landmark

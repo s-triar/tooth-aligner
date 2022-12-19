@@ -23,23 +23,7 @@ def calculate_studi_model(self):
         self.carey_studi_model.calculate_carey(self.models)
         self.summary_flat_pts = calculate_flat_plane_points(self)
         self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
-        temp={
-            ArchType.LOWER.value:None,
-            ArchType.UPPER.value:None
-        }
-        temp_teeth={
-            ArchType.LOWER.value:None,
-            ArchType.UPPER.value:None
-        }
-        for a in ArchType:
-            idx = Arch._get_index_arch_type(a.value)
-            m = self.models[idx]
-            temp[a.value]=m.mesh
-            temp[a.value]=m.mesh.clone()
-            temp_teeth[a.value]=m.teeth.copy()
-        self.step_model.add_step_model(temp, temp_teeth)
         
-        self.attachment_model.copy_attachment(0,0+1)
         
 def get_studi_model_summary_pts(self):
     return self.studi_model_summary_pts
