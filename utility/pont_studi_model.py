@@ -192,10 +192,10 @@ class Pont(AnalisaStudiModel):
             # mandi_r1_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r1_pit]
             # mandi_r2_pit = archs[LOWER_IDX].mesh.points()[idx_mandi_r2_pit]
             
-            mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].center
-            mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].center
-            mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].center
-            mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].center
+            # mandi_l1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL4_LR4.value].center
+            # mandi_l2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UL5_LR5.value].center
+            # mandi_r1_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR4_LL4.value].center
+            # mandi_r2_pit = archs[LOWER_IDX].teeth[ToothType.PREMOLAR_UR5_LL5.value].center
             
             
 
