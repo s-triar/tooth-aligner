@@ -40,16 +40,16 @@ def click_btn_de_optimization(self, e):
     step_i = 1
     gen = []
     new_models=None
-    # while(step_i<24):
-    while(error_opt > 1):
+    while(step_i<24):
+    # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
-        while(error_opt>5000):
-            new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
-            print("eror in while", error_opt)
+        # while(error_opt>5000):
+        new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
+        print("eror in while", error_opt)
             
         for i in range(len(self.models)):
             self.models[i].mesh = new_models[i].mesh.clone()

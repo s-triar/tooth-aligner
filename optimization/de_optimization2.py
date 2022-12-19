@@ -286,6 +286,7 @@ def check_bounds(mutated, bounds):
     return mutated_bound
 
 def new_crossover(models, summary_pts):
+    ArchCopy._clear()
     tempGen = []
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
@@ -297,7 +298,8 @@ def new_crossover(models, summary_pts):
             tempGen.append(pt_in_line[0]-teeth[tooth_type].center[0])
             tempGen.append(pt_in_line[1]-teeth[tooth_type].center[1])
             tempGen.append(pt_in_line[2]-teeth[tooth_type].center[2])
-        
+    ArchCopy._clear()
+    
     return tempGen
     
 
