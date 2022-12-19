@@ -50,12 +50,13 @@ def de_rotation_and_moving(model, chrs):
             # movement
             val_direction=[chr[0],chr[1],chr[2]]
             mesh.points(mesh.points()+val_direction)
-            model.update_teeth_point_moving(i.value, val_direction)
+            
             # end moving
             
             temp_p = model.mesh.points()
             temp_p[faces_unique] = mesh.points()[faces_unique]
             model.mesh.points(temp_p)
+            model.update_teeth_point_moving(i.value, val_direction)
     return model
         
         
