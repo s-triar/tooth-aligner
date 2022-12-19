@@ -1,3 +1,4 @@
+from controller.summary_controller import calculate_studi_model
 from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.step_model import StepModel
@@ -65,6 +66,7 @@ def change_step(self, e):
     
     self.step_model.change_current_step(e)
     apply_transform_arch(self,e)
+    calculate_studi_model(self)
     
 # def generate_view(self, e): # based on what panel is showing
     
