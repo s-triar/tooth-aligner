@@ -41,7 +41,7 @@ def click_btn_de_optimization(self, e):
     step_i = 1
     gen = []
     new_models=self.models
-    while(step_i<4):
+    while(step_i<24):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
