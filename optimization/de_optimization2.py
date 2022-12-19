@@ -253,11 +253,11 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
         summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=3, smooth=0, res=600)
         for tooth_type in teeth:
             pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
+            a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+            b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].center])[0]
             # a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pt_in_line])[0]
             # b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [teeth[tooth_type].center])[0]
-            # a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pt_in_line])[0]
-            # b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [teeth[tooth_type].center])[0]
-            dst = find_distance_between_two_points(pt_in_line,teeth[tooth_type].center)
+            dst = find_distance_between_two_points(a,b)
             # error_summary+=(dst**2)
             error_summary+= dst 
             
