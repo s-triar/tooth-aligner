@@ -39,7 +39,7 @@ def click_btn_de_optimization(self, e):
     error_opt = 1200000
     step_i = 1
     gen = []
-    new_models=None
+    new_models=self.models
     while(step_i<12):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
@@ -48,7 +48,7 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
+        new_models, gen, error_opt = start_de(new_models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         print("eror in while", error_opt)
         print(gen)
             
