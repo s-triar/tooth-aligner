@@ -61,8 +61,8 @@ def on_value_change(self, e):
     self.label_slider_step_aligner.setText(te)
     # apply_transform_arch(self, e)
     change_step(self,e)
-    if(self.btn_de_optimization.isChecked()==False):
-        calculate_studi_model(self)
+    # if(self.btn_de_optimization.isChecked()==False):
+    #     calculate_studi_model(self)
     
 
 def add_step(self,event):

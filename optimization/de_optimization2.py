@@ -23,7 +23,7 @@ import time
 def de_rotation_and_moving(model, chrs):
     for i in ToothType:    
         if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
-            chr=chrs[(i.value-1)*3:((i.value-1)+1)*3]
+            chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
             verts =  model.mesh.points()
             # print(model.teeth[i.value].index_vertice_cells, i.value)
             faces = model.teeth[i.value].index_vertice_cells
@@ -36,19 +36,19 @@ def de_rotation_and_moving(model, chrs):
                 for jb in np.unique(itemp[0]):
                     idx_for_faces.append(jb)
             faces_unique = np.delete(faces_unique, idx_for_faces)
-            # teeth_center = model.teeth[i.value].center
+            teeth_center = model.teeth[i.value].center
             
             # rotation
-            # mesh.rotateX(chr[0], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
-            # mesh.rotateY(chr[1], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
-            # mesh.rotateZ(chr[2], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            mesh.rotateX(chr[0], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            mesh.rotateY(chr[1], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            mesh.rotateZ(chr[2], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
             # end rotation
             
             # movement
-            val_direction=[chr[0],chr[1],chr[2]]
+            val_direction=[chr[3],chr[4],chr[5]]
             mesh.points(mesh.points()+val_direction)
             
             # end moving
@@ -184,7 +184,7 @@ def get_new_model(models,chromosome):
         models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
         
     for i in range(len(models_cp)):
-        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*3)):(i+1)*(14*3)]) # 6 chromosome per tooth
+        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*6)):(i+1)*(14*6)]) # 6 chromosome per tooth
     return models_cp
 
 def minimize_function_using_recalculation_studi_model(models, chromosome):
@@ -198,7 +198,7 @@ def minimize_function_using_recalculation_studi_model(models, chromosome):
         models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
         
     for i in range(len(models_cp)):
-        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*14*3):(i+1)*14*3]) # 6 chromosome per tooth
+        models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*14*6):(i+1)*14*6]) # 6 chromosome per tooth
 
     studimodels = get_new_perhitungan_studi_model(models_cp)
     total_studi_error = get_total_error_studi_model(studimodels)
@@ -216,37 +216,37 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
-        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*3)):(i+1)*(14*3)])
+        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*6)):(i+1)*(14*6)])
         i+=1
         
         # models_cp.append(ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva)))
         
         # begin calc error flat
         teeth = copy.deepcopy(model_cp.teeth)
-        # pts_cusps=np.array([
-        #         teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        #         teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-        #         teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        #         teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        #         teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
-        #         teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
-        #         teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+        pts_cusps=np.array([
+                teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
                 
-        #         teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-        #         teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-        #         teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
-        #         teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        #         teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        #         teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-        #         teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        #     ])
-        # pts_flat = flat_pts[model_cp.arch_type]
-        # for ipt in range(len(pts_cusps)):
-        #     a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
-        #     b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
-        #     dst = find_distance_between_two_points(a,b)
-        #     error_flat+=(dst**2)
-        #     error_flat_i+=1
+                teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+            ])
+        pts_flat = flat_pts[model_cp.arch_type]
+        for ipt in range(len(pts_cusps)):
+            a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
+            b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_flat+=(dst**2)
+            error_flat_i+=1
         # end calc error flat
         
         # begin calc error summary
@@ -275,7 +275,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
         # punish_collision += get_collision_teeth_status(m, model_cp)
         
     error_summary = math.sqrt(error_summary/error_summary_i)
-    # error_flat = math.sqrt(error_flat/error_flat_i)
+    error_flat = math.sqrt(error_flat/error_flat_i)
     return error_flat+error_summary+punish_collision
     
 
@@ -288,7 +288,7 @@ def check_bounds(mutated, bounds):
     mutated_bound = [np.clip(mutated[i], bounds[i, 0], bounds[i, 1]) for i in range(len(bounds))]
     return mutated_bound
 
-def new_crossover(models, summary_pts):
+def new_crossover(models, summary_pts, chrs):
     ArchCopy._clear()
     tempGen = []
     for m in models:
@@ -296,11 +296,16 @@ def new_crossover(models, summary_pts):
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
         summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=3, smooth=0, res=600)
         teeth = copy.deepcopy(model_cp.teeth)
-        for tooth_type in teeth:
-            pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
-            tempGen.append(pt_in_line[0]-teeth[tooth_type].center[0])
-            tempGen.append(pt_in_line[1]-teeth[tooth_type].center[1])
-            tempGen.append(pt_in_line[2]-teeth[tooth_type].center[2])
+        for i in ToothType:    
+            if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
+                chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
+                tempGen.append(chr[0])
+                tempGen.append(chr[1])
+                tempGen.append(chr[2])
+                pt_in_line = summary_line.closestPoint(teeth[i.value].center)
+                tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
+                tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
+                tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
     ArchCopy._clear()
     
     return np.array(tempGen)
@@ -319,7 +324,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
         pop[0]=gen
-    myinitIndividu = new_crossover(models, summaries)
+    myinitIndividu = new_crossover(models, summaries, pop[0])
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
     
@@ -356,7 +361,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, pop[j],flats, summaries)
             # compute objective function value for trial vector
             obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, trial,flats, summaries)
-            print("obj_trial",i,j,obj_trial, obj_target)
+            # print("obj_trial",i,j,obj_trial, obj_target)
             # print(pop[j])
             # print(trial)
             # perform selection
@@ -385,7 +390,7 @@ def start_de(models, flats, summaries, gen):
     
     pop_size = 6
     n_tooth = 14
-    n_chromosome = 3
+    n_chromosome = 6
     individu_bounds= [[-0.3, 0.3]]*n_tooth*2*n_chromosome
     bounds = np.asarray(individu_bounds)
     # define number of iterations
