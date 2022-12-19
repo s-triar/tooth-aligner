@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QSize
 from controller.rotation_controller import pitch, roll, yaw
 from controller.step_controller import add_transform_arch, apply_transform_arch, change_step, remove_transform_arch
+from controller.summary_controller import calculate_studi_model
 from view.components.rotation_btn_group import RotationButtonGroup
 
 
@@ -60,6 +61,9 @@ def on_value_change(self, e):
     self.label_slider_step_aligner.setText(te)
     # apply_transform_arch(self, e)
     change_step(self,e)
+    if(self.btn_de_optimization.isChecked()==False):
+        calculate_studi_model(self)
+    
 
 def add_step(self,event):
     max = self.slider_step_aligner.maximum()

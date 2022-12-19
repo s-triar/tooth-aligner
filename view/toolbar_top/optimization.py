@@ -24,6 +24,7 @@ def create_optimization_menu(self, parent_layout):
     self.container_tool_btn.setLayout(self.container_tool_btn_layout)
     
     self.btn_de_optimization = ToolTopButton("DE Optimization",'icons/teeth-segmentation.png','icons/teeth-segmentation-colors.png',True)
+    
     # self.btn_de_optimization.setObjectName('btn_toolbar_tool_segmentation')
     self.btn_de_optimization.clicked.connect(lambda e: click_btn_de_optimization(self,e))
     # self.btn_de_optimization.toggled.connect(lambda e: toggle_btn_de_optimization(self,e))
@@ -60,7 +61,7 @@ def click_btn_de_optimization(self, e):
             self.models[i].gingiva=new_models[i].gingiva
             self.models[i].teeth=new_models[i].teeth
             update_transform_arch(self,self.step_model.get_current_step())
-            calculate_studi_model(self)
+            # calculate_studi_model(self)
         # self.btn_addmin_step_aligner.btn_increase.click()
     self.btn_de_optimization.setChecked(False)
     # self.model_plot.add(new_models[0].mesh)
