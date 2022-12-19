@@ -320,6 +320,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     if(len(gen)>0):
         pop[0]=gen
     myinitIndividu = new_crossover(models, summaries)
+    myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
     
     # print("pop",pop)
