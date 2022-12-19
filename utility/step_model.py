@@ -15,6 +15,7 @@ class StepModel():
         self.step_teeth.append(teeth.copy())
     
     def update_current(self, models, teeth):
+        print(self.get_current_step())
         self.step_models[self.get_current_step()]=models.copy()
         self.step_teeth[self.get_current_step()]=teeth.copy()
     

@@ -50,6 +50,23 @@ def import_arch(self, arch_type, btn):
     if dlg.exec_():
         filenames = dlg.selectedFiles()
         load_model(self, filenames[0], arch_type)
+        if(Arch._is_complete()):
+            temp={
+                ArchType.LOWER.value:None,
+                ArchType.UPPER.value:None
+            }
+            temp_teeth={
+                ArchType.LOWER.value:None,
+                ArchType.UPPER.value:None
+            }
+            for a in ArchType:
+                idx = Arch._get_index_arch_type(a.value)
+                m = self.models[idx]
+                temp[a.value]=m.mesh.clone()
+                temp_teeth[a.value]=m.teeth.copy()
+            self.step_model.add_step_model(temp, temp_teeth)
+            
+            self.attachment_model.copy_attachment(0,0+1)
         btn.setDisabled(True)
         check_btn_toggle_arch(self, arch_type, True)
     check_loaded(self)
