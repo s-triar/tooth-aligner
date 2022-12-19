@@ -66,3 +66,4 @@ def click_btn_de_optimization(self, e):
     # self.model_plot.add(new_models[0].mesh)
     # self.model_plot.add(new_models[1].mesh)
     # self.model_plot.render()
+    

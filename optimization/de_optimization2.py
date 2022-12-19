@@ -302,7 +302,7 @@ def new_crossover(models, summary_pts):
             tempGen.append(pt_in_line[2]-teeth[tooth_type].center[2])
     ArchCopy._clear()
     
-    return tempGen
+    return np.array(tempGen)
     
 
 def crossover(mutated, target, dims, cr):
@@ -355,7 +355,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             print(pop[j])
             print(trial)
             # perform selection
-            if obj_trial < obj_target:
+            if obj_trial <= obj_target:
                 # replace the target vector with the trial vector
                 pop[j] = trial
                 # store the new objective function value
