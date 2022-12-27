@@ -522,9 +522,9 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                         pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.PIT.value]
                         
                         bawah = teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
-                        if(bawah == None):
+                        if(bawah is None):
                             bawah = teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT.value]
-                        if(bawah ==None):
+                        if(bawah is None):
                             bawah = np.mean([teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
                         
                         tempGen.append(pt_in_line[0]-bawah[0])
