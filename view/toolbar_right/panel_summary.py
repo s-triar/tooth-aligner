@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import (
 import numpy as np
 from PyQt5.QtCore import Qt, QSize
 from constant.enums import ArchType, LandmarkType, ToothType
-from controller.summary_controller import calculate_studi_model_summary_pts, get_studi_model_summary_pts, get_summary_flat_pts
+from controller.summary_controller import  get_studi_model_summary_pts, get_summary_flat_pts
 from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.names import convert_arch_val_to_name
@@ -400,8 +400,9 @@ def draw_summary_lines(self):
     # pts = calculate_studi_model_summary_pts(self)
     pts = get_studi_model_summary_pts(self)
     for a in pts:
-        draw_spline(self, pts[a][0], False, a)
-        draw_spline(self, pts[a][1], True, a)
+        # draw_spline(self, pts[a][0], False, a)
+        # draw_spline(self, pts[a][1], True, a)
+        draw_spline(self, pts, True, FileNotFoundError)
 
 def draw_spline(self, pts, isPred, arch):
     c = 'orange'
@@ -409,12 +410,12 @@ def draw_spline(self, pts, isPred, arch):
         c='green'
     if(arch == ArchType.UPPER.value):
         c+='5'
-    line = SplineKu(pts, degree=2, smooth=0, res=600)
-    line.ps(8)
+    line = SplineKu(pts)
+    line.lw(8)
     line.c(c)
     self.model_plot.add(line)
-    for pt in pts:
-        self.model_plot.add(Point(pt))
+    # for pt in pts:
+    #     self.model_plot.add(Point(pt))
     self.model_plot.render()
     
 def draw_spline_flat(self):
@@ -423,11 +424,11 @@ def draw_spline_flat(self):
         pts = coords[a]
         print(pts)
         c = 'blue4'
-        line = SplineKu(pts, degree=3, smooth=0, res=600)
+        line = SplineKu(pts, degree=2, smooth=0, res=600)
         line.ps(8)
         line.c(c)
         self.model_plot.add(line)
-        for pt in pts:
-            self.model_plot.add(Point(pt))
+        # for pt in pts:
+        #     self.model_plot.add(Point(pt))
         self.model_plot.render()
     

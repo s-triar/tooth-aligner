@@ -18,15 +18,15 @@ from vedo import (
 )
 from utility.calculation import (
     find_new_point_in_a_line_with_new_distance,
-    find_distance_between_two_points,
     find_distance_between_a_point_and_a_line,
+    find_distance_between_two_points,
     closest_line_seg_line_seg,
     find_closest_point_between_a_point_and_a_line,
     getToothLabelSeberang,
 )
 import math
 
-def get_mesial_distal_as_R(arch):
+def get_mesial_distal_as_R(model):
     teeth = [
         ToothType.CANINE_UL3_LR3.value,
         ToothType.INCISOR_UL2_LR2.value,
@@ -70,8 +70,8 @@ centermeshtoothcenterPT = Point(centermeshtoothcenterpt, c='grey',r=20)
 
 # mid_incisor_pt
 # TODO coba dengan titik terluar bukan center
-# A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
-A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
+A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
+# A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
 
 used_center = u.centerOfMass()
 
@@ -121,16 +121,14 @@ J = find_new_point_in_a_line_with_new_distance(I,H,n_I_C)
 n_H_D = find_distance_between_two_points(H,C)
 K = find_new_point_in_a_line_with_new_distance(H,I,n_H_D)
 
-print(AAOO)
-
 spl = SplineKu([J,D,A,C,K],degree=2,easing='Sine',smooth=0)
 
 ctr,rad,norm = fitCircle([K,C])
 ccr_CAD = KSpline([K,C,A,D,J],)
 ccr_DJ = KSpline([A,D,J],continuity=0.1,tension=-1)
 ccr_CK = KSpline([K,C,A],continuity=0.1,tension=-1)
-# print(ccr.points())
-# print(spl)
+
+
 
 ccr_CKs = []
 batas_CK = find_distance_between_two_points(C,K)
@@ -154,27 +152,27 @@ for p in ccr_DJ.points():
 
 titiks = np.concatenate((ccr_CKs, ccr_CADs, ccr_DJs))
 
-
-print(titiks)
-
-spr = Sphere(B,r=find_distance_between_two_points(B,A),res=24).c('blue3').alpha(0.3)
-spr2 = Sphere(I,r=find_distance_between_two_points(I,J),res=24).c('grey').alpha(0.3)
-spr3 = Sphere(H,r=find_distance_between_two_points(H,K),res=24).c('grey').alpha(0.3)
+spr = Sphere(B,r=find_distance_between_two_points(B,A),res=24).c('blue3').alpha(0.1)
+spr2 = Sphere(I,r=find_distance_between_two_points(I,J),res=24).c('grey').alpha(0.1)
+spr3 = Sphere(H,r=find_distance_between_two_points(H,K),res=24).c('grey').alpha(0.1)
 
 spl = SplineKu(titiks)
 # tttt = spr.geodesic(K,C)
-# print(tttt.points())
+
+
+
 
 plt = Plotter(axes=1)
 plt.show(
     u,
+    Point(A,r=25),
     Point(AA),
     Point(B),
     Point(E),
     Points([AAMM,AANN]),
     Line(AAMM, AANN),
     # CD_circle,
-    Points([C,D],r=20),
+    Points([C,D],r=20,c='red'),
     Point(F,c='blue'),
     Line(E,F),
     Point(G,c='grey'),

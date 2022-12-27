@@ -327,6 +327,9 @@ def check_bounds(mutated, bounds):
     mutated_bound = [np.clip(mutated[i], bounds[i, 0], bounds[i, 1]) for i in range(len(bounds))]
     return mutated_bound
 
+
+
+
 def indvCreate(models, summary_pts, chrs):
     ArchCopy._clear()
     tempGen = []
