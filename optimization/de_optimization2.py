@@ -350,9 +350,9 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                         pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.PIT.value]
                         
                         bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
-                        if(bawah == None):
+                        if(bawah is None):
                             bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT.value]
-                        if(bawah ==None):
+                        if(bawah is None):
                             bawah = np.mean([teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
                         
                         a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
