@@ -242,6 +242,129 @@ def minimize_function_using_recalculation_studi_model(models, chromosome):
     ArchCopy._clear()
     return total_studi_error
 
+def minimize_function_using_delta_current_to_the_first_studi_model_calculation2( models, chromosome, flat_pts, summary_pts):
+    error_flat=0
+    error_summary=0
+    error_flat_i=0
+    error_summary_i=0
+    punish_collision = 0
+    i=0
+    ArchCopy._clear()
+    toCenterArch=[
+        ToothType.CANINE_UL3_LR3.value,
+        ToothType.INCISOR_UL2_LR2.value,
+        ToothType.INCISOR_UL1_LR1.value,
+        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.INCISOR_UR2_LL2.value,
+        ToothType.CANINE_UR3_LL3.value
+    ]
+    toCrossover = [
+        ToothType.MOLAR_UL7_LR7.value,
+        ToothType.MOLAR_UL6_LR6.value,
+        ToothType.PREMOLAR_UL5_LR5.value,
+        ToothType.PREMOLAR_UL4_LR4.value,
+        ToothType.PREMOLAR_UR4_LL4.value,
+        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.MOLAR_UR6_LL6.value,
+        ToothType.MOLAR_UR7_LL7.value
+    ]
+    model_upper_cp = None
+    model_lower_cp = None
+    
+    for m in models:
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+        if(m.arch_type == ArchType.UPPER.value):
+            model_upper_cp = model_cp
+        else:
+            model_lower_cp = model_cp
+    
+    models_cps=[model_upper_cp,model_lower_cp]
+    
+    for model_cp in models_cps:
+        eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
+        model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*6)):(i+1)*(14*6)])
+        i+=1
+        teeth = copy.deepcopy(model_cp.teeth)
+        pts_cusps=np.array([
+                teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+                
+                teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
+                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+            ])
+        pts_flat = flat_pts[model_cp.arch_type]
+        for ipt in range(len(pts_cusps)):
+            a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
+            b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_flat+=(dst**2)
+            error_flat_i+=1
+            
+        summary_line = SplineKu(summary_pts)
+        for tooth_type in teeth:
+            if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
+                
+                if(m.arch_type == ArchType.UPPER.value):
+                    if(tooth_type in toCenterArch):
+                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center])
+                        
+                    elif(tooth_type in toCrossover):
+                        labelSeberang = getToothLabelSeberang(tooth_type)
+                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center])
+                    pt_in_line = hitpspln
+                    
+                    a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+                    b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]])[0]
+                    dst = find_distance_between_two_points(a,b)
+                    error_summary+=(dst**2)
+                    # error_summary+= dst 
+                    
+                    error_summary_i+=1
+                
+                else:
+                    if(tooth_type in toCenterArch):
+                        labelSeberang = getToothLabelSeberang(tooth_type)
+                        pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.LINGUAL_OR_PALATAL.value]
+
+                        a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+                        b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.CUSP.value]])[0]
+                        dst = find_distance_between_two_points(a,b)
+                        error_summary+=(dst**2)
+                        # error_summary+= dst 
+                        
+                        error_summary_i+=1
+                        
+                    elif(tooth_type in toCrossover):
+                        labelSeberang = getToothLabelSeberang(tooth_type)
+                        pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.PIT.value]
+                        
+                        bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
+                        if(bawah == None):
+                            bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT.value]
+                        if(bawah ==None):
+                            bawah = np.mean([teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
+                        
+                        a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+                        b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [bawah])[0]
+                        dst = find_distance_between_two_points(a,b)
+                        error_summary+=(dst**2)
+    
+    
+    ArchCopy._clear()
+    
+    
+
 def minimize_function_using_delta_current_to_the_first_studi_model_calculation( models, chromosome, flat_pts, summary_pts):
     error_flat=0
     error_summary=0
@@ -356,7 +479,6 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
-        teeth = copy.deepcopy(model_cp.teeth)
         if(m.arch_type == ArchType.UPPER.value):
             model_upper_cp = model_cp
         else:
@@ -365,7 +487,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     models_cps=[model_upper_cp,model_lower_cp]
     
     for model_cp in models_cps:
-        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
+        summary_line = SplineKu(summary_pts)
         teeth = copy.deepcopy(model_cp.teeth)
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
@@ -382,17 +504,17 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                         labelSeberang = getToothLabelSeberang(i.value)
                         hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center])
                     pt_in_line = hitpspln
-                    tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL][0])
-                    tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL][1])
-                    tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL][2])
+                    tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
+                    tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
+                    tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][2])
                 
                 else:
                     if(i.value in toCenterArch):
                         labelSeberang = getToothLabelSeberang(i.value)
                         pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.LINGUAL_OR_PALATAL.value]
-                        tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.CUSP][0])
-                        tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.CUSP][1])
-                        tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.CUSP][2])
+                        tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][0])
+                        tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][1])
+                        tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][2])
 
                         
                     elif(i.value in toCrossover):
