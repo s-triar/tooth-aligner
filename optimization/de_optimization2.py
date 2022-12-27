@@ -131,6 +131,7 @@ def get_rotation_teeth_status(models, summary_pts):
                 mesial_normalize = mesial - center_arch_used
                 
                 hitpspln, hitpln = summary_line_normalize.closestPointToAline([center_normalize, distal_normalize], isAwal=(i.value <=7))
+    ArchCopy._clear()
 
 def get_collision_teeth_status(model, new_model):
     total = 0
@@ -363,9 +364,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     
     models_cps=[model_upper_cp,model_lower_cp]
     
-    for m in models_cps:
-        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
-        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+    for models_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
         teeth = copy.deepcopy(model_cp.teeth)
         for i in ToothType:    
