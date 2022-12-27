@@ -5,7 +5,7 @@ from vedo import Mesh
 from constant.enums import ToothType, ArchType, LandmarkType
 from utility.arch_copy import ArchCopy
 from utility.bolton_studi_model import Bolton
-from utility.calculation import FaceTypeConversion, convert_to_2d, find_distance_between_two_points
+from utility.calculation import FaceTypeConversion, convert_to_2d, find_distance_between_two_points, getToothLabelSeberang, find_closest_point_between_a_point_and_a_line
 from utility.pont_studi_model import Pont
 from utility.korkhaus_studi_model import Korkhaus
 from utility.carey_studi_model import Carey
@@ -96,7 +96,42 @@ def get_total_error_studi_model(st):
     total_studi = total_studi + abs(bolton_studi_st.correction_overall)
     
     return total_studi
-    
+
+def get_rotation_teeth_status(models, summary_pts):
+    ArchCopy._clear()
+    total = 0
+    posterior = [
+        ToothType.MOLAR_UL7_LR7.value,
+        ToothType.MOLAR_UL6_LR6.value,
+        ToothType.PREMOLAR_UL5_LR5.value,
+        ToothType.PREMOLAR_UL4_LR4.value,
+        ToothType.PREMOLAR_UR4_LL4.value,
+        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.MOLAR_UR6_LL6.value,
+        ToothType.MOLAR_UR7_LL7.value
+    ]
+    for m in models:
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
+        teeth = copy.deepcopy(model_cp.teeth)
+        center_arch = model_cp.mesh.centerOfMass()
+        center_normalize = np.array([0.0,0.0,0.0])
+        summary_line_normalize = SplineKu(summary_pts[model_cp.arch_type][1]-center_arch, degree=2, smooth=0, res=600)
+        for i in ToothType:        
+            if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
+                distal=teeth[i.value].landmark_pt[LandmarkType.DISTAL.value]
+                mesial=teeth[i.value].landmark_pt[LandmarkType.MESIAL.value]
+                center_arch_used = center_arch[:]
+                
+                if(i.value in posterior):
+                    center_arch_used = find_closest_point_between_a_point_and_a_line(center_arch_used,)
+                
+                distal_normalize = distal - center_arch_used
+                mesial_normalize = mesial - center_arch_used
+                
+                hitpspln, hitpln = summary_line_normalize.closestPointToAline([center_normalize, distal_normalize], isAwal=(i.value <=7))
+
 def get_collision_teeth_status(model, new_model):
     total = 0
     for i in range(1,15):
@@ -185,6 +220,7 @@ def get_new_model(models,chromosome):
         
     for i in range(len(models_cp)):
         models_cp[i] = de_rotation_and_moving(models_cp[i], chromosome[(i*(14*6)):(i+1)*(14*6)]) # 6 chromosome per tooth
+    ArchCopy._clear()
     return models_cp
 
 def minimize_function_using_recalculation_studi_model(models, chromosome):
@@ -202,6 +238,7 @@ def minimize_function_using_recalculation_studi_model(models, chromosome):
 
     studimodels = get_new_perhitungan_studi_model(models_cp)
     total_studi_error = get_total_error_studi_model(studimodels)
+    ArchCopy._clear()
     return total_studi_error
 
 def minimize_function_using_delta_current_to_the_first_studi_model_calculation( models, chromosome, flat_pts, summary_pts):
@@ -251,7 +288,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
         
         # begin calc error summary
         # print("summary_pts[model_cp.arch_type]", summary_pts[model_cp.arch_type][1])
-        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=3, smooth=0, res=600)
+        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
         for tooth_type in teeth:
             pt_in_line = summary_line.closestPoint(teeth[tooth_type].center)
             a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
@@ -279,22 +316,42 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation( 
     return error_flat+error_summary+punish_collision
     
 
-def mutation(x, F):
+def mutation(x, F): # DE/rand/1
     return x[0] + F * (x[1] - x[2])
 
-
+def mutation_best(xb, x, F): #DE/best/1
+    return xb + F * (x[0] - x[1])
+    
 
 def check_bounds(mutated, bounds):
     mutated_bound = [np.clip(mutated[i], bounds[i, 0], bounds[i, 1]) for i in range(len(bounds))]
     return mutated_bound
 
-def new_crossover(models, summary_pts, chrs):
+def indvCreate(models, summary_pts, chrs):
     ArchCopy._clear()
     tempGen = []
+    toCenterArch=[
+        ToothType.CANINE_UL3_LR3.value,
+        ToothType.INCISOR_UL2_LR2.value,
+        ToothType.INCISOR_UL1_LR1.value,
+        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.INCISOR_UR2_LL2.value,
+        ToothType.CANINE_UR3_LL3.value
+    ]
+    toCrossover = [
+        ToothType.MOLAR_UL7_LR7.value,
+        ToothType.MOLAR_UL6_LR6.value,
+        ToothType.PREMOLAR_UL5_LR5.value,
+        ToothType.PREMOLAR_UL4_LR4.value,
+        ToothType.PREMOLAR_UR4_LL4.value,
+        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.MOLAR_UR6_LL6.value,
+        ToothType.MOLAR_UR7_LL7.value
+    ]
     for m in models:
         eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
-        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=3, smooth=0, res=600)
+        summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
         teeth = copy.deepcopy(model_cp.teeth)
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
@@ -302,7 +359,15 @@ def new_crossover(models, summary_pts, chrs):
                 tempGen.append(chr[0])
                 tempGen.append(chr[1])
                 tempGen.append(chr[2])
-                pt_in_line = summary_line.closestPoint(teeth[i.value].center)
+                
+                if(i.value in toCenterArch):
+                    hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center])
+                elif(i.value in toCrossover):
+                    labelSeberang = getToothLabelSeberang(i.value)
+                    hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center])
+                    
+                # pt_in_line = summary_line.closestPoint(teeth[i.value].center)
+                pt_in_line = hitpspln
                 tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
                 tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
                 tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
@@ -324,7 +389,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
         pop[0]=gen
-    myinitIndividu = new_crossover(models, summaries, pop[0])
+    myinitIndividu = indvCreate(models, summaries, pop[0])
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
     
@@ -344,10 +409,10 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
         for j in range(pop_size):
             # choose three candidates, a, b and c, that are not the current one
             candidates = [candidate for candidate in range(pop_size) if candidate != j]
-            a, b, c = pop[np.random.choice(candidates, 3 , replace=False)]
+            a, b= pop[np.random.choice(candidates, 2 , replace=False)]
             # perform mutation
             # print("mutation", "j", j)
-            mutated = mutation([a, b, c], F)
+            mutated = mutation_best(best_vector,[a, b], F)
             # check that lower and upper bounds are retained after mutation
             # print("check_bounds", "j", j)
             mutated = check_bounds(mutated, bounds)

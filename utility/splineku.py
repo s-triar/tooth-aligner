@@ -5,6 +5,7 @@ import numpy as np
 import vedo
 from scipy.interpolate import splprep, splev
 from scipy.optimize import fmin
+from utility.calculation import find_closest_point_between_a_point_and_a_line, find_distance_between_two_points
 class SplineKu(Line):
     """
     Find the B-Spline curve through a set of points. This curve does not necessarly
@@ -128,6 +129,28 @@ class SplineKu(Line):
         spline = np.array(splev(np.linspace(0, 1, self.res_spline), self.tckp))
         return np.array([spline[0, self.res_spline//2],spline[1, self.res_spline//2],spline[2, self.res_spline//2]])
     
+    def closestPointToAline(self, line, isAwal, isAll=False):
+        inc = 0
+        div = 2
+        if(isAll == True):
+            div=1
+        nPoint = int(len(self.points())/div)
+        if(isAwal==False and isAll==False):
+            inc=nPoint
+        hit = 10000
+        hitpln = []
+        hitpspln = []
+        for i in range(nPoint):
+            cls = find_closest_point_between_a_point_and_a_line(gp[i+inc], line)
+            jrk = find_distance_between_two_points(cls, gp[i+inc])
+            if(hit > jrk):
+                hit = jrk
+                hitpln = cls
+                hitpspln = gp[i+inc]
+        return hitpspln, hitpln # in spline , in line
+        
+        
+    
     # def getPoints(self, pts):
     #     collection=[]
     #     for pt in pts:
@@ -141,30 +164,56 @@ class SplineKu(Line):
     
     
 if __name__ == '__main__':
-    a = [
-        [-27.90358526,   1.86242962,   0.        ],
-        [-28.37128401,   1.0558827 ,   0.        ],
-        [-25.43864699,  -5.28383416,   0.        ],
-        [-25.12074518,  -5.279812  ,   0.        ],
-        [-22.89260027, -12.87712528,   0.        ],
-        [-24.11552541, -13.93834269,   0.        ],
-        [-18.56892819, -18.3407164 ,   0.        ],
-        [-20.28311044, -19.88013512,   0.        ],
-        [-14.11948933, -21.58556432,   0.        ],
-        [-13.71805202, -21.99672613,   0.        ],
-        [ -8.12505993, -22.45098792,   0.        ],
-        # [ -8.12505993, -22.45098792,   0.        ],
-        [ -3.05928468, -23.90370647,   0.        ],
-        [ -3.30508482, -23.38285635,   0.        ],
-        [  2.17816707, -24.77074199,   0.        ],
-        [  0.48651514, -22.91453632,   0.        ],
-        [  4.93656547, -17.0252087 ,   0.        ],
-        [  7.30299498, -18.50315614,   0.        ],
-        [ 10.6393177 , -12.25583118,   0.        ],
-        [ 12.59852178, -12.71975628,   0.        ],
-        [ 14.97179367,  -6.44804279,   0.        ],
-        [ 17.0699199 ,  -6.55948391,   0.        ],
-        ]
-    
-    g = SplineKu(np.array(a),degree=3, smooth=0, res=600)
+    a = np.array([
+            [-33.668804, -7.196526, -18.664274],
+            [-30.379278, -6.7690253, -7.855745],
+            [-25.125946, -3.1601255, 6.9478517],
+            [-23.913269, -0.7162205, 14.74307],
+            [-19.648832, -0.06988825, 21.42319],
+            [-13.436774, 0.1705411, 25.998985],
+            [-4.860525, -0.06184273, 27.682693],
+            [1.547517, -1.5786004, 24.64604],
+            [8.01171, -2.6085515, 20.62717],
+            [11.104846, -5.768812, 13.837558],
+            [20.260782, -10.295973, 0.84508145],
+            [26.364462, -11.02692, -8.507987]
+        ])
+    b =np.array([
+        [-33.668804, -7.196526, -18.664274],
+            [-27.88399602, -6.19594257, -7.55183892],
+            [-25.12242191, -3.15979625, 6.94826705],
+            [-24.6263086, -0.69364001, 15.28356274],
+            [-20.14354345, -0.02509289, 22.16771743],
+            [-13.68371669, 0.22099167, 26.85778809],
+            [-4.80888019e+00, -2.06807003e-02, 2.85752777e+01],
+            [1.83690023, -1.58981249, 25.49291638],
+            [8.54808453, -2.6583883, 21.34193409],
+            [11.10138843, -5.76803477, 13.83718193],
+            [17.8373209, -9.45390279, 0.59019147],
+            [26.364462, -11.02692, -8.507987]
+    ])
+    lp = np.array([
+        a[3],
+        a[-4],
+    ])
+    from vedo import Plotter, Line, Point
+    g = SplineKu(np.array(b),degree=2, smooth=0, res=600).extrude(1)
+    l = Line(lp).lw(3).c('green')
+    pp = Points(g.intersectWithLine(*l.points()), r=20).c('red')
+    plt = Plotter(axes=1)
+    gp = g.points()
+    hits = 10000
+    hitp = []
+    hitpspl = []
+    for i in range(int(len(gp)/2)):
+        cls = l.closestPoint(gp[i])
+        jrk = np.linalg.norm(cls - gp[i])
+        if(hits > jrk):
+            hits = jrk
+            hitp = cls
+            hitpspl = gp[i]
+            
+    ptg = Point(hitp)
+    ptgspl = Point(hitpspl).c("yellow")
+    plt.show(g,l,pp, ptg,ptgspl)
     

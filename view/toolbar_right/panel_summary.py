@@ -409,7 +409,7 @@ def draw_spline(self, pts, isPred, arch):
         c='green'
     if(arch == ArchType.UPPER.value):
         c+='5'
-    line = SplineKu(pts, degree=3, smooth=0, res=600)
+    line = SplineKu(pts, degree=2, smooth=0, res=600)
     line.ps(8)
     line.c(c)
     self.model_plot.add(line)

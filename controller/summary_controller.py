@@ -23,6 +23,9 @@ def calculate_studi_model(self):
         self.carey_studi_model.calculate_carey(self.models)
         self.summary_flat_pts = calculate_flat_plane_points(self)
         self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
+        print("self.studi_model_summary_pts")
+        print(self.studi_model_summary_pts)
+        print()
         
         
 def get_studi_model_summary_pts(self):
@@ -30,6 +33,8 @@ def get_studi_model_summary_pts(self):
 
 def get_summary_flat_pts(self):
     return self.summary_flat_pts
+
+
 
 def calculate_flat_plane_points(self):
     if Arch._is_complete():
@@ -144,6 +149,9 @@ def calculate_studi_model_summary_pts(self):
                         val_cor_status=self.pont_studi_model.status_pv[i.value]
                     new_center = find_new_point_in_a_line_with_delta_distance(center_arch, center, val_cor)
                     preds.append(new_center)
+            line_molar = [legacies[0],legacies[-1]]
+            preds[0] = find_closest_point_between_a_point_and_a_line(preds[1],line_molar)
+            preds[-1] = find_closest_point_between_a_point_and_a_line(preds[-2],line_molar)
             res[i.value]=[legacies,preds]
     return res        
                     
