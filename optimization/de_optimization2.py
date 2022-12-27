@@ -364,7 +364,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     
     models_cps=[model_upper_cp,model_lower_cp]
     
-    for models_cp in models_cps:
+    for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type][1], degree=2, smooth=0, res=600)
         teeth = copy.deepcopy(model_cp.teeth)
         for i in ToothType:    
