@@ -604,7 +604,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     
     # print("pop",pop)
     # evaluate initial population of candidate solutions
-    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, ind, flats, summaries) for ind in pop]
+    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries) for ind in pop]
     # print(obj_all)
     
     # find the best performing vector of initial population
@@ -632,9 +632,9 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             # trial = check_bounds(trial, bounds)
             
             # compute objective function value for target vector
-            obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, pop[j],flats, summaries)
+            obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[j],flats, summaries)
             # compute objective function value for trial vector
-            obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation(models, trial,flats, summaries)
+            obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, trial,flats, summaries)
             # print("obj_trial",i,j,obj_trial, obj_target)
             # print(pop[j])
             # print(trial)
