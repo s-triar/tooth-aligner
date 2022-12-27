@@ -527,7 +527,6 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                         if(bawah ==None):
                             bawah = np.mean([teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
                         
-                        pt_in_line = hitpspln
                         tempGen.append(pt_in_line[0]-bawah[0])
                         tempGen.append(pt_in_line[1]-bawah[1])
                         tempGen.append(pt_in_line[2]-bawah[2])
