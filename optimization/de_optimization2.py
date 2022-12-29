@@ -272,7 +272,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     model_lower_cp = None
     
     for m in models:
-        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.,isAwal=(i.value<=7)upward_downward_vec]
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
         if(m.arch_type == ArchType.UPPER.value):
             model_upper_cp = model_cp
