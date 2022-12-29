@@ -39,12 +39,12 @@ def de_rotation_and_moving(model, chrs):
             teeth_center = model.teeth[i.value].center
             
             # rotation
-            # mesh.rotateX(chr[0], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
-            # mesh.rotateY(chr[1], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
-            # mesh.rotateZ(chr[2], False, teeth_center)
-            # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            mesh.rotateX(chr[0], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            mesh.rotateY(chr[1], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            mesh.rotateZ(chr[2], False, teeth_center)
+            model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
             # end rotation
             
             # movement
@@ -174,13 +174,13 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
             ])
-        # pts_flat = flat_pts[model_cp.arch_type]
-        # for ipt in range(len(pts_cusps)):
-        #     a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
-        #     b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
-        #     dst = find_distance_between_two_points(a,b)
-        #     error_flat+=(dst**2)
-        #     error_flat_i+=1
+        pts_flat = flat_pts[model_cp.arch_type]
+        for ipt in range(len(pts_cusps)):
+            a = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_flat[ipt]])[0]
+            b = convert_to_2d(FaceTypeConversion.RIGHT.value, eigenvec, [pts_cusps[ipt]])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_flat+=(dst**2)
+            error_flat_i+=1
             
         summary_line = SplineKu(summary_pts)
         for tooth_type in teeth:
@@ -237,8 +237,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     ArchCopy._clear()
     error_summary = math.sqrt(error_summary/error_summary_i)
     # error_flat = math.sqrt(error_flat/error_flat_i)
-    # return error_flat+error_summary+punish_collision
-    return error_summary
+    return error_flat+error_summary+punish_collision
+    # return error_summary
     
     
 
