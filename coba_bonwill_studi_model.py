@@ -17,6 +17,8 @@ from vedo import (
     
 )
 from utility.calculation import (
+    FaceTypeConversion,
+    convert_to_2d,
     find_new_point_in_a_line_with_new_distance,
     find_distance_between_a_point_and_a_line,
     find_distance_between_two_points,
@@ -64,12 +66,14 @@ def get_CD(sph_interect, ln_side):
     return candidate
 
 
-# u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
+l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
 u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
 path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
+path_ld_l = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_LOWER__step_0.csv'
 model = Arch(ArchType.UPPER.value,u)
 load_ld(model,path_ld_u,ArchType.UPPER.value)
-
+model_lw = Arch(ArchType.LOWER.value,l)
+load_ld(model_lw,path_ld_l,ArchType.LOWER.value)
 R = get_mesial_distal_as_R(model)
 
 centermeshPT=Point(u.centerOfMass(),c='black',r=20)
@@ -195,30 +199,76 @@ toCrossover = [
 ]
 llg = []
 teeth = model.teeth
+error_summary_i=0
+error_summary=0
+eigenvec = [model.right_left_vec, model.forward_backward_vec, model.upward_downward_vec]
+
 for tooth_type in model.teeth:
     if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
         if(tooth_type in toCenterArch):
             hitpspln, hitpln = spl.closestPointToAline([model.mesh.centerOfMass(), teeth[tooth_type].center], isAwal=(tooth_type>7))
-            hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+            # hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
             
         elif(tooth_type in toCrossover):
             labelSeberang = getToothLabelSeberang(tooth_type)
             hitpspln, hitpln = spl.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center], isAwal=(tooth_type>7))
-            hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+            # hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         pt_in_line = hitpspln
         # print(tooth_type, pt_in_line, teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='blue'))
-        llg.append(Line(hitpspln2,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='green'))
+        # llg.append(Line(hitpspln2,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='green'))
         llg.append(Line(pt_in_line,teeth[tooth_type].center,lw=6,c='red'))
+        a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+        # b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]])[0]
+        b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].center])[0]
+        dst = find_distance_between_two_points(a,b)
+        error_summary+=(dst**2)
+        # error_summary+= dst 
+        
+        error_summary_i+=1
+        
+teeth = model_lw.teeth
+
+for tooth_type in model_lw.teeth:
+    print(tooth_type,error_summary)
+    if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
+        if(tooth_type in toCenterArch):
+            labelSeberang = getToothLabelSeberang(tooth_type)
+            pt_in_line = model.teeth[labelSeberang].landmark_pt[LandmarkType.LINGUAL_OR_PALATAL.value]
+            llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.CUSP.value],lw=6,c='pink'))
+            a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+            b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.CUSP.value]])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_summary+=(dst**2)
+            # error_summary+= dst 
+            
+            error_summary_i+=1
+            
+        elif(tooth_type in toCrossover):
+            labelSeberang = getToothLabelSeberang(tooth_type)
+            pt_in_line = model.teeth[labelSeberang].landmark_pt[LandmarkType.PIT.value]
+            
+            bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
+            if(bawah is None):
+                bawah = teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT.value]
+            if(bawah is None):
+                bawah = np.mean([teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[tooth_type].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
+            llg.append(Line(pt_in_line,bawah,lw=6,c='pink'))
+            a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
+            b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [bawah])[0]
+            dst = find_distance_between_two_points(a,b)
+            error_summary+=(dst**2)
+            error_summary_i+=1
         
         
-        
+print( math.sqrt(error_summary/error_summary_i), '<===========')
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
 
 plt = Plotter(axes=1)
 plt.show(
     u.alpha(0.4),
+    l.alpha(0.4),
     Point(A,r=25),
     Point(AA),
     Point(B),

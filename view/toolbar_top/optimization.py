@@ -13,7 +13,7 @@ from controller.bite_contact_controller import reset_bite_contact
 from controller.segmentation_controller import set_selected_arch, set_selected_label
 from controller.step_controller import update_transform_arch
 from controller.summary_controller import calculate_studi_model, get_studi_model_summary_pts, get_summary_flat_pts
-from optimization.de_optimization2 import start_de
+from optimization.de_optimization3 import start_de
 
 from view.components.toolbar_top_section import ToolbarTopSection
 from view.components.tool_top_button import ToolTopButton
