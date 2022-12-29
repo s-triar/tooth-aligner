@@ -325,7 +325,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                     pt_in_line = hitpspln
                     
                     a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
-                    b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]])[0]
+                    # b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]])[0]
+                    b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].center])[0]
                     dst = find_distance_between_two_points(a,b)
                     error_summary+=(dst**2)
                     # error_summary+= dst 
@@ -508,9 +509,12 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                         labelSeberang = getToothLabelSeberang(i.value)
                         hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value>7))
                     pt_in_line = hitpspln
-                    tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
-                    tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
-                    tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][2])
+                    # tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
+                    # tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
+                    # tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][2])
+                    tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
+                    tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
+                    tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
                 
                 else:
                     if(i.value in toCenterArch):

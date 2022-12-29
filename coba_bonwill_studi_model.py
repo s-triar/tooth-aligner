@@ -25,7 +25,19 @@ from utility.calculation import (
     getToothLabelSeberang,
 )
 import math
+import pandas as pd
 
+def load_ld(model, filename, typearch):
+    df = pd.read_csv(filename, index_col=0)
+    print(df.head())
+    
+    # index_in_models = Arch._get_index_arch_type(typearch)
+    arch = model
+    for index, row in df.iterrows():
+        tooth = arch.teeth[row['label']]
+        tooth.landmark_pt[row['landmark']]=np.array([row['x'],row['y'],row['z']])
+        
+    
 def get_mesial_distal_as_R(model):
     teeth = [
         ToothType.CANINE_UL3_LR3.value,
@@ -51,9 +63,12 @@ def get_CD(sph_interect, ln_side):
             candidate=p
     return candidate
 
+
 # u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
 u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
+path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
 model = Arch(ArchType.UPPER.value,u)
+load_ld(model,path_ld_u,ArchType.UPPER.value)
 
 R = get_mesial_distal_as_R(model)
 
@@ -184,13 +199,20 @@ for tooth_type in model.teeth:
     if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
         if(tooth_type in toCenterArch):
             hitpspln, hitpln = spl.closestPointToAline([model.mesh.centerOfMass(), teeth[tooth_type].center], isAwal=(tooth_type>7))
+            hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
             
         elif(tooth_type in toCrossover):
             labelSeberang = getToothLabelSeberang(tooth_type)
             hitpspln, hitpln = spl.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center], isAwal=(tooth_type>7))
+            hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         pt_in_line = hitpspln
-        print(tooth_type, pt_in_line, teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+        # print(tooth_type, pt_in_line, teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='blue'))
+        llg.append(Line(hitpspln2,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='green'))
+        llg.append(Line(pt_in_line,teeth[tooth_type].center,lw=6,c='red'))
+        
+        
+        
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
 
