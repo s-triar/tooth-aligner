@@ -186,7 +186,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 
-                if(m.arch_type == ArchType.UPPER.value):
+                if(model_cp.arch_type == ArchType.UPPER.value):
                     if(tooth_type in toCenterArch):
                         hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center],isAwal=(tooth_type>7))
                         

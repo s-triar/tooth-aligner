@@ -28,6 +28,7 @@ from utility.calculation import (
 )
 import math
 import pandas as pd
+import copy
 
 def load_ld(model, filename, typearch):
     df = pd.read_csv(filename, index_col=0)
@@ -198,7 +199,7 @@ toCrossover = [
     ToothType.MOLAR_UL7_LR7.value
 ]
 llg = []
-teeth = model.teeth
+teeth = copy.deepcopy(model.teeth)
 error_summary_i=0
 error_summary=0
 eigenvec = [model.right_left_vec, model.forward_backward_vec, model.upward_downward_vec]
@@ -227,7 +228,7 @@ for tooth_type in model.teeth:
         
         error_summary_i+=1
         
-teeth = model_lw.teeth
+teeth = copy.deepcopy(model_lw.teeth)
 
 for tooth_type in model_lw.teeth:
     print(tooth_type,error_summary)
