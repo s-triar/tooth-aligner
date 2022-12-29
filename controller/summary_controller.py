@@ -34,9 +34,9 @@ def calculate_studi_model(self):
         self.summary_flat_pts = calculate_flat_plane_points(self)
         # self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
         self.studi_model_summary_pts=calculate_bonwill(self)
-        print("self.studi_model_summary_pts")
-        print(self.studi_model_summary_pts)
-        print()
+        # print("self.studi_model_summary_pts")
+        # print(self.studi_model_summary_pts)
+        # print()
         
         
 def get_studi_model_summary_pts(self):

@@ -251,28 +251,28 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     i=0
     ArchCopy._clear()
     toCenterArch=[
-        ToothType.CANINE_UL3_LR3.value,
-        ToothType.INCISOR_UL2_LR2.value,
-        ToothType.INCISOR_UL1_LR1.value,
-        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.CANINE_UR3_LL3.value,
         ToothType.INCISOR_UR2_LL2.value,
-        ToothType.CANINE_UR3_LL3.value
+        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.INCISOR_UL1_LR1.value,
+        ToothType.INCISOR_UL2_LR2.value,
+        ToothType.CANINE_UL3_LR3.value
     ]
     toCrossover = [
-        ToothType.MOLAR_UL7_LR7.value,
-        ToothType.MOLAR_UL6_LR6.value,
-        ToothType.PREMOLAR_UL5_LR5.value,
-        ToothType.PREMOLAR_UL4_LR4.value,
-        ToothType.PREMOLAR_UR4_LL4.value,
-        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.MOLAR_UR7_LL7.value,
         ToothType.MOLAR_UR6_LL6.value,
-        ToothType.MOLAR_UR7_LL7.value
+        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.PREMOLAR_UR4_LL4.value,
+        ToothType.PREMOLAR_UL4_LR4.value,
+        ToothType.PREMOLAR_UL5_LR5.value,
+        ToothType.MOLAR_UL6_LR6.value,
+        ToothType.MOLAR_UL7_LR7.value
     ]
     model_upper_cp = None
     model_lower_cp = None
     
     for m in models:
-        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.,isAwal=(i.value<=7)upward_downward_vec]
         model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
         if(m.arch_type == ArchType.UPPER.value):
             model_upper_cp = model_cp
@@ -317,11 +317,11 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 
                 if(m.arch_type == ArchType.UPPER.value):
                     if(tooth_type in toCenterArch):
-                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center])
+                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center],isAwal=(tooth_type<=7))
                         
                     elif(tooth_type in toCrossover):
                         labelSeberang = getToothLabelSeberang(tooth_type)
-                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center])
+                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center],isAwal=(tooth_type<=7))
                     pt_in_line = hitpspln
                     
                     a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
@@ -460,22 +460,22 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     ArchCopy._clear()
     tempGen = []
     toCenterArch=[
-        ToothType.CANINE_UL3_LR3.value,
-        ToothType.INCISOR_UL2_LR2.value,
-        ToothType.INCISOR_UL1_LR1.value,
-        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.CANINE_UR3_LL3.value,
         ToothType.INCISOR_UR2_LL2.value,
-        ToothType.CANINE_UR3_LL3.value
+        ToothType.INCISOR_UR1_LL1.value,
+        ToothType.INCISOR_UL1_LR1.value,
+        ToothType.INCISOR_UL2_LR2.value,
+        ToothType.CANINE_UL3_LR3.value
     ]
     toCrossover = [
-        ToothType.MOLAR_UL7_LR7.value,
-        ToothType.MOLAR_UL6_LR6.value,
-        ToothType.PREMOLAR_UL5_LR5.value,
-        ToothType.PREMOLAR_UL4_LR4.value,
-        ToothType.PREMOLAR_UR4_LL4.value,
-        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.MOLAR_UR7_LL7.value,
         ToothType.MOLAR_UR6_LL6.value,
-        ToothType.MOLAR_UR7_LL7.value
+        ToothType.PREMOLAR_UR5_LL5.value,
+        ToothType.PREMOLAR_UR4_LL4.value,
+        ToothType.PREMOLAR_UL4_LR4.value,
+        ToothType.PREMOLAR_UL5_LR5.value,
+        ToothType.MOLAR_UL6_LR6.value,
+        ToothType.MOLAR_UL7_LR7.value
     ]
     model_upper_cp = None
     model_lower_cp = None
@@ -502,11 +502,11 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                 
                 if(m.arch_type == ArchType.UPPER.value):
                     if(i.value in toCenterArch):
-                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center])
+                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center], isAwal=(i.value<=7))
                         
                     elif(i.value in toCrossover):
                         labelSeberang = getToothLabelSeberang(i.value)
-                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center])
+                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value<=7))
                     pt_in_line = hitpspln
                     tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
                     tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
