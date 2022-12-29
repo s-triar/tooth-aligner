@@ -137,6 +137,7 @@ class SplineKu(Line):
         nPoint = int(len(self.points())/div)
         if(isAwal==False and isAll==False):
             inc=nPoint
+        gp = self.points()[:]
         hit = 1000000
         hitpln = []
         hitpspln = []
