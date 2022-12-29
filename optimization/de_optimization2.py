@@ -317,11 +317,11 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 
                 if(m.arch_type == ArchType.UPPER.value):
                     if(tooth_type in toCenterArch):
-                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center],isAwal=(tooth_type<=7))
+                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[tooth_type].center],isAwal=(tooth_type>7))
                         
                     elif(tooth_type in toCrossover):
                         labelSeberang = getToothLabelSeberang(tooth_type)
-                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center],isAwal=(tooth_type<=7))
+                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center],isAwal=(tooth_type>7))
                     pt_in_line = hitpspln
                     
                     a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
@@ -502,11 +502,11 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                 
                 if(m.arch_type == ArchType.UPPER.value):
                     if(i.value in toCenterArch):
-                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center], isAwal=(i.value<=7))
+                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center], isAwal=(i.value>7))
                         
                     elif(i.value in toCrossover):
                         labelSeberang = getToothLabelSeberang(i.value)
-                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value<=7))
+                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value>7))
                     pt_in_line = hitpspln
                     tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
                     tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
