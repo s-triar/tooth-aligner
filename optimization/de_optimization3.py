@@ -237,7 +237,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     ArchCopy._clear()
     error_summary = math.sqrt(error_summary/error_summary_i)
     # error_flat = math.sqrt(error_flat/error_flat_i)
-    return error_flat #+error_summary+punish_collision
+    # return error_flat+error_summary+punish_collision
+    return error_summary
     
     
 
