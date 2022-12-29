@@ -425,7 +425,7 @@ def start_de(models, flats, summaries, gen):
     individu_bounds= [[-0.3, 0.3]]*n_tooth*2*n_chromosome
     bounds = np.asarray(individu_bounds)
     # define number of iterations
-    iter = 5
+    iter = 10
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
