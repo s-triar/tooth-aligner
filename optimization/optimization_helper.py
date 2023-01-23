@@ -283,6 +283,8 @@ def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
     if(cusp is None):
         cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT.value]
     if(cusp is None):
+        cusp = tooth.landmark_pt[LandmarkType.CUSP.value]
+    if(cusp is None):
         cusp = np.mean([tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
                         
     closest_buccallabial_to_spl = spl.closestPoint(cusp)
