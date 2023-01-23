@@ -141,7 +141,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         mesial = tooth.landmark_pt[LandmarkType.MESIAL.value]
         distal = tooth.landmark_pt[LandmarkType.DISTAL.value]
         closest_spl_mesial, closest_ln_mesial = spl.closestPointToAline([B, mesial],isAwal=(tooth.label>7))
-        closest_spl_distal, closest_ln_distal = spl.closestPoint([B, distal],isAwal=(tooth.label>7))
+        closest_spl_distal, closest_ln_distal = spl.closestPointToAline([B, distal],isAwal=(tooth.label>7))
         mesial2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[distal])[0]
         closest_spl_mesial2d=convert_to_2d(FaceTypeConversion.UP.value,eigvector,[closest_spl_mesial])[0]
@@ -155,7 +155,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         central_mesial_pt = find_closest_point_between_a_point_and_a_line(mesial, line_center)
         central_distal_pt = find_closest_point_between_a_point_and_a_line(distal, line_center)
         closest_spl_mesial, closest_ln_mesial = spl.closestPointToAline([central_mesial_pt, mesial],isAwal=(tooth.label>7))
-        closest_spl_distal, closest_ln_distal = spl.closestPoint([central_distal_pt, distal],isAwal=(tooth.label>7))
+        closest_spl_distal, closest_ln_distal = spl.closestPointToAline([central_distal_pt, distal],isAwal=(tooth.label>7))
         mesial2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[distal])[0]
         closest_spl_mesial2d=convert_to_2d(FaceTypeConversion.UP.value,eigvector,[closest_spl_mesial])[0]
