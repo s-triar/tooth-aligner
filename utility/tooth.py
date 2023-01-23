@@ -5,6 +5,7 @@ import os
 # load_dotenv()
 from constant.enums import ToothType, LandmarkType
 from vedo import vtk2numpy, Mesh, Point
+from utility import landmarking_lib as ll
 
 class Tooth():    
 
@@ -29,17 +30,15 @@ class Tooth():
         # self.cusp_indexes=cusp_indexes
         # self.pit_index=pit_index
         # self.generate_mesh()
+    
+    
+    
+    def get_mesh(self):
+        point_tooth_index_map = ll.map_point_index(np.unique(self.index_vertice_cells))
+        cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, self.index_vertice_cells)
+        tooth_mesh = Mesh([self.vertices, cells_tooth_mapped])
+        return tooth_mesh
         
-    def generate_mesh(self):
-        points_index = np.unique(self.index_vertice_cells)
-        # print(points_index)
-        points_label = self.vertices[points_index]
-        sorted_index_points_index = np.argsort(points_index)
-        map_sorted2ori={}
-        map_ori2sorted={}
-        for sp,p in zip(sorted_index_points_index, points_index):
-            map_sorted2ori[sp]=p
-            map_ori2sorted[p]=sp
     
     def update_landmark_rotation(self, type, val_rotate, new_new_center):
         new_new_center = [new_new_center[0],new_new_center[1],new_new_center[2]]

@@ -28,11 +28,12 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
     rot_y=0
     rot_z=0
     candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
+    toothmesh = tooth.get_mesh()
     for vx in candidate_chr:
         for vy in candidate_chr:
             for vz in candidate_chr:
                 
-                tooth_clone = tooth.clone()
+                tooth_clone = toothmesh.clone()
                 tx_center = tooth_clone.centerOfMass()[:]
                 tooth_clone.rotateX(vx, False, tx_center)
                 tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
@@ -58,11 +59,13 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tand
     mov_y=0
     mov_z=0
     candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
+    toothmesh = tooth.get_mesh()
+    
     for vx in candidate_chr:
         for vy in candidate_chr:
             for vz in candidate_chr:
                 
-                tooth_clone = tooth.clone()
+                tooth_clone = toothmesh.clone()
                 val_direction=[vx,vy,vz]
                 tooth_clone.points(tooth_clone.points()+val_direction)
                 tooth_clone.update_landmark_moving(val_direction)
@@ -87,6 +90,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
     mov_z=0
     candidate_chr_rot = get_candidate_chromosome(min_chr, max_chr, step_rot)
     candidate_chr_move = get_candidate_chromosome(min_chr, max_chr, step_move)
+    toothmesh = tooth.get_mesh()
     
     for vx in candidate_chr_rot:
         for vy in candidate_chr_rot:
@@ -94,7 +98,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                 for mx in candidate_chr_move:
                     for my in candidate_chr_move:
                         for mz in candidate_chr_move:
-                            tooth_clone = tooth.clone()
+                            tooth_clone = toothmesh.clone()
                             tx_center = tooth_clone.centerOfMass()[:]
                             tooth_clone.rotateX(vx, False, tx_center)
                             tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
