@@ -379,11 +379,11 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
     pop[-2]=myinit_indv_rot
     
-    myinit_indv_mov = indv_create_move(models,summaries,pop[0])
+    myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0])
     myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
     pop[-3]=myinit_indv_mov
     
-    myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,Bs,line_centers,pop[0])
+    myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0])
     myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
     pop[-4]=myinit_indv_rot_mov
     
