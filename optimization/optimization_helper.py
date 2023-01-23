@@ -82,7 +82,7 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tand
                     
     return mov_x, mov_y, mov_z
                                 
-def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_tandalone, max_chr=0.3, min_chr=-0.3, step_rot=0.3, step_move=0.1):                
+def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_tandalone, max_chr=0.3, min_chr=-0.3, step_rot=0.3, step_move=0.3):                
     error = 999999999
     rot_x=0
     rot_y=0

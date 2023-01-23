@@ -221,43 +221,22 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                 tempGen.append(chr[1])
                 tempGen.append(chr[2])
                 
-                if(m.arch_type == ArchType.UPPER.value):
-                    if(i.value in toCenterArch):
-                        hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center], isAwal=(i.value>7))
-                        
-                    elif(i.value in toCrossover):
-                        labelSeberang = getToothLabelSeberang(i.value)
-                        hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value>7))
-                    pt_in_line = hitpspln
-                    # tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
-                    # tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
-                    # tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][2])
-                    tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
-                    tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
-                    tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
                 
-                else:
-                    if(i.value in toCenterArch):
-                        labelSeberang = getToothLabelSeberang(i.value)
-                        pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.LINGUAL_OR_PALATAL.value]
-                        tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][0])
-                        tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][1])
-                        tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.CUSP.value][2])
-
-                        
-                    elif(i.value in toCrossover):
-                        labelSeberang = getToothLabelSeberang(i.value)
-                        pt_in_line = model_upper_cp.teeth[labelSeberang].landmark_pt[LandmarkType.PIT.value]
-                        
-                        bawah = teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
-                        if(bawah is None):
-                            bawah = teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT.value]
-                        if(bawah is None):
-                            bawah = np.mean([teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],teeth[i.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
-                        
-                        tempGen.append(pt_in_line[0]-bawah[0])
-                        tempGen.append(pt_in_line[1]-bawah[1])
-                        tempGen.append(pt_in_line[2]-bawah[2])
+                if(i.value in toCenterArch):
+                    hitpspln, hitpln = summary_line.closestPointToAline([model_cp.mesh.centerOfMass(), teeth[i.value].center], isAwal=(i.value>7))
+                    
+                elif(i.value in toCrossover):
+                    labelSeberang = getToothLabelSeberang(i.value)
+                    hitpspln, hitpln = summary_line.closestPointToAline([teeth[i.value].center, teeth[labelSeberang].center], isAwal=(i.value>7))
+                pt_in_line = hitpspln
+                # tempGen.append(pt_in_line[0]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][0])
+                # tempGen.append(pt_in_line[1]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][1])
+                # tempGen.append(pt_in_line[2]-teeth[i.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value][2])
+                tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
+                tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
+                tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
+                
+                
                     
                 
     ArchCopy._clear()
