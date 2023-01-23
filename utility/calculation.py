@@ -1,6 +1,31 @@
 import numpy as np
 import enum
 
+import math
+
+def dot(vA, vB):
+    return vA[0]*vB[0]+vA[1]*vB[1]
+
+def get_angle_from_2_2d_lines(lineA, lineB, is_return_degree=False):
+    # Get nicer vector form
+    vA = [(lineA[0][0]-lineA[1][0]), (lineA[0][1]-lineA[1][1])]
+    vB = [(lineB[0][0]-lineB[1][0]), (lineB[0][1]-lineB[1][1])]
+    # Get dot prod
+    dot_prod = dot(vA, vB)
+    # Get magnitudes
+    magA = dot(vA, vA)**0.5
+    magB = dot(vB, vB)**0.5
+    # Get cosine value
+    cos_ = dot_prod/magA/magB
+    # Get angle in radians and then convert to degrees
+    angle = math.acos(cos_)
+    if(is_return_degree==True):
+        return math.degrees(angle) #0-180
+    else:
+        return angle
+    
+    
+
 def find_distance_between_two_points(pt1,pt2):
     return np.linalg.norm(pt1 - pt2)
 

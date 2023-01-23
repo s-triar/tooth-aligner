@@ -20,6 +20,8 @@ from utility.splineku import SplineKu
 def init_summary(self):
     self.summary_flat_pts = None
     self.studi_model_summary_pts=None
+    self.line_center_pts=None
+    self.Bs_pts=None
 
 def calculate_studi_model(self):
     if(Arch._is_complete()):
@@ -33,11 +35,16 @@ def calculate_studi_model(self):
         self.carey_studi_model.calculate_carey(self.models)
         self.summary_flat_pts = calculate_flat_plane_points(self)
         # self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
-        self.studi_model_summary_pts=calculate_bonwill(self)
+        self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts =calculate_bonwill(self)
         # print("self.studi_model_summary_pts")
         # print(self.studi_model_summary_pts)
         # print()
-        
+
+def get_Bs_pts(self):
+    return self.Bs_pts    
+
+def get_line_centers_pts(self):
+    return self.line_center_pts        
         
 def get_studi_model_summary_pts(self):
     return self.studi_model_summary_pts
@@ -56,7 +63,9 @@ def get_mesial_distal_as_R(model):
         t_inverse = getToothLabelSeberang(t)
         temp = find_distance_between_two_points(model.teeth[t].landmark_pt[LandmarkType.MESIAL.value], model.teeth[t].landmark_pt[LandmarkType.DISTAL.value])
         temp2 = find_distance_between_two_points(model.teeth[t_inverse].landmark_pt[LandmarkType.MESIAL.value], model.teeth[t_inverse].landmark_pt[LandmarkType.DISTAL.value])
-        mesio_distal += np.mean([temp,temp2])
+        # mesio_distal += np.mean([temp,temp2])
+        mesio_distal += np.mean([temp,temp2]) + (0 if t == teeth[-1] else 1.5)
+        
     return mesio_distal
 
 def get_CD(sph_interect, ln_side):
@@ -69,10 +78,8 @@ def get_CD(sph_interect, ln_side):
             c_val=dst
             candidate=p
     return candidate
-def calculate_bonwill(self):
-    idx_upper = Arch._get_index_arch_type(ArchType.UPPER.value)
-    model = self.models[idx_upper]
-    u=model.mesh
+
+def get_bonwill(u, model):
     R = get_mesial_distal_as_R(model)
 
     centermeshPT=Point(u.centerOfMass(),c='black',r=20)
@@ -88,13 +95,20 @@ def calculate_bonwill(self):
 
     # mid_incisor_pt
     # TODO coba dengan titik terluar bukan center
-    A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
-    # A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
+    # A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
+    A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
 
     used_center = u.centerOfMass()
 
+    molarrl7pt_ctr = model.teeth[ToothType.MOLAR_UL7_LR7.value].center
+    molarrr7pt_ctr = model.teeth[ToothType.MOLAR_UR7_LL7.value].center
+
     molarL72x_pt = ((model.teeth[ToothType.MOLAR_UL7_LR7.value].center - used_center) * 4) + used_center
     molarR72x_pt = ((model.teeth[ToothType.MOLAR_UR7_LL7.value].center - used_center) * 4) + used_center
+
+    molarrl7pt = molarL72x_pt[:]
+    molarrr7pt = molarR72x_pt[:]
+
 
     GG = find_closest_point_between_a_point_and_a_line(A, [model.teeth[ToothType.MOLAR_UL7_LR7.value].center, model.teeth[ToothType.MOLAR_UR7_LL7.value].center])
     HH = find_closest_point_between_a_point_and_a_line(molarL72x_pt,[model.teeth[ToothType.MOLAR_UL7_LR7.value].center, model.teeth[ToothType.MOLAR_UR7_LL7.value].center])
@@ -139,7 +153,7 @@ def calculate_bonwill(self):
     n_H_D = find_distance_between_two_points(H,C)
     K = find_new_point_in_a_line_with_new_distance(H,I,n_H_D)
 
-    spl = SplineKu([J,D,A,C,K],degree=2,easing='Sine',smooth=0)
+    # spl = SplineKu([J,D,A,C,K],degree=2,easing='Sine',smooth=0)
 
     # ctr,rad,norm = fitCircle([K,C])
     ccr_CAD = KSpline([K,C,A,D,J],)
@@ -169,7 +183,32 @@ def calculate_bonwill(self):
             ccr_DJs.append(p)
 
     titiks = np.concatenate((ccr_CKs, ccr_CADs, ccr_DJs))
-    return titiks
+
+    # spr0 =Sphere(A,r=find_distance_between_two_points(B,A),res=24).c('green3').alpha(0.1) 
+    # spr = Sphere(B,r=find_distance_between_two_points(B,A),res=24).c('blue3').alpha(0.1)
+    # spr2 = Sphere(I,r=find_distance_between_two_points(I,J),res=24).c('grey').alpha(0.1)
+    # spr3 = Sphere(H,r=find_distance_between_two_points(H,K),res=24).c('grey').alpha(0.1)
+
+    # spl = SplineKu(titiks)
+    
+    return titiks, [AA,GG], B
+
+
+def calculate_bonwill(self):
+    if Arch._is_complete():
+        archwire = {}
+        center_line= {}
+        Bs={}
+        for i in ArchType:
+            idx = Arch._get_index_arch_type(i.value)
+            mesh = self.models[idx].mesh
+            titiks, line_center, B = get_bonwill(mesh, self.models[idx])
+            archwire[i.value] = titiks
+            center_line[i.value] = line_center
+            Bs[i.value] = B
+        return archwire, center_line, Bs
+    else:
+        return {}, {}, {}
 
 
 def calculate_flat_plane_points(self):

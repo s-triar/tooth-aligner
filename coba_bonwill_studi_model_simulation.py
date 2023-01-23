@@ -52,7 +52,7 @@ def get_mesial_distal_as_R(model):
         t_inverse = getToothLabelSeberang(t)
         temp = find_distance_between_two_points(model.teeth[t].landmark_pt[LandmarkType.MESIAL.value], model.teeth[t].landmark_pt[LandmarkType.DISTAL.value])
         temp2 = find_distance_between_two_points(model.teeth[t_inverse].landmark_pt[LandmarkType.MESIAL.value], model.teeth[t_inverse].landmark_pt[LandmarkType.DISTAL.value])
-        mesio_distal += np.mean([temp,temp2])
+        mesio_distal += np.mean([temp,temp2]) #+1.5
     return mesio_distal
 
 def get_CD(sph_interect, ln_side):
@@ -90,10 +90,13 @@ centermeshtoothcenterPT = Point(centermeshtoothcenterpt, c='grey',r=20)
 
 # mid_incisor_pt
 # TODO coba dengan titik terluar bukan center
-A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
-# A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
+# A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].center, model.teeth[ToothType.INCISOR_UR1_LL1.value].center], axis=0)
+A = np.mean([model.teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value], model.teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]], axis=0)
 
 used_center = u.centerOfMass()
+
+molarrl7pt_ctr = model.teeth[ToothType.MOLAR_UL7_LR7.value].center
+molarrr7pt_ctr = model.teeth[ToothType.MOLAR_UR7_LL7.value].center
 
 molarL72x_pt = ((model.teeth[ToothType.MOLAR_UL7_LR7.value].center - used_center) * 4) + used_center
 molarR72x_pt = ((model.teeth[ToothType.MOLAR_UR7_LL7.value].center - used_center) * 4) + used_center
@@ -213,18 +216,18 @@ eigenvec = [model.right_left_vec, model.forward_backward_vec, model.upward_downw
 for tooth_type in model.teeth:
     if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
         if(tooth_type in toCenterArch):
-            hitpspln, hitpln = spl.closestPointToAline([model.mesh.centerOfMass(), teeth[tooth_type].center], isAwal=(tooth_type>7))
-            # hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+            # hitpspln, hitpln = spl.closestPointToAline([model.mesh.centerOfMass(), teeth[tooth_type].center], isAwal=(tooth_type>7))
+            hitpspln = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
             
         elif(tooth_type in toCrossover):
             labelSeberang = getToothLabelSeberang(tooth_type)
-            hitpspln, hitpln = spl.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center], isAwal=(tooth_type>7))
-            # hitpspln2 = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+            # hitpspln, hitpln = spl.closestPointToAline([teeth[tooth_type].center, teeth[labelSeberang].center], isAwal=(tooth_type>7))
+            hitpspln = spl.closestPoint(teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         pt_in_line = hitpspln
         # print(tooth_type, pt_in_line, teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
-        # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='blue'))
+        llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='blue'))
         # llg.append(Line(hitpspln2,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],lw=6,c='green'))
-        llg.append(Line(pt_in_line,teeth[tooth_type].center,lw=6,c='red'))
+        # llg.append(Line(pt_in_line,teeth[tooth_type].center,lw=6,c='red'))
         a = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [pt_in_line])[0]
         # b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]])[0]
         b = convert_to_2d(FaceTypeConversion.UP.value, eigenvec, [teeth[tooth_type].center])[0]
@@ -272,44 +275,73 @@ print( math.sqrt(error_summary/error_summary_i), '<===========')
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
         # llg.append(Line(pt_in_line,teeth[tooth_type].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]))
 
-plt = Plotter(axes=1)
-plt.show(
-    u.alpha(0.1),
-    l.alpha(0.4),
-    # Point(AA,c='violet'),
-    # Point(HH,c='violet'),
-    # Point(II,c='violet'),
-    # Point(molarrl7pt,c='blue'),
-    # Point(molarrr7pt,c='blue'),
-    # Line(AA,HH,c='violet'),
-    # Line(AA,II,c='violet'),
-    # Line(HH,II,c='violet'),
-    # # l.alpha(0.4),
-    # Point(A,r=25),
-    # Point(B),
-    # Point(E),
-    # Points([AAMM,AANN]),
-    # Line(AAMM, AANN),
-    # # CD_circle,
-    # Points([C,D],r=20,c='red'),
-    # Point(F,c='blue'),
-    # Line(E,F),
-    # Point(G,c='grey'),
-    # Point(GG,c='black'),
-    # Points([AAOO,AAPP]),
-    # Line(AAOO,AAPP),
-    # Points([H,I],r=12),
-    # Points([J,K],r=15,c='blue'),
-    # # ccr_CAD.lw(5).c('green'),
-    # # ccr_DJ.lw(5).c('red'),
-    # # ccr_CK.lw(5).c('blue'),
-    # spr0,
-    # spr,
-    # spr2,
-    # spr3,
-    # spl.lw(10).c('yellow'),
-    # llg,
-    lll,
-    # Points(tttt.points(),r=15),
-)
 
+msh = [
+    u,
+    # l.alpha(0.4),
+    Point(A,r=25),
+    spr0,
+    
+    Line(molarrl7pt_ctr,molarrr7pt_ctr,c='violet'),
+    Point(GG,c='black'),
+    
+    Point(molarrl7pt,c='blue'),
+    Point(molarrr7pt,c='blue'),
+    
+    Point(HH,c='violet'),
+    Point(II,c='violet'),
+    Point(AA,c='violet'),
+    Line(AA,HH,c='violet'),
+    Line(AA,II,c='violet'),
+    Line(HH,II,c='violet'),
+    
+    Points([AAMM,AANN]),
+    Line(AAMM, AANN),
+    
+    
+    
+    # l.alpha(0.4),
+    Point(B),
+    spr,
+    Point(E),
+    
+    
+    
+    # CD_circle,
+    Points([C,D],r=20,c='red'),
+    Point(F,c='blue'),
+    Line(E,F),
+
+    Point(G,c='grey'),
+    Points([AAOO,AAPP]),
+    Line(AAOO,AAPP),
+    Points([H,I],r=12),
+    Points([J,K],r=15,c='blue'),
+    # ccr_CAD.lw(5).c('green'),
+    # ccr_DJ.lw(5).c('red'),
+    # ccr_CK.lw(5).c('blue'),
+    spr2,
+    spr3,
+    spl.lw(10).c('yellow'),
+    # llg,
+    # lll,
+    # Points(tttt.points(),r=15),
+]
+# plt = Plotter(axes=1, interactive=False)
+# plt.show(axes=1).interactive()
+# import time
+# for kg in msh:
+#     plt.show(
+#         kg, axes=1   
+#     )
+#     plt.render()
+#     time.sleep(1)
+#     if(len(plt.actors)==len(msh)):
+#         plt.clear()
+#     if plt.escaped:
+#         break  # if ESC button is hit during the loop
+
+# plt.interactive().close()
+
+plt = Plotter(axes=1)
+plt.show(msh ,llg)

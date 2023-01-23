@@ -398,11 +398,11 @@ def draw_summary_lines_DEPRECATED(self): #deprecated
 
 def draw_summary_lines(self):
     # pts = calculate_studi_model_summary_pts(self)
-    pts = get_studi_model_summary_pts(self)
-    for a in pts:
+    wirearchs = get_studi_model_summary_pts(self)
+    for a in wirearchs:
         # draw_spline(self, pts[a][0], False, a)
         # draw_spline(self, pts[a][1], True, a)
-        draw_spline(self, pts, True, FileNotFoundError)
+        draw_spline(self, wirearchs[a], True, a)
 
 def draw_spline(self, pts, isPred, arch):
     c = 'orange'

@@ -12,7 +12,7 @@ from constant.enums import PanelMode
 from controller.bite_contact_controller import reset_bite_contact
 from controller.segmentation_controller import set_selected_arch, set_selected_label
 from controller.step_controller import update_transform_arch
-from controller.summary_controller import calculate_studi_model, get_studi_model_summary_pts, get_summary_flat_pts
+from controller.summary_controller import calculate_studi_model, get_Bs_pts, get_line_centers_pts, get_studi_model_summary_pts, get_summary_flat_pts
 from optimization.de_optimization3 import start_de
 
 from view.components.toolbar_top_section import ToolbarTopSection
@@ -44,6 +44,8 @@ def click_btn_de_optimization(self, e):
     new_models=self.models
     flats = copy.deepcopy(get_summary_flat_pts(self))
     summary = copy.deepcopy(get_studi_model_summary_pts(self))
+    Bs = copy.deepcopy(get_Bs_pts(self))
+    line_centers = copy.deepcopy(get_line_centers_pts(self))
     while(step_i<16):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
@@ -52,7 +54,7 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt = start_de(new_models, flats, summary, gen)
+        new_models, gen, error_opt = start_de(new_models, flats, summary, line_centers, Bs, gen)
         print("eror in while", error_opt)
         print(gen)
             
