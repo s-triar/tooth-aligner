@@ -35,7 +35,7 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
             for vz in candidate_chr:
                 
                 tooth_clone =  copy.deepcopy(tooth)
-                tx_center = tooth_clone.centerOfMass()[:]
+                tx_center = tooth_clone.center
                 # tooth_clone.rotateX(vx, False, tx_center)
                 tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
                 # tooth_clone.rotateY(vy, False, tx_center)
@@ -101,7 +101,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                     for my in candidate_chr_move:
                         for mz in candidate_chr_move:
                             tooth_clone =  copy.deepcopy(tooth)
-                            tx_center = tooth_clone.centerOfMass()[:]
+                            tx_center = tooth_clone.center
                             # tooth_clone.rotateX(vx, False, tx_center)
                             tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
                             # tooth_clone.rotateY(vy, False, tx_center)
