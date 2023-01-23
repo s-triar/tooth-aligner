@@ -4,6 +4,7 @@ from utility.calculation import FaceTypeConversion, convert_to_2d, find_closest_
 from utility.tooth_label import get_tooth_labels
 import numpy as np
 import math
+import copy
 
 INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.3
 BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.1
@@ -28,18 +29,18 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
     rot_y=0
     rot_z=0
     candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
-    toothmesh = tooth.get_mesh()
+    # toothmesh = tooth.get_mesh()
     for vx in candidate_chr:
         for vy in candidate_chr:
             for vz in candidate_chr:
                 
-                tooth_clone = toothmesh.clone()
+                tooth_clone =  copy.deepcopy(tooth)
                 tx_center = tooth_clone.centerOfMass()[:]
-                tooth_clone.rotateX(vx, False, tx_center)
+                # tooth_clone.rotateX(vx, False, tx_center)
                 tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
-                tooth_clone.rotateY(vy, False, tx_center)
+                # tooth_clone.rotateY(vy, False, tx_center)
                 tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
-                tooth_clone.rotateZ(vz, False, tx_center)
+                # tooth_clone.rotateZ(vz, False, tx_center)
                 tooth_clone.update_landmark_rotation("roll", vz, tx_center)
                 
                 error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_tandalone) 
@@ -59,15 +60,16 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tand
     mov_y=0
     mov_z=0
     candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
-    toothmesh = tooth.get_mesh()
+    # toothmesh = tooth.get_mesh()
     
     for vx in candidate_chr:
         for vy in candidate_chr:
             for vz in candidate_chr:
                 
-                tooth_clone = toothmesh.clone()
+                tooth_clone =  copy.deepcopy(tooth)
+
                 val_direction=[vx,vy,vz]
-                tooth_clone.points(tooth_clone.points()+val_direction)
+                # tooth_clone.points(tooth_clone.points()+val_direction)
                 tooth_clone.update_landmark_moving(val_direction)
                 error_top_view = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper)
                 error_side_view = calculate_cusp_to_flat_level_line(tooth_clone, spl_flat,eigenvec, is_upper)
@@ -90,7 +92,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
     mov_z=0
     candidate_chr_rot = get_candidate_chromosome(min_chr, max_chr, step_rot)
     candidate_chr_move = get_candidate_chromosome(min_chr, max_chr, step_move)
-    toothmesh = tooth.get_mesh()
+    # toothmesh = tooth.get_mesh()
     
     for vx in candidate_chr_rot:
         for vy in candidate_chr_rot:
@@ -98,17 +100,17 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                 for mx in candidate_chr_move:
                     for my in candidate_chr_move:
                         for mz in candidate_chr_move:
-                            tooth_clone = toothmesh.clone()
+                            tooth_clone =  copy.deepcopy(tooth)
                             tx_center = tooth_clone.centerOfMass()[:]
-                            tooth_clone.rotateX(vx, False, tx_center)
+                            # tooth_clone.rotateX(vx, False, tx_center)
                             tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
-                            tooth_clone.rotateY(vy, False, tx_center)
+                            # tooth_clone.rotateY(vy, False, tx_center)
                             tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
-                            tooth_clone.rotateZ(vz, False, tx_center)
+                            # tooth_clone.rotateZ(vz, False, tx_center)
                             tooth_clone.update_landmark_rotation("roll", vz, tx_center)
                             
                             val_direction=[mx,my,mz]
-                            tooth_clone.points(tooth_clone.points()+val_direction)
+                            # tooth_clone.points(tooth_clone.points()+val_direction)
                             tooth_clone.update_landmark_moving(val_direction)
                             
                             error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_tandalone) 
