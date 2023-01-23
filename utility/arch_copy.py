@@ -111,7 +111,7 @@ class ArchCopy():
             ToothType.INCISOR_UL2_LR2.value, 
             ToothType.INCISOR_UL1_LR1.value,
             ToothType.INCISOR_UR1_LL1.value,
-            ToothType.INCISOR_UR2_LL2.value
+            ToothType.INCISOR_UR2_LL2.vPalue
         ]
 
         canine_teeth = [

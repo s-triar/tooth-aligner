@@ -13,14 +13,24 @@ DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.1
 DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 0.1
 DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 0.1
 
-def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_tandalone, max=0.3, min=-0.3, step=0.3):
+def get_candidate_chromosome(start, stop, step):
+    res=[]
+    current = start
+    while current<=stop:
+        current = round(current+step,1)
+        res.append(current)
+    return res
+
+
+def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_tandalone, max_chr=0.3, min_chr=-0.3, step=0.3):
     error = 999999999
     rot_x=0
     rot_y=0
     rot_z=0
-    for vx in range(min,max,step):
-        for vy in range(min,max,step):
-            for vz in range(min,max,step):
+    candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
+    for vx in candidate_chr:
+        for vy in candidate_chr:
+            for vz in candidate_chr:
                 
                 tooth_clone = tooth.clone()
                 tx_center = tooth_clone.centerOfMass()[:]
@@ -42,14 +52,15 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
                     
     return rot_x, rot_y, rot_z
                 
-def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tandalone, max=0.3, min=-0.3, step=0.3):
+def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tandalone, max_chr=0.3, min_chr=-0.3, step=0.3):
     error = 999999999
     mov_x=0
     mov_y=0
     mov_z=0
-    for vx in range(min,max,step):
-        for vy in range(min,max,step):
-            for vz in range(min,max,step):
+    candidate_chr = get_candidate_chromosome(min_chr, max_chr, step)
+    for vx in candidate_chr:
+        for vy in candidate_chr:
+            for vz in candidate_chr:
                 
                 tooth_clone = tooth.clone()
                 val_direction=[vx,vy,vz]
@@ -66,7 +77,7 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_tand
                     
     return mov_x, mov_y, mov_z
                                 
-def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_tandalone, max=0.3, min=-0.3, step_rot=0.3, step_move=0.1):                
+def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_tandalone, max_chr=0.3, min_chr=-0.3, step_rot=0.3, step_move=0.1):                
     error = 999999999
     rot_x=0
     rot_y=0
@@ -74,12 +85,15 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
     mov_x=0
     mov_y=0
     mov_z=0
-    for vx in range(min,max,step_rot):
-        for vy in range(min,max,step_rot):
-            for vz in range(min,max,step_rot):
-                for mx in range(min,max,step_move):
-                    for my in range(min,max,step_move):
-                        for mz in range(min,max,step_move):
+    candidate_chr_rot = get_candidate_chromosome(min_chr, max_chr, step_rot)
+    candidate_chr_move = get_candidate_chromosome(min_chr, max_chr, step_move)
+    
+    for vx in candidate_chr_rot:
+        for vy in candidate_chr_rot:
+            for vz in candidate_chr_rot:
+                for mx in candidate_chr_move:
+                    for my in candidate_chr_move:
+                        for mz in candidate_chr_move:
                             tooth_clone = tooth.clone()
                             tx_center = tooth_clone.centerOfMass()[:]
                             tooth_clone.rotateX(vx, False, tx_center)
