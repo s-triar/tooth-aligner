@@ -97,38 +97,56 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
     for vx in candidate_chr_rot:
         for vy in candidate_chr_rot:
             for vz in candidate_chr_rot:
-                for mx in candidate_chr_move:
-                    for my in candidate_chr_move:
-                        for mz in candidate_chr_move:
-                            tooth_clone =  copy.deepcopy(tooth)
-                            tx_center = tooth_clone.center
-                            # tooth_clone.rotateX(vx, False, tx_center)
-                            tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
-                            # tooth_clone.rotateY(vy, False, tx_center)
-                            tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
-                            # tooth_clone.rotateZ(vz, False, tx_center)
-                            tooth_clone.update_landmark_rotation("roll", vz, tx_center)
-                            
-                            val_direction=[mx,my,mz]
-                            # tooth_clone.points(tooth_clone.points()+val_direction)
-                            tooth_clone.update_landmark_moving(val_direction)
-                            
-                            error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_tandalone) 
-                            error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_tandalone)
-                            
-                            error_top_view_move = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper)
-                            error_side_view_move = calculate_cusp_to_flat_level_line(tooth_clone, spl_flat,eigenvec, is_upper)
-                            
-                            error_total = error_top_view+error_side_view+error_top_view_move+error_side_view_move
-                            
-                            if(error > error_total):
-                                error = error_total
-                                rot_x=vx
-                                rot_y=vy
-                                rot_z=vz
-                                mov_x=mx
-                                mov_y=my
-                                mov_z=mz
+                
+                tooth_clone =  copy.deepcopy(tooth)
+                tx_center = tooth_clone.center
+                # tooth_clone.rotateX(vx, False, tx_center)
+                tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
+                # tooth_clone.rotateY(vy, False, tx_center)
+                tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
+                # tooth_clone.rotateZ(vz, False, tx_center)
+                tooth_clone.update_landmark_rotation("roll", vz, tx_center)
+                
+                buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
+                closest_buccallabial_to_spl = spl.closestPoint(buccal_labial)
+                
+                
+    
+                cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
+                if(cusp is None):
+                    cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT.value]
+                if(cusp is None):
+                    cusp = tooth.landmark_pt[LandmarkType.CUSP.value]
+                if(cusp is None):
+                    cusp = np.mean([tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
+                                    
+                closest_cusp_to_spl = spl.closestPoint(cusp)
+                
+                mx = (closest_buccallabial_to_spl[0]+closest_cusp_to_spl[0])/2
+                my = (closest_buccallabial_to_spl[1]+closest_cusp_to_spl[1])/2
+                mz = (closest_buccallabial_to_spl[2]+closest_cusp_to_spl[2])/2
+                
+                
+                val_direction=[mx,my,mz]
+                # tooth_clone.points(tooth_clone.points()+val_direction)
+                tooth_clone.update_landmark_moving(val_direction)
+                
+                error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_tandalone) 
+                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_tandalone)
+                
+                error_top_view_move = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper)
+                error_side_view_move = calculate_cusp_to_flat_level_line(tooth_clone, spl_flat,eigenvec, is_upper)
+                
+                error_total = error_top_view+error_side_view+error_top_view_move+error_side_view_move
+                
+                if(error > error_total):
+                    error = error_total
+                    rot_x=vx
+                    rot_y=vy
+                    rot_z=vz
+                    mov_x=mx
+                    mov_y=my
+                    mov_z=mz
                     
     return rot_x, rot_y, rot_z, mov_x, mov_y, mov_z
 
@@ -287,8 +305,8 @@ def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
     if(cusp is None):
         cusp = np.mean([tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
                         
-    closest_buccallabial_to_spl = spl.closestPoint(cusp)
+    closest_cusp_to_spl = spl.closestPoint(cusp)
     cusp2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[cusp])[0]
-    closest_buccallabial_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_buccallabial_to_spl])[0]
-    dst = find_distance_between_two_points(cusp2d,closest_buccallabial_to_spl2D)
+    closest_cusp_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_cusp_to_spl])[0]
+    dst = find_distance_between_two_points(cusp2d,closest_cusp_to_spl2D)
     return dst*DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT
