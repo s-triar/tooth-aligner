@@ -6,13 +6,13 @@ import numpy as np
 import math
 import copy
 
-INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.3
-BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.1
-DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.1
+INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 5
+BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 20 #sudut
+DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 4
 
 
-DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 0.1
-DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 0.1
+DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 2
+DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 2
 
 def get_candidate_chromosome(start, stop, step):
     res=[]
@@ -203,13 +203,23 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     mesial_distal_to_spl_err += abs(distal_to_spl)
     mesial_distal_to_spl_err *= DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     
+    check_same_in_or_out_spl = ((mesial_to_center-mesial_spl_to_center) < 0 and (distal_to_center-distal_spl_to_center)<0) or ((mesial_to_center-mesial_spl_to_center) >= 0 and (distal_to_center-distal_spl_to_center)>=0) 
+    if(check_same_in_or_out_spl == True):
+        if(mesial_to_spl < distal_to_spl):
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl-distal_to_spl)    
+            anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
+            spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
+        else:
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_mesial2d,mesial2d,distal_to_spl-mesial_to_spl)    
+            anchor = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
+            spl_pt = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
+    else:
+        ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl)
+        ext = np.array([ext[0],ext[1]])
+        anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
+        spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
     
-    distal2d_ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl)
-    distal2d_ext_real = np.array([distal2d_ext[0],distal2d_ext[1]])
-    closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
-    closest_spl_distal2d_real = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
-    
-    angle = get_angle_from_2_2d_lines([distal2d_ext_real,closest_spl_mesial2d_real],[closest_spl_distal2d_real,closest_spl_mesial2d_real])
+    angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt])
     
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
@@ -281,7 +291,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     
     
-    angle = get_angle_from_2_2d_lines([buccal_labial2d_real,closest_spl_buccallabial2d_real],[closest_spl_mesial2d_real,closest_spl_buccallabial2d_real])
+    angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real])
     angle = abs((math.pi/2)-angle)
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT

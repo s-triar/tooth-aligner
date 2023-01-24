@@ -121,7 +121,7 @@ def toggle_btn_menu_summary(self, e):
         # create_pane_summary(self)
         create_pane_summary(self)
         draw_summary_lines(self)
-        draw_spline_flat(self)
+        # draw_spline_flat(self)
         
     else:
         self.summary_panel_widget_container.hide()
