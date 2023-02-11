@@ -7,7 +7,9 @@ import numpy as np
 from utility.colors import convert_labels_to_colors
 
 
-path = os.path.join('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\ada non-manyfold\\MNF LowerJawScan_d_predicted_refined.vtp')
+# path = os.path.join('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\ada non-manyfold\\MNF LowerJawScan_d_predicted_refined.vtp')
+path = os.path.join('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\KEC UpperJawScan_d_predicted_refined.vtp')
+
 mesh = load(path)
 
 center_mesh = mesh.centerOfMass()

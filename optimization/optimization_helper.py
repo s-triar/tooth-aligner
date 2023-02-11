@@ -6,9 +6,9 @@ import numpy as np
 import math
 import copy
 
-INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 5
-BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 20 #sudut
-DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 4
+INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 10
+BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 500 #sudut
+DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 2
 
 
 DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 2
@@ -17,6 +17,7 @@ DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 2
 def get_candidate_chromosome(start, stop, step):
     res=[]
     current = start
+    res.append(current)
     while current<=stop:
         current = round(current+step,1)
         res.append(current)
@@ -223,7 +224,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
-    
+    print("calculate_mesiodistal_balance_to_bonwill_line_from_top_view",out_of_spl_err,mesial_distal_to_spl_err,mesial_distal_balance_err)
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
     
     
@@ -294,7 +295,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real])
     angle = abs((math.pi/2)-angle)
     mesial_distal_balance_err+=angle
-    mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
+    mesial_distal_balance_err*=(BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT/5)
     
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
 

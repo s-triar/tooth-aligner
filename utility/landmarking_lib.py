@@ -126,7 +126,7 @@ def getEigen(points,idx_faces, cell_data, label_anterior):
         eig_vec[1] *=-1   
         
     # atas bawah
-    p_bottom_indicator = nl.get_bottom(points,np.array(idx_faces))
+    p_bottom_indicator, s_p = nl.get_bottom(points,np.array(idx_faces))
     temp_eig_up_down = eig_vec[2] * -1
     if(
         np.dot(eig_vec[2], p_bottom_indicator) < np.dot(temp_eig_up_down, p_bottom_indicator)

@@ -46,7 +46,7 @@ def click_btn_de_optimization(self, e):
     summary = copy.deepcopy(get_studi_model_summary_pts(self))
     Bs = copy.deepcopy(get_Bs_pts(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
-    while(step_i<16):
+    while(step_i<3):
     # while(error_opt > 1):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)

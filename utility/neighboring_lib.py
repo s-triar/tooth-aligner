@@ -190,7 +190,7 @@ def get_bottom(points, idx_faces):
             s_p.append(points[index_selected_point])
         
     m_s_p = np.mean(s_p, axis=0)        
-    return m_s_p
+    return m_s_p, s_p
 
 def extract_labels(mesh):
         temp_obj_info = {}
@@ -260,7 +260,7 @@ def getEigen(points,idx_faces):
     # ============================================
     
     # Fixing position Eigen vector
-    p_bottom_indicator = get_bottom(points,np.array(idx_faces))
+    p_bottom_indicator, s_p = get_bottom(points,np.array(idx_faces))
     # depan belakang
     ori_fb = np.dot(p_bottom_indicator,eig_vec[1])
     inv_fb = np.dot(p_bottom_indicator,eig_vec[1]*-1)
