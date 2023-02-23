@@ -59,7 +59,7 @@ def get_closest_to_mesial_distal(teeth,spl, B):
 def get_spl_pts_through_sphere(sphere, spl, A):
     # A = spl.getHalwayPoint()
     temp_spl = spl.clone().extrude(1).triangulate()
-    inter = (sphere.intersecWith(temp_spl)).points()
+    inter = (sphere.intersectWith(temp_spl)).points()
     inter_dst=[]
     cls_pts = []
     for p in inter:
@@ -117,6 +117,9 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_strt=dst[1][:]
             dests[label]= dst
+            sph = Sphere(a_strt,r=1.5)
+            yy = get_spl_pts_through_sphere(sph, spl, A)
+            a_strt=yy[1][:]
     for label in labels_end:
         if teeth[label]:
             tooth = teeth[label]
@@ -138,6 +141,9 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_end=dst[1][:]
             dests[label]= dst
+            sph = Sphere(a_strt,r=1.5)
+            yy = get_spl_pts_through_sphere(sph, spl, A)
+            a_strt=yy[1][:]
     return dests
 
             
@@ -196,5 +202,5 @@ for lbl in destinations_pts:
 plt = Plotter(N=3)
 plt.show(model.mesh, spl, cls_mesial, cls_distal, at=0)
 plt.show(model4.mesh, spl, cls_mesial4, cls_distal4, at=1)
-plt.show( spl,destinations_line,pd, at=2)
+plt.show( model.mesh,spl,destinations_line,pd, at=2)
 plt.interactive()
