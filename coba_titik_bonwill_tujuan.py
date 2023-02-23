@@ -117,7 +117,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_strt=dst[1][:]
             dests[label]= dst
-            sph = Sphere(a_strt,r=1.5)
+            sph = Sphere(a_strt,r=0.5)
             yy = get_spl_pts_through_sphere(sph, spl, A)
             a_strt=yy[1][:]
     for label in labels_end:
@@ -141,7 +141,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_end=dst[1][:]
             dests[label]= dst
-            sph = Sphere(a_strt,r=1.5)
+            sph = Sphere(a_strt,r=0.5)
             yy = get_spl_pts_through_sphere(sph, spl, A)
             a_strt=yy[1][:]
     return dests
