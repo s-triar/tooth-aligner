@@ -5,7 +5,7 @@ import utility.landmarking_lib as ll
 import numpy as np
 import math
 
-arch = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan Cleaned 10000_d_predicted_refined a.vtp')
+arch = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\KEC LowerJawScan_d_predicted_refined.vtp')
 
 teeth_label = arch.celldata['Label']
 colors = convert_labels_to_colors(arch.celldata['Label'])

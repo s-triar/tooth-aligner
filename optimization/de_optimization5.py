@@ -3,7 +3,7 @@ import numpy as np
 from vedo import Mesh
 
 from constant.enums import ToothType, ArchType, LandmarkType
-from optimization.optimization_helper import calculate_buccallabial_to_bonwill_line, calculate_cusp_to_flat_level_line, calculate_mesiodistal_balance_to_bonwill_line_from_side_view, calculate_mesiodistal_balance_to_bonwill_line_from_top_view, get_closest_possible_movements, get_closest_possible_rotations, get_closest_possible_rotations_and_movements
+from optimization.optimization_helper5 import calculate_buccallabial_to_bonwill_line, calculate_cusp_to_flat_level_line, calculate_mesiodistal_balance_to_bonwill_line_from_side_view, calculate_mesiodistal_balance_to_bonwill_line_from_top_view, get_closest_possible_movements, get_closest_possible_rotations, get_closest_possible_rotations_and_movements
 from utility.arch_copy import ArchCopy
 from utility.bolton_studi_model import Bolton
 from utility.calculation import FaceTypeConversion, convert_to_2d, find_distance_between_two_points, getToothLabelSeberang, find_closest_point_between_a_point_and_a_line
@@ -114,7 +114,7 @@ def get_new_model(models,chromosome):
 
 
 
-def minimize_function_using_delta_current_to_the_first_studi_model_calculation2( models, chromosome, flat_pts, summary_pts, Bs, line_centers):
+def minimize_function_using_delta_current_to_the_first_studi_model_calculation2( models, chromosome, flat_pts, summary_pts, Bs, line_centers,  As, destination_tooth):
     tot_error_top_view=0
     tot_error_side_view=0
     
@@ -149,13 +149,15 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         flat_line = SplineKu(flat_pts[model_cp.arch_type])
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 
-                error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True) 
-                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True)
+                error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts) 
+                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts)
                 
-                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False)
+                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
                 
                 tot_error_top_view+=error_top_view**2
@@ -261,7 +263,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     return np.array(tempGen)
 
 
-def indv_create_rot(models, summary_pts, Bs, line_centers, chrs):
+def indv_create_rot(models, summary_pts, Bs, line_centers, chrs,  As, destination_tooth):
     ArchCopy._clear()
     tempGen = []
     for m in models:
@@ -276,11 +278,13 @@ def indv_create_rot(models, summary_pts, Bs, line_centers, chrs):
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         teeth = copy.deepcopy(model_cp.teeth)
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                rx,ry,rz = get_closest_possible_rotations(teeth[i.value],summary_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True)
+                rx,ry,rz = get_closest_possible_rotations(teeth[i.value],summary_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True, A, destination_pts)
                 tempGen.append(rx)
                 tempGen.append(ry)
                 tempGen.append(rz)
@@ -291,7 +295,7 @@ def indv_create_rot(models, summary_pts, Bs, line_centers, chrs):
     
     return np.array(tempGen)
 
-def indv_create_move(models, summary_pts,flat_pts, chrs):
+def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth):
     ArchCopy._clear()
     tempGen = []
     for m in models:
@@ -307,11 +311,13 @@ def indv_create_move(models, summary_pts,flat_pts, chrs):
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         flat_line = SplineKu(flat_pts[model_cp.arch_type])
         teeth = copy.deepcopy(model_cp.teeth)
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                mx,my,mz = get_closest_possible_movements(teeth[i.value],summary_line, flat_line,eigenvec,False,True)
+                mx,my,mz = get_closest_possible_movements(teeth[i.value],summary_line, flat_line,eigenvec,False,True,  A, destination_pts)
                 tempGen.append(chr[0])
                 tempGen.append(chr[1])
                 tempGen.append(chr[2])
@@ -322,7 +328,7 @@ def indv_create_move(models, summary_pts,flat_pts, chrs):
     
     return np.array(tempGen)
 
-def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, chrs):
+def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, chrs,  As, destination_tooth):
     ArchCopy._clear()
     tempGen = []
     for m in models:
@@ -339,11 +345,13 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
         flat_line = SplineKu(flat_pts[model_cp.arch_type])
         
         teeth = copy.deepcopy(model_cp.teeth)
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                rx,ry,rz,mx,my,mz = get_closest_possible_rotations_and_movements(teeth[i.value],summary_line, flat_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True)
+                rx,ry,rz,mx,my,mz = get_closest_possible_rotations_and_movements(teeth[i.value],summary_line, flat_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True,  A, destination_pts)
                 tempGen.append(rx)
                 tempGen.append(ry)
                 tempGen.append(rz)
@@ -362,7 +370,7 @@ def crossover(mutated, target, dims, cr):
     trial = [mutated[i] if p[i] < cr else target[i] for i in range(dims)]
     return trial
 
-def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs):
+def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
@@ -371,21 +379,21 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
     
-    myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0])
+    myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth)
     myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
     pop[-2]=myinit_indv_rot
     
-    myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0])
+    myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0],As, destination_tooth)
     myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
     pop[-3]=myinit_indv_mov
     
-    myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0])
+    myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0],As, destination_tooth)
     myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
     pop[-4]=myinit_indv_rot_mov
     
     # print("pop",pop)
     # evaluate initial population of candidate solutions
-    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers) for ind in pop]
+    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop]
     # print(obj_all)
     
     # find the best performing vector of initial population
@@ -413,9 +421,9 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             # trial = check_bounds(trial, bounds)
             
             # compute objective function value for target vector
-            obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[j],flats, summaries,Bs, line_centers)
+            obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[j],flats, summaries,Bs, line_centers,  As, destination_tooth)
             # compute objective function value for trial vector
-            obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, trial,flats, summaries,Bs, line_centers)
+            obj_trial = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, trial,flats, summaries,Bs, line_centers,  As, destination_tooth)
             # print("obj_trial",i,j,obj_trial, obj_target)
             # print(pop[j])
             # print(trial)
@@ -439,25 +447,8 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     # dilakukan de dan return models yang paling optimum
     # return de models yang paling optimum
 
-def de_optimization_coba(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs):
-    # initialise population of candidate solutions randomly within the specified bounds
-    pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
-    if(len(gen)>0):
-        pop[0]=gen
-    
-    myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0])
-    myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
-    
-    obj_indv = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, myinit_indv_mov, flats, summaries, Bs, line_centers)
-    
-    
-    
-    return [myinit_indv_mov, obj_indv]
-    
-    # dilakukan de dan return models yang paling optimum
-    # return de models yang paling optimum
 
-def start_de(models, flats, summaries, line_centers, Bs, gen):
+def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth):
     
     
     pop_size = 7
@@ -472,7 +463,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen):
     # define crossover rate for recombination
     cr = 0.7
     seconds_start = time.time()
-    solution = de_optimization_coba(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs)
+    solution = de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth)
     seconds_finish = time.time()
     print("waktu de opt", (seconds_finish-seconds_start),"detik")
     new_model = get_new_model(models, solution[0])

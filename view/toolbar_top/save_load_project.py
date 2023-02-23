@@ -19,6 +19,7 @@ from controller.import_data_controller import load_opt_model
 from controller.landmarking_controller import save_landmark, load_landmark
 from controller.segmentation_controller import save_segmentation, set_selected_arch, set_selected_label
 from controller.step_controller import change_step
+from controller.summary_controller import calculate_studi_model
 from utility.app_tool import get_saved_path
 
 from view.components.toolbar_top_section import ToolbarTopSection
@@ -87,6 +88,8 @@ def click_btn_load_landmark(self, type_arch):
         filenames = dlg.selectedFiles()
         print(filenames)
     load_landmark(self, type_arch, filenames[0])
+    calculate_studi_model(self)
+    
     
 def click_btn_load_project(self, e):
     dlg = QFileDialog()

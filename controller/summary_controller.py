@@ -1,5 +1,5 @@
 import numpy as np
-
+from sklearn.cluster import KMeans
 from vedo import Point, Sphere, CSpline, KSpline
 from constant.enums import ArchType, LandmarkType, ToothType
 from utility.arch import Arch
@@ -22,6 +22,8 @@ def init_summary(self):
     self.studi_model_summary_pts=None
     self.line_center_pts=None
     self.Bs_pts=None
+    self.As_pts=None
+    self.destination_tooth=None
 
 def calculate_studi_model(self):
     if(Arch._is_complete()):
@@ -35,10 +37,14 @@ def calculate_studi_model(self):
         self.carey_studi_model.calculate_carey(self.models)
         self.summary_flat_pts = calculate_flat_plane_points(self)
         # self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
-        self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts =calculate_bonwill(self)
+        self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts, self.As_pts =calculate_bonwill(self)
+        self.destination_tooth = calculate_destination_points(self)
         # print("self.studi_model_summary_pts")
         # print(self.studi_model_summary_pts)
         # print()
+
+def get_As_pts(self):
+    return self.As_pts 
 
 def get_Bs_pts(self):
     return self.Bs_pts    
@@ -48,6 +54,10 @@ def get_line_centers_pts(self):
         
 def get_studi_model_summary_pts(self):
     return self.studi_model_summary_pts
+
+def get_destination_tooth(self):
+    return self.destination_tooth
+
 
 def get_summary_flat_pts(self):
     return self.summary_flat_pts
@@ -191,24 +201,24 @@ def get_bonwill(u, model):
 
     # spl = SplineKu(titiks)
     
-    return titiks, [AA,GG], B
+    return titiks, [AA,GG], B, A
 
 
 def calculate_bonwill(self):
+    archwire = {}
+    center_line= {}
+    Bs={}
+    As={}
     if Arch._is_complete():
-        archwire = {}
-        center_line= {}
-        Bs={}
         for i in ArchType:
             idx = Arch._get_index_arch_type(i.value)
             mesh = self.models[idx].mesh
-            titiks, line_center, B = get_bonwill(mesh, self.models[idx])
+            titiks, line_center, B, A = get_bonwill(mesh, self.models[idx])
             archwire[i.value] = titiks
             center_line[i.value] = line_center
             Bs[i.value] = B
-        return archwire, center_line, Bs
-    else:
-        return {}, {}, {}
+            As[i.value] = A
+    return archwire, center_line, Bs, As
 
 
 def calculate_flat_plane_points(self):
@@ -488,6 +498,98 @@ def get_flat_plane_DEPRECATED(self): # deprecated
     else:
         return []
             
-            
+def calculate_destination_points(self):
+    model_destination = {}
+    As = get_As_pts(self)
+    studi_model_summary_pts = get_studi_model_summary_pts(self)
+    if(Arch._is_complete()):
+        for i in ArchType:
+            idx = Arch._get_index_arch_type(i.value)
+            arch = self.models[idx]
+            dest = get_destination_points(arch, SplineKu(studi_model_summary_pts[i.value]), As[i.value], arch.right_left_vec)
+            model_destination[i.value]=dest
+    return model_destination               
 
-    
+def get_spl_pts_through_sphere(sphere, spl, A):
+    # A = spl.getHalwayPoint()
+    temp_spl = spl.clone().extrude(1).triangulate()
+    inter = (sphere.intersectWith(temp_spl)).points()
+    inter_dst=[]
+    cls_pts = []
+    for p in inter:
+        cp = spl.closestPoint(p)
+        cls_pts.append(cp)
+        dis = find_distance_between_two_points(p,cp)
+        inter_dst.append(dis)
+    sk = KMeans(n_clusters=2,max_iter=20)
+    sk = sk.fit(inter)
+    label0dist=9999999
+    label1dist=9999999
+    label0pt=None
+    label1pt=None
+    for il in range(len(sk.labels_)):
+        if(sk.labels_[il]==1):
+            if(inter_dst[il]<label1dist):
+                label1dist = inter_dst[il]
+                label1pt=cls_pts[il]
+        else:
+            if(inter_dst[il]<label0dist):
+                label0dist = inter_dst[il]
+                label0pt=cls_pts[il]
+    if(find_distance_between_two_points(A,label0pt) < find_distance_between_two_points(A,label1pt)):
+        return [label0pt,label1pt]
+    else:
+        return [label1pt,label0pt]
+    # return mesial distal
+
+def get_destination_points(arch, spl, A, eig_right): #double sphere
+    teeth = arch.teeth
+    dests = {}
+    labels_strt = [7,6,5,4,3,2,1]
+    labels_end =  [8,9,10,11,12,13,14]
+    a_strt = A[:]
+    a_end = A[:]
+    eig_right_inv = (eig_right[:])*-1
+    for label in labels_strt:
+        if teeth[label]:
+            tooth = teeth[label]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_strt,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dis_mid = dst[1]
+            if(label == 7):
+                eig_l_m = np.dot(eig_right_inv, dst[0])
+                eig_l_d = np.dot(eig_right_inv, dst[1])
+                if(eig_l_m<eig_l_d):
+                    dis_mid =dst[0]
+                else:
+                    dis_mid =dst[1]
+            a_strt=dis_mid[:]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_strt,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dst.append(dis_mid)
+            a_strt=dst[1][:]
+            dests[label]= dst
+    for label in labels_end:
+        if teeth[label]:
+            tooth = teeth[label]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_end,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dis_mid = dst[1]
+            if(label == 7):
+                eig_r_m = np.dot(eig_right, dst[0])
+                eig_r_d = np.dot(eig_right, dst[1])
+                if(eig_r_m<eig_r_d):
+                    dis_mid =dst[0]
+                else:
+                    dis_mid =dst[1]
+            a_end=dis_mid[:]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_end,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dst.append(dis_mid)
+            a_end=dst[1][:]
+            dests[label]= dst
+    return dests
