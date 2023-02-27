@@ -463,6 +463,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
             res.append(target[i+4])
             res.append(target[i+5])
         i+=6
+    print("hasil untuk trial (custom_crossover)",res)
     return res
     
 
