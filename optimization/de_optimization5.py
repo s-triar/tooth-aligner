@@ -445,7 +445,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     ArchCopy._clear()
     res = []
     i=0
-    for k in zip(teeth_err_target_angle,teeth_err_target_dst):
+    for k in teeth_err_target_angle:
         if(teeth_err_mutated_angle[k]<teeth_err_target_angle[k]):
             res.append(mutated[i])
             res.append(mutated[i+1])
