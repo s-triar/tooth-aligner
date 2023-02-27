@@ -446,7 +446,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     res = []
     i=0
     for k in zip(teeth_err_target_angle,teeth_err_target_dst):
-        if(teeth_err_mutated_angle<teeth_err_target_angle):
+        if(teeth_err_mutated_angle[k]<teeth_err_target_angle[k]):
             res.append(mutated[i])
             res.append(mutated[i+1])
             res.append(mutated[i+2])
@@ -454,7 +454,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
             res.append(target[i])
             res.append(target[i+1])
             res.append(target[i+2])
-        if(teeth_err_mutated_dst<teeth_err_target_dst):
+        if(teeth_err_mutated_dst[k]<teeth_err_target_dst[k]):
             res.append(mutated[i+3])
             res.append(mutated[i+4])
             res.append(mutated[i+5])
