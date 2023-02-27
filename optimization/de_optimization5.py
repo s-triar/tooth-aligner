@@ -401,14 +401,18 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
+        angle_error={}
+        dst_error={}
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
-                teeth_err_mutated_angle[tooth_type] = error_top_view_angle+error_side_view_angle
-                teeth_err_mutated_dst[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
+                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+        teeth_err_mutated_angle[model_cp.arch_type] = angle_error
+        teeth_err_mutated_dst[model_cp.arch_type] = dst_error
                 
     ArchCopy._clear()
     
@@ -434,35 +438,40 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
+        angle_error={}
+        dst_error={}
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
-                teeth_err_target_angle[tooth_type] = error_top_view_angle+error_side_view_angle
-                teeth_err_target_dst[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
+                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+        teeth_err_target_angle[model_cp.arch_type] = angle_error
+        teeth_err_target_dst[model_cp.arch_type] = dst_error
     ArchCopy._clear()
     res = []
     i=0
-    for k in teeth_err_target_angle:
-        if(teeth_err_mutated_angle[k]<teeth_err_target_angle[k]):
-            res.append(mutated[i])
-            res.append(mutated[i+1])
-            res.append(mutated[i+2])
-        else:
-            res.append(target[i])
-            res.append(target[i+1])
-            res.append(target[i+2])
-        if(teeth_err_mutated_dst[k]<teeth_err_target_dst[k]):
-            res.append(mutated[i+3])
-            res.append(mutated[i+4])
-            res.append(mutated[i+5])
-        else:
-            res.append(target[i+3])
-            res.append(target[i+4])
-            res.append(target[i+5])
-        i+=6
+    for arctype in teeth_err_target_angle:
+        for k in teeth_err_target_angle[arctype]:
+            if(teeth_err_mutated_angle[arctype][k]<teeth_err_target_angle[arctype][k]):
+                res.append(mutated[i])
+                res.append(mutated[i+1])
+                res.append(mutated[i+2])
+            else:
+                res.append(target[i])
+                res.append(target[i+1])
+                res.append(target[i+2])
+            if(teeth_err_mutated_dst[arctype][k]<teeth_err_target_dst[arctype][k]):
+                res.append(mutated[i+3])
+                res.append(mutated[i+4])
+                res.append(mutated[i+5])
+            else:
+                res.append(target[i+3])
+                res.append(target[i+4])
+                res.append(target[i+5])
+            i+=6
     print("hasil untuk trial (custom_crossover)",res)
     return res
     
