@@ -151,7 +151,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                     
     return rot_x, rot_y, rot_z, mov_x, mov_y, mov_z
 
-def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_center, spl, eigvector, is_upper, is_spl_standalone, A, destination_pts):
+def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_center, spl, eigvector, is_upper, is_spl_standalone, A, destination_pts, for_cr=False):
     
     tooth_labels = get_tooth_labels()
     
@@ -239,11 +239,13 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     out_of_spl_err=out_of_spl_err*0.2
     mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.1
     mesial_distal_balance_err=mesial_distal_balance_err*0.7
+    if(for_cr):
+        return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
     
     
 
-def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eigvector, is_upper, is_spl_standalone, A, destination_pts):
+def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eigvector, is_upper, is_spl_standalone, A, destination_pts, for_cr=False):
     tooth_labels = get_tooth_labels()
     eig_up_down = eigvector[2]
     mesial = tooth.landmark_pt[LandmarkType.MESIAL.value]
@@ -316,6 +318,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     out_of_spl_err=out_of_spl_err*0.2
     mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.1
     mesial_distal_balance_err=mesial_distal_balance_err*0.7
+    if(for_cr):
+        return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
 
 def calculate_buccallabial_to_bonwill_line(tooth, spl, eigvector, is_upper, A, destination_pts):

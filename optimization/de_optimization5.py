@@ -370,6 +370,102 @@ def crossover(mutated, target, dims, cr):
     trial = [mutated[i] if p[i] < cr else target[i] for i in range(dims)]
     return trial
 
+def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_centers,  As, destination_tooth):
+    
+    teeth_err_mutated_angle = {}
+    teeth_err_target_angle = {}
+    teeth_err_mutated_dst = {}
+    teeth_err_target_dst = {}
+
+    model_upper_cp = None
+    model_lower_cp = None
+    ArchCopy._clear()
+    i=0
+    for m in models:
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+        if(m.arch_type == ArchType.UPPER.value):
+            model_upper_cp = model_cp
+        else:
+            model_lower_cp = model_cp
+    
+    models_cps=[model_upper_cp,model_lower_cp]
+    for model_cp in models_cps:
+        eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
+        model_cp= de_rotation_and_moving(model_cp, mutated[(i*(14*6)):(i+1)*(14*6)])
+        i+=1
+        teeth = copy.deepcopy(model_cp.teeth)
+        summary_line = SplineKu(summary_pts[model_cp.arch_type])
+        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        B = Bs[model_cp.arch_type]
+        line_center = line_centers[model_cp.arch_type]
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
+        for tooth_type in teeth:
+            if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
+                error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
+                error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
+                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
+                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                teeth_err_mutated_angle[tooth_type] = error_top_view_angle+error_side_view_angle
+                teeth_err_mutated_dst[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+                
+    ArchCopy._clear()
+    
+    ArchCopy._clear()
+    i=0
+    for m in models:
+        eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+        model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+        if(m.arch_type == ArchType.UPPER.value):
+            model_upper_cp = model_cp
+        else:
+            model_lower_cp = model_cp
+    
+    models_cps=[model_upper_cp,model_lower_cp]
+    for model_cp in models_cps:
+        eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
+        model_cp= de_rotation_and_moving(model_cp, target[(i*(14*6)):(i+1)*(14*6)])
+        i+=1
+        teeth = copy.deepcopy(model_cp.teeth)
+        summary_line = SplineKu(summary_pts[model_cp.arch_type])
+        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        B = Bs[model_cp.arch_type]
+        line_center = line_centers[model_cp.arch_type]
+        A = As[model_cp.arch_type]
+        destination_pts = destination_tooth[model_cp.arch_type]
+        for tooth_type in teeth:
+            if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
+                error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
+                error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
+                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
+                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                teeth_err_target_angle[tooth_type] = error_top_view_angle+error_side_view_angle
+                teeth_err_target_dst[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+    ArchCopy._clear()
+    res = []
+    i=0
+    for k in zip(teeth_err_target_angle,teeth_err_target_dst):
+        if(teeth_err_mutated_angle<teeth_err_target_angle):
+            res.append(mutated[i])
+            res.append(mutated[i+1])
+            res.append(mutated[i+2])
+        else:
+            res.append(target[i])
+            res.append(target[i+1])
+            res.append(target[i+2])
+        if(teeth_err_mutated_dst<teeth_err_target_dst):
+            res.append(mutated[i+3])
+            res.append(mutated[i+4])
+            res.append(mutated[i+5])
+        else:
+            res.append(target[i+3])
+            res.append(target[i+4])
+            res.append(target[i+5])
+        i+=6
+    return res
+    
+
 def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
@@ -416,7 +512,9 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             mutated = check_bounds(mutated, bounds)
             # perform crossover
             # print("crossover", "j", j)
-            trial = crossover(mutated, pop[j], len(bounds), cr)
+            # trial = crossover(mutated, pop[j], len(bounds), cr)
+            
+            trial = custom_crossover(models, mutated, pop[j],  flats, summaries, Bs, line_centers,  As, destination_tooth)
             
             # trial = check_bounds(trial, bounds)
             
