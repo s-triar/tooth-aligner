@@ -96,6 +96,76 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
     a_strt = A[:]
     a_end = A[:]
     eig_right_inv = (eig_right[:])*-1
+    print("eigen")
+    print(eig_right)
+    print(eig_right_inv)
+    for label in labels_strt:
+        if teeth[label]:
+            tooth = teeth[label]
+            print(tooth.label)
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_strt,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dis_mid = dst[1]
+            if(label == 7):
+                eig_l_m = np.dot(eig_right_inv, dst[0])
+                eig_l_d = np.dot(eig_right_inv, dst[1])
+                if(eig_l_m<eig_l_d):
+                    dis_mid =dst[0]
+                else:
+                    dis_mid =dst[1]
+            a_strt=dis_mid[:]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_strt,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dst.append(dis_mid)
+            a_strt=dst[1][:]
+            dests[label]= dst
+            # if(arch.arch_type == ArchType.UPPER.value):
+            #     sph = Sphere(a_strt,r=1.5)
+            #     yy = get_spl_pts_through_sphere(sph, spl, A)
+            #     a_strt=yy[1][:]
+            print(dests)
+    for label in labels_end:
+        if teeth[label]:
+            tooth = teeth[label]
+            print(tooth.label)
+            
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_end,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dis_mid = dst[1]
+            if(label == 7):
+                eig_r_m = np.dot(eig_right, dst[0])
+                eig_r_d = np.dot(eig_right, dst[1])
+                if(eig_r_m<eig_r_d):
+                    dis_mid =dst[0]
+                else:
+                    dis_mid =dst[1]
+            a_end=dis_mid[:]
+            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            sph = Sphere(a_end,r=rf/2)
+            dst = get_spl_pts_through_sphere(sph, spl, A)
+            dst.append(dis_mid)
+            a_end=dst[1][:]
+            dests[label]= dst
+            # if(arch.arch_type == ArchType.UPPER.value):
+            #     sph = Sphere(a_strt,r=1.5)
+            #     yy = get_spl_pts_through_sphere(sph, spl, A)
+            #     a_strt=yy[1][:]
+            print(dests)
+            
+    return dests
+
+def get_destination_points_depre(arch, spl, A, eig_right): #double sphere
+    print(spl.points())
+    teeth = arch.teeth
+    dests = {}
+    labels_strt = [7,6,5,4,3,2,1]
+    labels_end =  [8,9,10,11,12,13,14]
+    a_strt = A[:]
+    a_end = A[:]
+    eig_right_inv = (eig_right[:])*-1
     for label in labels_strt:
         if teeth[label]:
             tooth = teeth[label]
@@ -117,9 +187,9 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_strt=dst[1][:]
             dests[label]= dst
-            sph = Sphere(a_strt,r=0.5)
-            yy = get_spl_pts_through_sphere(sph, spl, A)
-            a_strt=yy[1][:]
+            # sph = Sphere(a_strt,r=0.5)
+            # yy = get_spl_pts_through_sphere(sph, spl, A)
+            # a_strt=yy[1][:]
     for label in labels_end:
         if teeth[label]:
             tooth = teeth[label]
@@ -127,7 +197,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             sph = Sphere(a_end,r=rf/2)
             dst = get_spl_pts_through_sphere(sph, spl, A)
             dis_mid = dst[1]
-            if(label == 7):
+            if(label == 8):
                 eig_r_m = np.dot(eig_right, dst[0])
                 eig_r_d = np.dot(eig_right, dst[1])
                 if(eig_r_m<eig_r_d):
@@ -141,9 +211,10 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_end=dst[1][:]
             dests[label]= dst
-            sph = Sphere(a_strt,r=0.5)
-            yy = get_spl_pts_through_sphere(sph, spl, A)
-            a_strt=yy[1][:]
+            # sph = Sphere(a_strt,r=0.5)
+            # yy = get_spl_pts_through_sphere(sph, spl, A)
+            # a_strt=yy[1][:]
+    print(dests)
     return dests
 
             
@@ -165,16 +236,16 @@ cls_mesial, cls_distal =get_closest_to_mesial_distal(model.teeth,spl,B)
 cls_mesial4, cls_distal4 =get_closest_to_mesial_distal(model4.teeth,spl,B4)
 
 ptd = cls_distal[14]
-rf = find_distance_between_two_points(cls_mesial[14].points()[0], ptd.points()[0])
-print(rf)
-sph = Sphere(ptd.points()[0],r=rf)
+# rf = find_distance_between_two_points(cls_mesial[14].points()[0], ptd.points()[0])
+# print(rf)
+# sph = Sphere(ptd.points()[0],r=rf)
 
 # ptthr = get_spl_pts_through_sphere(sph, spl)
 
 # cmid = Point(ptthr[0],c="yellow",r=20)
 # fmid = Point(ptthr[1],c="green",r=20)
 
-sph.alpha(0.3)
+# sph.alpha(0.3)
 
 destinations_pts = get_destination_points(model, spl, A, model.right_left_vec)
 destinations_line = []
