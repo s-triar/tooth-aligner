@@ -563,7 +563,14 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_tooth = 14
     n_chromosome = 6
     individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
+    # individu_bounds= [[-0.5, 0.5],
+    #             [-0.5, 0.5],
+    #             [-0.5, 0.5],
+    #             [-0.3, 0.3],
+    #             [-0.3, 0.3],
+    #             [-0.3, 0.3]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
+    
     # define number of iterations
     iter = 15
     # define scale factor for mutation
