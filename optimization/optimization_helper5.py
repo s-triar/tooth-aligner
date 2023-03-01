@@ -8,7 +8,7 @@ import copy
 
 INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 10
 BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 500 #sudut
-DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 15
+DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 1
 
 
 DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 1
@@ -228,13 +228,14 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         # anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
         # spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
     
-    angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt])
+    angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
     
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
-        mesial_distal_balance_err=3.14*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
-        print(tooth.label,"ada NaN")
+        # mesial_distal_balance_err=3.14*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
+        mesial_distal_balance_err=90*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
+        print(tooth.label,"ada NaN", [anchor,ext],[anchor,spl_pt])
     # print("calculate_mesiodistal_balance_to_bonwill_line_from_top_view",tooth.label ,out_of_spl_err,mesial_distal_to_spl_err,mesial_distal_balance_err)
     out_of_spl_err=out_of_spl_err*0.2
     mesial_distal_to_spl_err=mesial_distal_to_spl_err*1   #0.1
@@ -311,8 +312,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     
     
-    angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real])
-    angle = abs((math.pi/2)-angle)
+    angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+    # angle = abs((math.pi/2)-angle)
+    angle = abs(90-angle)
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     out_of_spl_err=out_of_spl_err*0.2
