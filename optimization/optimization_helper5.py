@@ -238,7 +238,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         print(tooth.label,"ada NaN", [anchor,ext],[anchor,spl_pt])
     # print("calculate_mesiodistal_balance_to_bonwill_line_from_top_view",tooth.label ,out_of_spl_err,mesial_distal_to_spl_err,mesial_distal_balance_err)
     out_of_spl_err=out_of_spl_err*0.2
-    mesial_distal_to_spl_err=mesial_distal_to_spl_err*1   #0.1
+    mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.5   #0.1
     mesial_distal_balance_err=mesial_distal_balance_err*0.7
     if(for_cr):
         return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
@@ -318,7 +318,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     out_of_spl_err=out_of_spl_err*0.2
-    mesial_distal_to_spl_err=mesial_distal_to_spl_err*1  #0.1
+    mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.5  #0.1
     mesial_distal_balance_err=mesial_distal_balance_err*0.7
     if(for_cr):
         return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
