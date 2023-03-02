@@ -202,8 +202,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     
     
     
-    temp_mes += abs(mesial_to_spl)
-    temp_dis += abs(distal_to_spl)
+    temp_mes = abs(mesial_to_spl)
+    temp_dis = abs(distal_to_spl)
     # mesial_distal_to_spl_err += abs(mesial_to_spl)
     # mesial_distal_to_spl_err += abs(distal_to_spl)
     mesial_distal_to_spl_err += abs(temp_mes-temp_dis)
@@ -309,8 +309,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     mesial_to_spl = find_distance_between_two_points(mesial2d,closest_spl_mesial2d)
     distal_to_spl = find_distance_between_two_points(distal2d,closest_spl_distal2d)
     
-    temp_mes += abs(mesial_to_spl)
-    temp_dis += abs(distal_to_spl)
+    temp_mes = abs(mesial_to_spl)
+    temp_dis = abs(distal_to_spl)
     # mesial_distal_to_spl_err += abs(mesial_to_spl)
     # mesial_distal_to_spl_err += abs(distal_to_spl)
     mesial_distal_to_spl_err += abs(temp_mes-temp_dis)
