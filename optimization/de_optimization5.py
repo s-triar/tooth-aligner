@@ -409,7 +409,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
-                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle+error_top_view_dst
+                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
                 dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
         teeth_err_mutated_angle[model_cp.arch_type] = angle_error
         teeth_err_mutated_dst[model_cp.arch_type] = dst_error
@@ -446,7 +446,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
-                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle+error_top_view_dst
+                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
                 dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
         teeth_err_target_angle[model_cp.arch_type] = angle_error
         teeth_err_target_dst[model_cp.arch_type] = dst_error
@@ -590,7 +590,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
-    iter = 15
+    iter = 30
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
