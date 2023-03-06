@@ -579,14 +579,14 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     pop_size = 7
     n_tooth = 14
     n_chromosome = 6
-    # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
-    individu_bounds= [
-                [-0.5, 0.5],
-                [-0.5, 0.5],
-                [-0.5, 0.5],
-                [-0.1, 0.1],
-                [-0.1, 0.1],
-                [-0.1, 0.1]]*n_tooth*2
+    individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
+    # individu_bounds= [
+    #             [-0.5, 0.5],
+    #             [-0.5, 0.5],
+    #             [-0.5, 0.5],
+    #             [-0.1, 0.1],
+    #             [-0.1, 0.1],
+    #             [-0.1, 0.1]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
