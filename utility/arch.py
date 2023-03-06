@@ -31,11 +31,12 @@ class Arch():
         return idx
         
     # class
-    def __init__(self, arch_type:ArchType, mesh, teeth=None) -> None:
-        if(arch_type not in Arch.ids):
-            Arch.ids.append(arch_type)
-        else:
-            raise Exception("Duplicate id on class Model")
+    def __init__(self, arch_type:ArchType, mesh, teeth=None, test=False) -> None:
+        if(test==False):
+            if(arch_type not in Arch.ids):
+                Arch.ids.append(arch_type)
+            else:
+                raise Exception("Duplicate id on class Model")
         self.arch_type = arch_type
         self.mesh = mesh
         self.right_left_vec = None

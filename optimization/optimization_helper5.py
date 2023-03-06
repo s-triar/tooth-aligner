@@ -182,7 +182,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         B_mesial2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[central_mesial_pt])[0]
         B_distal2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[central_distal_pt])[0]
     
-    
+    # print(distal, distal2d)
     out_of_spl_err = 0
     mesial_distal_to_spl_err=0
     mesial_distal_balance_err=0 #sudut
@@ -212,29 +212,32 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     check_same_in_or_out_spl = ((mesial_to_center-mesial_spl_to_center) < 0 and (distal_to_center-distal_spl_to_center)<0) or ((mesial_to_center-mesial_spl_to_center) >= 0 and (distal_to_center-distal_spl_to_center)>=0) 
     if(check_same_in_or_out_spl == True):
         if(mesial_to_spl < distal_to_spl):
-            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl-distal_to_spl)    
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,distal_to_spl-mesial_to_spl)    
             anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
             spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
+            
+            # anchor=closest_spl_mesial[:]
+            # spl_pt=closest_spl_distal[:]
         else:
-            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_mesial2d,mesial2d,distal_to_spl-mesial_to_spl)    
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_mesial2d,mesial2d,mesial_to_spl-distal_to_spl)    
             anchor = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
             spl_pt = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
     else:
         if(mesial_to_spl < distal_to_spl):
-            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl-distal_to_spl)    
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,distal_to_spl-mesial_to_spl)    
             anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
             spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
         else:
-            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_mesial2d,mesial2d,distal_to_spl-mesial_to_spl)    
+            ext = find_new_point_in_a_line_with_delta_distance(closest_spl_mesial2d,mesial2d,mesial_to_spl-distal_to_spl)    
             anchor = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
             spl_pt = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
         # ext = find_new_point_in_a_line_with_delta_distance(closest_spl_distal2d,distal2d,mesial_to_spl)
         # ext = np.array([ext[0],ext[1]])
         # anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
         # spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
-    
+    # ext=ext[:-1]
     angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
-    
+    # print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
@@ -322,7 +325,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
     # angle = abs((math.pi/2)-angle)
+    # print("angle tegak lurus", angle)
     angle = abs(90-angle)
+    # print("angle tegak lurus with 90", angle)
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     out_of_spl_err=out_of_spl_err*0.2
