@@ -590,7 +590,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
-    iter = 30
+    iter = 15
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
