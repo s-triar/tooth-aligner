@@ -133,30 +133,30 @@ for lbl in destinations_pts:
         calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_step, spl, eigenvec, True, True, A, destinations_pts, for_cr=False)
 
 line1 = [
-    [-11.05046568,  -2.83203368],
-    [-13.40785799,  -2.72762902]
+    [10.67364701, -9.11792534],
+    [10.41279467, -8.90876097]
 ]
 
 line2 = [
-    [-11.05046568,  -2.83203368],
-    [-7.60253077, -3.8774146 ]
+    [10.67364701, -9.11792534],
+    [6.71067934, -8.13429176]
 ]
 
 ln1 = Line(line1[0],line1[1],lw=4,c='green')
 ln2 = Line(line2[0],line2[1],lw=4,c='violet')
 
 linee1 = [
-    [-11.05046568,  -2.83203368],
-    [-11.16532732,  -3.65586786]
+    [10.67364701, -9.11792534],
+    [10.68048122, -8.54920956]
 ]
 
 linee2 = [
-   [-11.05046568,  -2.83203368],
-    [-7.60253077, -3.8774146 ]
+   [10.67364701, -9.11792534],
+    [6.71067934, -8.13429176 ]
     
 ]
 
-lne1 = Line(linee1[0],linee1[1],lw=4,c='yellow')
+lne1 = Line(linee1[0],linee1[1],lw=4,c='red')
 lne2 = Line(linee2[0],linee2[1],lw=4,c='violet')
 
 plt = Plotter(N=3)

@@ -192,11 +192,15 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     mesial_spl_to_center = find_distance_between_two_points(closest_spl_mesial2d,B_mesial2d)
     distal_spl_to_center = find_distance_between_two_points(closest_spl_distal2d,B_distal2d)
     
+    # print("+++++++++++++++++++++++++++")
+    # print(mesial_to_center, distal_to_center)
+    # print(mesial_spl_to_center, distal_spl_to_center)
+    
     # is_upper jika spl bukan standalone
     out_of_spl_err += 0 if (mesial_to_center-mesial_spl_to_center)<0 else abs(mesial_to_center-mesial_spl_to_center)
     out_of_spl_err += 0 if (distal_to_center-distal_spl_to_center)<0 else abs(distal_to_center-distal_spl_to_center)
     out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
-    
+    # print(out_of_spl_err)
     mesial_to_spl = find_distance_between_two_points(mesial2d,closest_spl_mesial2d)
     distal_to_spl = find_distance_between_two_points(distal2d,closest_spl_distal2d)
     
@@ -237,7 +241,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         # spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
     # ext=ext[:-1]
     angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
-    print("angle", angle, [anchor,ext],[anchor,spl_pt])
+    # print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
@@ -259,8 +263,10 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     eig_up_down = eigvector[2]
     mesial = tooth.landmark_pt[LandmarkType.MESIAL.value]
     distal = tooth.landmark_pt[LandmarkType.DISTAL.value]
-    buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
+    # buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
+    
     # point_between_mesial_distal_to_buccallabial = find_closest_point_between_a_point_and_a_line(buccal_labial,[mesial,distal])
+    point_between_mesial_distal_to_buccallabial = find_closest_point_between_a_point_and_a_line(destination_pts[tooth.label][2],[mesial,distal])
     # closest_spl_mesial = spl.closestPoint(mesial)
     # closest_spl_distal = spl.closestPoint(distal)
     # closest_spl_buccallabial, closest_ln_buccallabial  = spl.closestPointToAline([buccal_labial, point_between_mesial_distal_to_buccallabial],isAwal=(tooth.label>7))
@@ -268,12 +274,14 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     closest_spl_distal = destination_pts[tooth.label][1]
     closest_spl_buccallabial = destination_pts[tooth.label][2]
     
-    
+    mesial_distal_balance_err=0 #sudut
+    kto=0
     
     if(tooth.label in tooth_labels['anterior'] or tooth.label in tooth_labels['canine']):
         mesial2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[distal])[0]
-        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[buccal_labial])[0]
+        # buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[buccal_labial])[0]
+        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0]
         closest_spl_buccallabial2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_buccallabial])[0]
         closest_spl_mesial2d =convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_mesial])[0]
         closest_spl_distal2d =convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_distal])[0]
@@ -281,12 +289,18 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         buccal_labial2d_real = np.array([buccal_labial2d[0],buccal_labial2d[2]])
         closest_spl_buccallabial2d_real = np.array([closest_spl_buccallabial2d[0],closest_spl_buccallabial2d[2]])
         closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[2]])
+      
+        angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        # angle = abs((math.pi/2)-angle)
+        angle = abs(90-angle)
+        mesial_distal_balance_err+=angle  
+        kto+=1
         
-        
-    elif(tooth.label in tooth_labels['posterior']): #posterior
+    if(tooth.label in tooth_labels['posterior'] or tooth.label in tooth_labels['canine']): #posterior
         mesial2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[distal])[0]
-        buccal_labial2d=convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[buccal_labial])[0]
+        # buccal_labial2d=convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[buccal_labial])[0]
+        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0]
         closest_spl_buccallabial2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_buccallabial])[0]
         closest_spl_mesial2d =convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_mesial])[0]
         closest_spl_distal2d =convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_distal])[0]
@@ -295,20 +309,34 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         closest_spl_buccallabial2d_real = np.array([closest_spl_buccallabial2d[1],closest_spl_buccallabial2d[2]])
         closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[1],closest_spl_mesial2d[2]])
         
+        angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        # angle = abs((math.pi/2)-angle)
+        angle = abs(90-angle)
+        mesial_distal_balance_err+=angle
+        kto+=1
+    
+    
+    mesial_distal_balance_err= mesial_distal_balance_err/kto
+        
+    
     out_of_spl_err = 0
     mesial_distal_to_spl_err=0
-    mesial_distal_balance_err=0 #sudut
+   
     
-    mesial_to_upper = np.dot(mesial2d,eig_up_down)
-    distal_to_upper = np.dot(distal2d,eig_up_down)
-    mesial_spl_to_upper = np.dot(closest_spl_mesial2d,eig_up_down)
-    distal_spl_to_upper = np.dot(closest_spl_distal2d,eig_up_down)
+    mesial_to_upper = np.dot(mesial,eig_up_down)
+    distal_to_upper = np.dot(distal,eig_up_down)
+    mesial_spl_to_upper = np.dot(closest_spl_mesial,eig_up_down)
+    distal_spl_to_upper = np.dot(closest_spl_distal,eig_up_down)
+    
+    # print("----------------------------------")
+    # print(mesial_to_upper, distal_to_upper)
+    # print(mesial_spl_to_upper, distal_spl_to_upper)
     
     # is_upper jika spl bukan standalone
     out_of_spl_err += 0 if mesial_to_upper < mesial_spl_to_upper else abs(mesial_to_upper-mesial_spl_to_upper)
     out_of_spl_err += 0 if distal_to_upper < distal_spl_to_upper else abs(distal_to_upper-distal_spl_to_upper)
     out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
-    
+    # print(out_of_spl_err)
     mesial_to_spl = find_distance_between_two_points(mesial2d,closest_spl_mesial2d)
     distal_to_spl = find_distance_between_two_points(distal2d,closest_spl_distal2d)
     
@@ -323,12 +351,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     
     
-    angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
-    # angle = abs((math.pi/2)-angle)
-    print("angle tegak lurus", angle, [closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real])
-    angle = abs(90-angle)
-    print("angle tegak lurus with 90", angle)
-    mesial_distal_balance_err+=angle
+    
     mesial_distal_balance_err*=(BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT*0.5)
     out_of_spl_err=out_of_spl_err*0.2
     mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.1
