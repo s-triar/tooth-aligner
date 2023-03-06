@@ -86,8 +86,8 @@ def load_ld(model, filename, typearch):
 ori = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
 path_ld_ori = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
 
-n_step = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_bonwill_update_bounds_to_05\\Gerry Sihaj\\step_15\\Gerry Sihaj_UPPER__step_15.vtp')
-path_ld_step = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_bonwill_update_bounds_to_05\\Gerry Sihaj\\step_15\\Gerry Sihaj_landmark_UPPER__step_15.csv'
+n_step = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj\\step_15\\Gerry Sihaj_UPPER__step_15.vtp')
+path_ld_step = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj\\step_15\\Gerry Sihaj_landmark_UPPER__step_15.csv'
 
 
 model = Arch(ArchType.UPPER.value,ori, test=True)
@@ -133,26 +133,26 @@ for lbl in destinations_pts:
         calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_step, spl, eigenvec, True, True, A, destinations_pts, for_cr=False)
 
 line1 = [
-    [ -7.60253077, -26.6681197 ],
-    [-11.02172594, -13.14923084]
+    [-11.05046568,  -2.83203368],
+    [-13.40785799,  -2.72762902]
 ]
 
 line2 = [
-    [ -7.60253077, -26.6681197 ],
-    [-14.12951  , -21.8338383]
+    [-11.05046568,  -2.83203368],
+    [-7.60253077, -3.8774146 ]
 ]
 
 ln1 = Line(line1[0],line1[1],lw=4,c='green')
 ln2 = Line(line2[0],line2[1],lw=4,c='violet')
 
 linee1 = [
-    [ -7.60253077, -26.6681197 ],
-    [-5.65052735, -18.64965472]
+    [-11.05046568,  -2.83203368],
+    [-11.16532732,  -3.65586786]
 ]
 
 linee2 = [
-    [ -7.60253077, -26.6681197 ],
-    [-14.12951  , -21.8338383]
+   [-11.05046568,  -2.83203368],
+    [-7.60253077, -3.8774146 ]
     
 ]
 

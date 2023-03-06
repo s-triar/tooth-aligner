@@ -237,7 +237,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         # spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
     # ext=ext[:-1]
     angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
-    # print("angle", angle, [anchor,ext],[anchor,spl_pt])
+    print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
@@ -325,11 +325,11 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
     # angle = abs((math.pi/2)-angle)
-    # print("angle tegak lurus", angle)
+    print("angle tegak lurus", angle, [closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real])
     angle = abs(90-angle)
-    # print("angle tegak lurus with 90", angle)
+    print("angle tegak lurus with 90", angle)
     mesial_distal_balance_err+=angle
-    mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
+    mesial_distal_balance_err*=(BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT*0.5)
     out_of_spl_err=out_of_spl_err*0.2
     mesial_distal_to_spl_err=mesial_distal_to_spl_err*0.1
     mesial_distal_balance_err=mesial_distal_balance_err*0.7
