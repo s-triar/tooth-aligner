@@ -296,7 +296,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         mesial_distal_balance_err+=angle  
         kto+=1
         
-    if(tooth.label in tooth_labels['posterior'] or tooth.label in tooth_labels['canine']): #posterior
+    if(tooth.label in tooth_labels['posterior']): #posterior
         mesial2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[distal])[0]
         # buccal_labial2d=convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[buccal_labial])[0]
