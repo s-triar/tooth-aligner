@@ -240,9 +240,13 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         # anchor = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[1]])
         # spl_pt = np.array([closest_spl_distal2d[0],closest_spl_distal2d[1]])
     # ext=ext[:-1]
-    angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
+    line_spl = [closest_spl_mesial2d, closest_spl_distal2d]
+    line_tooth_md = [mesial2d, distal2d]
+    # angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
+    angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
     # print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
+    print("up:",mesial_distal_balance_err)
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
         # mesial_distal_balance_err=3.14*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
@@ -263,10 +267,10 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     eig_up_down = eigvector[2]
     mesial = tooth.landmark_pt[LandmarkType.MESIAL.value]
     distal = tooth.landmark_pt[LandmarkType.DISTAL.value]
-    buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
+    # buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
     
     # point_between_mesial_distal_to_buccallabial = find_closest_point_between_a_point_and_a_line(buccal_labial,[mesial,distal])
-    # point_between_mesial_distal_to_buccallabial = find_closest_point_between_a_point_and_a_line(destination_pts[tooth.label][2],[mesial,distal])
+    point_between_mesial_distal_to_buccallabial = find_closest_point_between_a_point_and_a_line(destination_pts[tooth.label][2],[mesial,distal])
     # closest_spl_mesial = spl.closestPoint(mesial)
     # closest_spl_distal = spl.closestPoint(distal)
     # closest_spl_buccallabial, closest_ln_buccallabial  = spl.closestPointToAline([buccal_labial, point_between_mesial_distal_to_buccallabial],isAwal=(tooth.label>7))
@@ -280,8 +284,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     if(tooth.label in tooth_labels['anterior'] or tooth.label in tooth_labels['canine']):
         mesial2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[distal])[0]
-        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[buccal_labial])[0]
-        # buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0] #jadi rusak geraknya
+        # buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[buccal_labial])[0]
+        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0] #jadi rusak geraknya
         closest_spl_buccallabial2d = convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_buccallabial])[0]
         closest_spl_mesial2d =convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_mesial])[0]
         closest_spl_distal2d =convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[closest_spl_distal])[0]
@@ -299,8 +303,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     if(tooth.label in tooth_labels['posterior'] or tooth.label in tooth_labels['canine']): #posterior
         mesial2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[mesial])[0]
         distal2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[distal])[0]
-        buccal_labial2d=convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[buccal_labial])[0]
-        # buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0] #jadi rusak geraknya
+        # buccal_labial2d=convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[buccal_labial])[0]
+        buccal_labial2d=convert_to_2d(FaceTypeConversion.FRONT.value,eigvector,[point_between_mesial_distal_to_buccallabial])[0] #jadi rusak geraknya
         closest_spl_buccallabial2d = convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_buccallabial])[0]
         closest_spl_mesial2d =convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_mesial])[0]
         closest_spl_distal2d =convert_to_2d(FaceTypeConversion.LEFT.value,eigvector,[closest_spl_distal])[0]
@@ -317,7 +321,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     
     
     mesial_distal_balance_err= mesial_distal_balance_err/kto
-        
+    print("side:",mesial_distal_balance_err)    
     
     out_of_spl_err = 0
     mesial_distal_to_spl_err=0

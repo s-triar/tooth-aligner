@@ -107,7 +107,7 @@ flats = get_flats(model)
 
 
 
-lbl_target=10
+lbl_target=8
 pts_ori=[]
 pts_step=[]
 teeth_ori = model.teeth
