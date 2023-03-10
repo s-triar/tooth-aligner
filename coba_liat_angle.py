@@ -86,8 +86,8 @@ def load_ld(model, filename, typearch):
 ori = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
 path_ld_ori = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
 
-n_step = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj\\step_15\\Gerry Sihaj_UPPER__step_15.vtp')
-path_ld_step = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj\\step_15\\Gerry Sihaj_landmark_UPPER__step_15.csv'
+n_step = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj 05 01 update angle\\step_15\\Gerry Sihaj_UPPER__step_15.vtp')
+path_ld_step = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_custom_crossover\\Gerry Sihaj 05 01 update angle\\step_15\\Gerry Sihaj_landmark_UPPER__step_15.csv'
 
 
 model = Arch(ArchType.UPPER.value,ori, test=True)
@@ -107,7 +107,7 @@ flats = get_flats(model)
 
 
 
-lbl_target=8
+lbl_target=10
 pts_ori=[]
 pts_step=[]
 teeth_ori = model.teeth
