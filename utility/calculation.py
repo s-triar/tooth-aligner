@@ -47,7 +47,23 @@ def get_angle_from_2_2d_lines(lineA, lineB, is_return_degree=False):
         return math.degrees(angle) #0-180
     else:
         return angle
-    
+
+def get_angle_from_2_2d_lines_tan(lineA, lineB, is_return_degree=False):
+    dimension = len(lineA[0])
+    vA = [lineA[1][i] - lineA[0][i] for i in range(dimension)]
+    vB = [lineB[1][i] - lineB[0][i] for i in range(dimension)]
+    # print(vA,vB)
+    mm1 = (lineA[1][0]-lineA[0][0])
+    mm2 = (lineB[1][0]-lineB[0][0])
+    m1 = (lineA[1][1]-lineA[0][1]) / (mm1 if mm1 != 0 else 0.000000001)
+    m2 = (lineB[1][1]-lineB[0][1]) / (mm2 if mm2 != 0 else 0.000000001)
+    # print(m1,m2)
+    tantheta = (m2-m1)/(1+(m2*m1))
+    # print(tantheta)
+    angle = math.atan(tantheta)
+    if( is_return_degree):
+        return abs(math.degrees(angle))
+    return abs(angle)
     
 
 def find_distance_between_two_points(pt1,pt2):

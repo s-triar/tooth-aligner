@@ -1,6 +1,6 @@
 
 from constant.enums import LandmarkType, ToothType
-from utility.calculation import FaceTypeConversion, convert_to_2d, find_closest_point_between_a_point_and_a_line, find_distance_between_two_points, find_new_point_in_a_line_with_delta_distance, get_angle_from_2_2d_lines
+from utility.calculation import FaceTypeConversion, convert_to_2d, find_closest_point_between_a_point_and_a_line, find_distance_between_two_points, find_new_point_in_a_line_with_delta_distance, get_angle_from_2_2d_lines, get_angle_from_2_2d_lines_tan
 from utility.tooth_label import get_tooth_labels
 import numpy as np
 import math
@@ -243,7 +243,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     line_spl = [closest_spl_mesial2d, closest_spl_distal2d]
     line_tooth_md = [mesial2d, distal2d]
     # angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
-    angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
+    # angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
+    # angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
+    angle = get_angle_from_2_2d_lines_tan(line_spl,line_tooth_md,True)
     # print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
     print("up:",mesial_distal_balance_err)

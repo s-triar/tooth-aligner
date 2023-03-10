@@ -43,19 +43,40 @@ def get_angle_from_2_2d_lines2(lineA, lineB, is_return_degree=False):
         return math.degrees(angle)   
     return angle
     
+def get_angle_from_2_2d_lines3(lineA, lineB, is_return_degree=False):
+    dimension = len(lineA[0])
+    vA = [lineA[1][i] - lineA[0][i] for i in range(dimension)]
+    vB = [lineB[1][i] - lineB[0][i] for i in range(dimension)]
+    print(vA,vB)
+    mm1 = (lineA[1][0]-lineA[0][0])
+    mm2 = (lineB[1][0]-lineB[0][0])
+    m1 = (lineA[1][1]-lineA[0][1]) / (mm1 if mm1 != 0 else 0.000000001)
+    m2 = (lineB[1][1]-lineB[0][1]) / (mm2 if mm2 != 0 else 0.000000001)
+    print(m1,m2)
+    tantheta = (m2-m1)/(1+(m2*m1))
+    print(tantheta)
+    angle = math.atan(tantheta)
+    if( is_return_degree):
+        return abs(math.degrees(angle))
+    return abs(angle)
 
 line1 = [
-    [ -7.60253077, -26.6681197 ],
-    [-12.59588703, -21.25790398]
+    [-5,3],
+    [4,-1]
 ]
 
 line2 = [
-   [ -7.60253077, -25.6681197 ],
-    [-12.59588703, -20.25790398]
+    [ 1,1],
+    [1,4],
+    
+   
+    
 ]
 
 r = get_angle_from_2_2d_lines(line1,line2,True)
 
 r2 = get_angle_from_2_2d_lines2(line1,line2,True)
 
-print(r,r2)
+r3 = get_angle_from_2_2d_lines3(line1,line2,True)
+
+print(r,r2,r3)
