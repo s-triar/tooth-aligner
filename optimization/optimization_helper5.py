@@ -297,6 +297,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[0],closest_spl_mesial2d[2]])
       
         angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        angle = angle if angle <= 90 else angle - 90
         # angle = abs((math.pi/2)-angle)
         angle = abs(90-angle)
         mesial_distal_balance_err+=angle  
