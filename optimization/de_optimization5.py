@@ -15,6 +15,8 @@ import math
 
 from utility.splineku import SplineKu
 import time
+from utility.tooth_label import get_tooth_label_flat
+
     
     
     
@@ -189,7 +191,15 @@ def mutation(x, F): # DE/rand/1
 
 def mutation_best(xb, x, F): #DE/best/1
     return xb + F * (x[0] - x[1])
-    
+
+def mutation_best_1(xb, x, F): #DE/best/1
+    return xb + F * (x[0] + x[1])
+
+def mutation_best_2(xb, x, F): #DE/best/1
+    return xb - F * (x[0] - x[1])
+
+def mutation_best_3(xb, x, F): #DE/best/1
+    return xb - F * (x[0] + x[1])
 
 def check_bounds(mutated, bounds):
     mutated_bound = [np.clip(mutated[i], bounds[i, 0], bounds[i, 1]) for i in range(len(bounds))]
@@ -370,6 +380,84 @@ def crossover(mutated, target, dims, cr):
     trial = [mutated[i] if p[i] < cr else target[i] for i in range(dims)]
     return trial
 
+def get_tooth_label_obj_list():
+    teeth_labels = get_tooth_label_flat()
+    temp = {}
+    for tooth_label in teeth_labels:
+        temp[tooth_label]=[]
+    return temp
+
+def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs, line_centers,  As, destination_tooth):
+    
+    teeth_err_angle = {
+        ArchType.UPPER.value: get_tooth_label_obj_list(),
+        ArchType.LOWER.value: get_tooth_label_obj_list(),
+    }
+    
+    teeth_err_dst = {
+        ArchType.UPPER.value: get_tooth_label_obj_list(),
+        ArchType.LOWER.value: get_tooth_label_obj_list(),
+    }
+    for mut in mutations:
+        model_upper_cp = None
+        model_lower_cp = None
+        ArchCopy._clear()
+        i=0
+        for m in models:
+            eigenvec = [m.right_left_vec, m.forward_backward_vec, m.upward_downward_vec]
+            model_cp = ArchCopy(m.arch_type, m.mesh, eigenvec, copy.deepcopy(m.teeth), copy.deepcopy(m.gingiva))
+            if(m.arch_type == ArchType.UPPER.value):
+                model_upper_cp = model_cp
+            else:
+                model_lower_cp = model_cp
+        
+        models_cps=[model_upper_cp,model_lower_cp]
+        for model_cp in models_cps:
+            eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
+            model_cp= de_rotation_and_moving(model_cp, mut[(i*(14*6)):(i+1)*(14*6)])
+            i+=1
+            teeth = copy.deepcopy(model_cp.teeth)
+            summary_line = SplineKu(summary_pts[model_cp.arch_type])
+            flat_line = SplineKu(flat_pts[model_cp.arch_type])
+            B = Bs[model_cp.arch_type]
+            line_center = line_centers[model_cp.arch_type]
+            A = As[model_cp.arch_type]
+            destination_pts = destination_tooth[model_cp.arch_type]
+
+            for tooth_type in teeth:
+                if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
+                    error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
+                    error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
+                    error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
+                    error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                    angle_error = error_top_view_angle+error_side_view_angle
+                    dst_error = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+                    teeth_err_angle[model_cp.arch_type][tooth_type].append(angle_error)
+                    teeth_err_angle[model_cp.arch_type][tooth_type].append(dst_error)
+        ArchCopy._clear()
+    res = []
+    i=0
+    tl = get_tooth_label_flat()
+    temp_arch_types = []
+    for m in models:
+        temp_arch_types.append(m.arch_type)
+    for arctype in temp_arch_types:
+        for k in tl:
+            iangle = teeth_err_angle[arctype][k]
+            choose = mutations[iangle]
+            res.append(choose[i])
+            res.append(choose[i+1])
+            res.append(choose[i+2])
+            
+            idst = teeth_err_dst[arctype][k]
+            choose = mutations[idst]
+            res.append(choose[i+3])
+            res.append(choose[i+4])
+            res.append(choose[i+5])
+            i+=6
+    # print("hasil untuk trial (custom_crossover)",res)
+    return res
+
 def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_centers,  As, destination_tooth):
     
     teeth_err_mutated_angle = {}
@@ -534,16 +622,23 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             # perform mutation
             # print("mutation", "j", j)
             mutated = mutation_best(best_vector,[a, b], F)
+            mutated_1 = mutation_best_1(best_vector,[a, b], F)
+            mutated_2 = mutation_best_2(best_vector,[a, b], F)
+            mutated_3 = mutation_best_3(best_vector,[a, b], F)
             # check that lower and upper bounds are retained after mutation
             # print("check_bounds", "j", j)
             mutated = check_bounds(mutated, bounds)
+            mutated_1 = check_bounds(mutated_1, bounds)
+            mutated_2 = check_bounds(mutated_2, bounds)
+            mutated_3 = check_bounds(mutated_3, bounds)
             # perform crossover
             # print("crossover", "j", j)
             # trial = crossover(mutated, pop[j], len(bounds), cr)
             
-            trial = custom_crossover(models, mutated, pop[j],  flats, summaries, Bs, line_centers,  As, destination_tooth)
+            # trial = custom_crossover(models, mutated, pop[j],  flats, summaries, Bs, line_centers,  As, destination_tooth)
+            trial = custom_crossover_many_mutated(models, [mutated, mutated_1, mutated_2, mutated_3, pop[j]],  flats, summaries, Bs, line_centers,  As, destination_tooth)
             
-            # trial = check_bounds(trial, bounds)
+            trial = check_bounds(trial, bounds)
             
             # compute objective function value for target vector
             obj_target = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[j],flats, summaries,Bs, line_centers,  As, destination_tooth)
@@ -579,14 +674,14 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     pop_size = 7
     n_tooth = 14
     n_chromosome = 6
-    individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
-    # individu_bounds= [
-    #             [-0.5, 0.5],
-    #             [-0.5, 0.5],
-    #             [-0.5, 0.5],
-    #             [-0.1, 0.1],
-    #             [-0.1, 0.1],
-    #             [-0.1, 0.1]]*n_tooth*2
+    # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
+    individu_bounds= [
+                [-0.5, 0.5],
+                [-0.5, 0.5],
+                [-0.5, 0.5],
+                [-0.1, 0.1],
+                [-0.1, 0.1],
+                [-0.1, 0.1]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations

@@ -80,3 +80,8 @@ r2 = get_angle_from_2_2d_lines2(line1,line2,True)
 r3 = get_angle_from_2_2d_lines3(line1,line2,True)
 
 print(r,r2,r3)
+
+
+g = [47,9,5,6,21,9]
+t = np.argmin(g)
+print(t)
