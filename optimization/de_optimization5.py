@@ -433,7 +433,7 @@ def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs,
                     angle_error = error_top_view_angle+error_side_view_angle
                     dst_error = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
                     teeth_err_angle[model_cp.arch_type][tooth_type].append(angle_error)
-                    teeth_err_angle[model_cp.arch_type][tooth_type].append(dst_error)
+                    teeth_err_dst[model_cp.arch_type][tooth_type].append(dst_error)
         ArchCopy._clear()
     res = []
     i=0
