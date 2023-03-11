@@ -443,13 +443,13 @@ def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs,
         temp_arch_types.append(m.arch_type)
     for arctype in temp_arch_types:
         for k in tl:
-            iangle = teeth_err_angle[arctype][k]
+            iangle = np.argmin(teeth_err_angle[arctype][k])
             choose = mutations[iangle]
             res.append(choose[i])
             res.append(choose[i+1])
             res.append(choose[i+2])
             
-            idst = teeth_err_dst[arctype][k]
+            idst = np.argmin(teeth_err_dst[arctype][k])
             choose = mutations[idst]
             res.append(choose[i+3])
             res.append(choose[i+4])
