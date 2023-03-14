@@ -210,6 +210,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     temp_dis = abs(distal_to_spl)
     # mesial_distal_to_spl_err += abs(mesial_to_spl)
     # mesial_distal_to_spl_err += abs(distal_to_spl)
+    
+    mesial_distal_to_spl_err += abs(abs(mesial_to_center-mesial_spl_to_center)-abs(distal_to_center-distal_spl_to_center))
     mesial_distal_to_spl_err += abs(temp_mes-temp_dis)
     mesial_distal_to_spl_err *= DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     
@@ -316,7 +318,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         closest_spl_buccallabial2d_real = np.array([closest_spl_buccallabial2d[1],closest_spl_buccallabial2d[2]])
         closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[1],closest_spl_mesial2d[2]])
         
-        angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        # angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        angle = get_angle_from_2_2d_lines_tan([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        angle = abs(angle)
         angle = angle if angle <= 90 else angle - 90
         # angle = abs((math.pi/2)-angle)
         angle = abs(90-angle)
@@ -352,6 +356,7 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     temp_dis = abs(distal_to_spl)
     # mesial_distal_to_spl_err += abs(mesial_to_spl)
     # mesial_distal_to_spl_err += abs(distal_to_spl)
+    mesial_distal_to_spl_err += abs(abs(mesial_to_upper-mesial_spl_to_upper)-abs(distal_to_upper-distal_spl_to_upper))
     mesial_distal_to_spl_err += abs(temp_mes-temp_dis)
     mesial_distal_to_spl_err *= DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     
