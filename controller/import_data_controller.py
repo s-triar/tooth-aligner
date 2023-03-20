@@ -21,7 +21,7 @@ def load_model(self, path, id):
     self.model_plot.add(self.models[-1].get_mesh())
     self.model_plot.addGlobalAxes(axtype=8)
     self.model_plot.resetCamera()
-    calculate_studi_model(self)
+    # calculate_studi_model(self)
     print(path) #D:/NyeMan/KULIAH S2/Thesis/MeshSegNet-master/MeshSegNet-master/down_segement_refine_manual/Gerry Sihaj LowerJawScan Cleaned 10000_d_predicted_refined a.vtp
     
 
