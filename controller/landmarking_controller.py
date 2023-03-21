@@ -182,7 +182,7 @@ def load_landmark(self, typearch, filename):
     for index, row in df.iterrows():
         tooth = arch.teeth[row['label']]
         tooth.landmark_pt[row['landmark']]=array([row['x'],row['y'],row['z']])
-    calculate_studi_model(self)
+    # calculate_studi_model(self)
     # load_model(self, filenames[0], arch_type)
     # btn.setDisabled(True)
     # check_btn_toggle_arch(self, arch_type, True)
