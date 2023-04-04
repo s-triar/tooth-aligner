@@ -58,6 +58,16 @@ class Tooth():
                     # print("rotate z tooth landmark")
                 # print("self.landmark_pt[k]=PT.points()",PT.points()[0])
                 self.landmark_pt[k]=PT.points()[0]
+                
+    def update_landmark_rotation_quarternion(self, type, val_rotate, new_new_center, arc_orientation):
+        new_new_center = [new_new_center[0],new_new_center[1],new_new_center[2]]
+        # print("do rotate landmark",type, val_rotate, new_new_center)
+        for k in self.landmark_pt:
+            pt = self.landmark_pt[k]
+            if(pt is not None):
+                PT = Point(pt)
+                PT.rotate(val_rotate, axis=arc_orientation, point=new_new_center)
+                self.landmark_pt[k]=PT.points()[0]
         
     def update_landmark_moving(self, val_direction):
         # print("do moving landmark",val_direction)

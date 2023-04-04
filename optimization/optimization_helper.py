@@ -38,11 +38,15 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
                 tooth_clone =  copy.deepcopy(tooth)
                 tx_center = tooth_clone.center
                 # tooth_clone.rotateX(vx, False, tx_center)
-                tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
+                # tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("pitch", vx, tx_center, eigenvec[0])
                 # tooth_clone.rotateY(vy, False, tx_center)
-                tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
+                # tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("yaw", vx, tx_center, eigenvec[1])
                 # tooth_clone.rotateZ(vz, False, tx_center)
-                tooth_clone.update_landmark_rotation("roll", vz, tx_center)
+                # tooth_clone.update_landmark_rotation("roll", vz, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("roll", vx, tx_center, eigenvec[2])
+                
                 
                 error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_tandalone) 
                 error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_tandalone)
@@ -102,11 +106,14 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                 tooth_clone =  copy.deepcopy(tooth)
                 tx_center = tooth_clone.center
                 # tooth_clone.rotateX(vx, False, tx_center)
-                tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
+                # tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("pitch", vx, tx_center, eigenvec[0])
                 # tooth_clone.rotateY(vy, False, tx_center)
-                tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
+                # tooth_clone.update_landmark_rotation("yaw", vy, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("yaw", vx, tx_center, eigenvec[1])
                 # tooth_clone.rotateZ(vz, False, tx_center)
-                tooth_clone.update_landmark_rotation("roll", vz, tx_center)
+                # tooth_clone.update_landmark_rotation("roll", vz, tx_center)
+                tooth_clone.update_landmark_rotation_quarternion("roll", vx, tx_center, eigenvec[2])
                 
                 buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
                 closest_buccallabial_to_spl = spl.closestPoint(buccal_labial)
