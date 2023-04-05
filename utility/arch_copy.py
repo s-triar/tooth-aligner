@@ -47,6 +47,7 @@ class ArchCopy():
         self.right_left_vec = eigenvec[0]
         self.forward_backward_vec = eigenvec[1]
         self.upward_downward_vec = eigenvec[2]
+        self.orientatin_vec = eigenvec
         
         self.gingiva=gingiva
         self.teeth=teeth
