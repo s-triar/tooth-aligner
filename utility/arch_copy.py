@@ -77,6 +77,21 @@ class ArchCopy():
         
         self.teeth[label].update_landmark_rotation(type, val_rotate, new_new_center)
         
+    def update_teeth_point_rotation_quarrternion(self, label, type, val_rotate, new_new_center, orientation):
+        points_mesh = np.array(self.mesh.points())
+        idx_faces_mesh = np.array(self.mesh.cells())
+        cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
+        label = math.floor(label)    
+        cells_tooth = idx_faces_mesh[cells_tooth_index]
+        points_tooth_index = np.unique(cells_tooth)
+        points_tooth = points_mesh[points_tooth_index]
+        center_tooth = np.mean(points_tooth,axis=0)
+        self.teeth[label].vertices=points_tooth
+        self.teeth[label].index_vertice_cells=cells_tooth
+        self.teeth[label].center=center_tooth
+        self.teeth[label].update_landmark_rotation_quarternion(type, val_rotate, new_new_center, orientation)
+    
+        
     def update_teeth_point_moving(self, label, val_direction):
         points_mesh = np.array(self.mesh.points())
         idx_faces_mesh = np.array(self.mesh.cells())
