@@ -44,13 +44,16 @@ def de_rotation_and_moving(model, chrs):
             # rotation
             # mesh.rotateX(chr[0], False, teeth_center)
             mesh.rotate(chr[0], axis=arch_orientation_vec[0], point=teeth_center)
-            model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "pitch", chr[0], teeth_center,arch_orientation_vec[0])
             # mesh.rotateY(chr[1], False, teeth_center)
             mesh.rotate(chr[1], axis=arch_orientation_vec[1], point=teeth_center)
-            model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[1], teeth_center,arch_orientation_vec[1])
             # mesh.rotateZ(chr[2], False, teeth_center)
             mesh.rotate(chr[2], axis=arch_orientation_vec[2], point=teeth_center)
-            model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "roll", chr[2], teeth_center,arch_orientation_vec[2])
             # end rotation
             
             # movement
