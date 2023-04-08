@@ -549,39 +549,39 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     i=0
     for arctype in teeth_err_target_angle:
         for k in teeth_err_target_angle[arctype]:
-            # if(teeth_err_mutated_angle[arctype][k]+teeth_err_mutated_dst[arctype][k]<teeth_err_target_angle[arctype][k]+teeth_err_target_dst[arctype][k]):
-            #     res.append(mutated[i])
-            #     res.append(mutated[i+1])
-            #     res.append(mutated[i+2])
-                
-            #     res.append(mutated[i+3])
-            #     res.append(mutated[i+4])
-            #     res.append(mutated[i+5])
-
-            # else:
-            #     res.append(target[i])
-            #     res.append(target[i+1])
-            #     res.append(target[i+2])
-                
-            #     res.append(target[i+3])
-            #     res.append(target[i+4])
-            #     res.append(target[i+5])
-            if(teeth_err_mutated_angle[arctype][k]<teeth_err_target_angle[arctype][k]):
+            if(teeth_err_mutated_angle[arctype][k]+teeth_err_mutated_dst[arctype][k]<teeth_err_target_angle[arctype][k]+teeth_err_target_dst[arctype][k]):
                 res.append(mutated[i])
                 res.append(mutated[i+1])
                 res.append(mutated[i+2])
+                
+                res.append(mutated[i+3])
+                res.append(mutated[i+4])
+                res.append(mutated[i+5])
+
             else:
                 res.append(target[i])
                 res.append(target[i+1])
                 res.append(target[i+2])
-            if(teeth_err_mutated_dst[arctype][k]<teeth_err_target_dst[arctype][k]):
-                res.append(mutated[i+3])
-                res.append(mutated[i+4])
-                res.append(mutated[i+5])
-            else:
+                
                 res.append(target[i+3])
                 res.append(target[i+4])
                 res.append(target[i+5])
+            # if(teeth_err_mutated_angle[arctype][k]<teeth_err_target_angle[arctype][k]):
+            #     res.append(mutated[i])
+            #     res.append(mutated[i+1])
+            #     res.append(mutated[i+2])
+            # else:
+            #     res.append(target[i])
+            #     res.append(target[i+1])
+            #     res.append(target[i+2])
+            # if(teeth_err_mutated_dst[arctype][k]<teeth_err_target_dst[arctype][k]):
+            #     res.append(mutated[i+3])
+            #     res.append(mutated[i+4])
+            #     res.append(mutated[i+5])
+            # else:
+            #     res.append(target[i+3])
+            #     res.append(target[i+4])
+            #     res.append(target[i+5])
             i+=6
     # print("hasil untuk trial (custom_crossover)",res)
     return res

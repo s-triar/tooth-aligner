@@ -66,7 +66,7 @@ class ArchCopy():
         points_mesh = np.array(self.mesh.points())
         idx_faces_mesh = np.array(self.mesh.cells())
         cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
-        label = math.floor(label)    
+        label = math.floor(label)
         cells_tooth = idx_faces_mesh[cells_tooth_index]
         points_tooth_index = np.unique(cells_tooth)
         points_tooth = points_mesh[points_tooth_index]
