@@ -404,6 +404,10 @@ def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs,
         ArchType.UPPER.value: get_tooth_label_obj_list(),
         ArchType.LOWER.value: get_tooth_label_obj_list(),
     }
+    teeth_err_total = {
+        ArchType.UPPER.value: get_tooth_label_obj_list(),
+        ArchType.LOWER.value: get_tooth_label_obj_list(),
+    }
     for mut in mutations:
         model_upper_cp = None
         model_lower_cp = None
@@ -440,6 +444,7 @@ def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs,
                     dst_error = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
                     teeth_err_angle[model_cp.arch_type][tooth_type].append(angle_error)
                     teeth_err_dst[model_cp.arch_type][tooth_type].append(dst_error)
+                    teeth_err_total[model_cp.arch_type][tooth_type].append(dst_error+angle_error)
         ArchCopy._clear()
     res = []
     i=0
@@ -449,17 +454,26 @@ def custom_crossover_many_mutated(models, mutations,  flat_pts, summary_pts, Bs,
         temp_arch_types.append(m.arch_type)
     for arctype in temp_arch_types:
         for k in tl:
-            iangle = np.argmin(teeth_err_angle[arctype][k])
-            choose = mutations[iangle]
+            iidx = np.argmin(teeth_err_total[arctype][k])
+            choose = mutations[iidx]
             res.append(choose[i])
             res.append(choose[i+1])
             res.append(choose[i+2])
-            
-            idst = np.argmin(teeth_err_dst[arctype][k])
-            choose = mutations[idst]
             res.append(choose[i+3])
             res.append(choose[i+4])
             res.append(choose[i+5])
+            
+            # iangle = np.argmin(teeth_err_angle[arctype][k])
+            # choose = mutations[iangle]
+            # res.append(choose[i])
+            # res.append(choose[i+1])
+            # res.append(choose[i+2])
+            
+            # idst = np.argmin(teeth_err_dst[arctype][k])
+            # choose = mutations[idst]
+            # res.append(choose[i+3])
+            # res.append(choose[i+4])
+            # res.append(choose[i+5])
             i+=6
     # print("hasil untuk trial (custom_crossover)",res)
     return res
