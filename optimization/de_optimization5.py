@@ -38,14 +38,20 @@ def de_rotation_and_moving(model, chrs):
                     idx_for_faces.append(jb)
             faces_unique = np.delete(faces_unique, idx_for_faces)
             teeth_center = model.teeth[i.value].center
-            
+            arch_orientation_vec = model.orientatin_vec
             # rotation
-            mesh.rotateX(chr[0], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
-            mesh.rotateY(chr[1], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
-            mesh.rotateZ(chr[2], False, teeth_center)
-            model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            # mesh.rotateX(chr[0], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
+            mesh.rotate(chr[0], axis=arch_orientation_vec[0], point=teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "pitch", chr[0], teeth_center,arch_orientation_vec[0])
+            # mesh.rotateY(chr[1], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
+            mesh.rotate(chr[1], axis=arch_orientation_vec[1], point=teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[1], teeth_center,arch_orientation_vec[1])
+            # mesh.rotateZ(chr[2], False, teeth_center)
+            # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
+            mesh.rotate(chr[2], axis=arch_orientation_vec[2], point=teeth_center)
+            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[2], teeth_center,arch_orientation_vec[2])
             # end rotation
             
             # movement
@@ -562,14 +568,14 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     pop_size = 7
     n_tooth = 14
     n_chromosome = 6
-    individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
-    # individu_bounds= [
-    #             [-0.5, 0.5],
-    #             [-0.5, 0.5],
-    #             [-0.5, 0.5],
-    #             [-0.2, 0.2],
-    #             [-0.2, 0.2],
-    #             [-0.2, 0.2]]*n_tooth*2
+    # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
+    individu_bounds= [
+                [-3, 3],
+                [-3, 3],
+                [-3, 3],
+                [-0.5, 0.5],
+                [-0.5, 0.5],
+                [-0.5, 0.5]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations

@@ -24,7 +24,7 @@ def get_pivot_point(self):
 
 def get_point_in_root(self, mesh, arch_type, label):
     # tooth center
-    tooth_center = self.mesh_selected_rotation['arch'].teeth[self.tooth_selected_rotation['label']].center
+    tooth_center = self.mesh_selected_rotation['arch'].teeth[self.tooth_selected_rotation['label']].get_center()
     # room center 
     # i_s_p = get_boundary_mesh(mesh, faces)
     i_s_p = mesh.boundaries(returnPointIds=True)
@@ -39,7 +39,7 @@ def get_point_in_root(self, mesh, arch_type, label):
     u = v/vv
     dd=vv+root_length
     root_point = np.array(mean_pts_boundary) + (dd*u)
-    
+    arch_eigen_vector=self.mesh_selected_rotation['arch'].orientatin_vec
     # p = Point(tooth_center,r=20,c='green')
     # self.model_plot.add(p)
     
@@ -50,7 +50,7 @@ def get_point_in_root(self, mesh, arch_type, label):
     
     # self.model_plot.add(p)
     
-    return root_point, mean_pts_boundary, tooth_center
+    return root_point, mean_pts_boundary, arch_eigen_vector
 
 def do_moving(self, val_direction):
     model = self.mesh_selected_rotation['arch']
@@ -66,7 +66,7 @@ def do_moving(self, val_direction):
         for jb in np.unique(itemp[0]):
             idx_for_faces.append(jb)
     faces_unique = np.delete(faces_unique, idx_for_faces)
-    teeth_center = model.teeth[self.tooth_selected_rotation['label']].center
+    teeth_center = model.teeth[self.tooth_selected_rotation['label']].get_center()
     
     # detect collision
     label_before=self.tooth_selected_rotation['label']-1
@@ -167,7 +167,7 @@ def do_rotate(self, type, val_rotate):
             idx_for_faces.append(jb)
     faces_unique = np.delete(faces_unique, idx_for_faces)
     # teeth_center = self.mesh_selected_rotation['model'].info['centers'][self.mesh_selected_rotation['label'].astype(int)]
-    teeth_center = model.teeth[self.tooth_selected_rotation['label']].center
+    teeth_center = model.teeth[self.tooth_selected_rotation['label']].get_center()
     
     # detect collision
     label_before=self.tooth_selected_rotation['label']-1
@@ -193,8 +193,8 @@ def do_rotate(self, type, val_rotate):
         col_after = mesh.clone().cutWithMesh(mesh_tooth_after_before_rotation)
         pts_col_after_before_rotation=col_after.points()
     
-    root_point, mean_pts_boundary, tooth_center = get_point_in_root(self, mesh, self.mesh_selected_rotation["arch_type"], self.tooth_selected_rotation['label'])
-    
+    # root_point, mean_pts_boundary, tooth_center = get_point_in_root(self, mesh, self.mesh_selected_rotation["arch_type"], self.tooth_selected_rotation['label'])
+    root_point, mean_pts_boundary, arch_orientation_vec = get_point_in_root(self, mesh, self.mesh_selected_rotation["arch_type"], self.tooth_selected_rotation['label'])
 
     v=mean_pts_boundary-root_point
     vv=np.linalg.norm(v)
@@ -206,17 +206,23 @@ def do_rotate(self, type, val_rotate):
     new_new_center=(new_center[0], new_center[1], new_center[2])
     self.model_plot.add(Point(new_new_center,c='green',r=20))
     self.model_plot.render()
-    
+    chosen_orientation=None
     print("do rotate",type, val_rotate, new_new_center)
     if(type=="pitch"):
-        mesh.rotateX(val_rotate, False, new_new_center)
+        # mesh.rotateX(val_rotate, False, new_new_center)
+        mesh.rotate(val_rotate, axis=arch_orientation_vec[0], point=new_new_center)
         print("rotate x tooth")
+        chosen_orientation=arch_orientation_vec[0]
     elif(type=="yaw"):
-        mesh.rotateY(val_rotate, False, new_new_center)
+        # mesh.rotateY(val_rotate, False, new_new_center)
+        mesh.rotate(val_rotate, axis=arch_orientation_vec[1], point=new_new_center)
         print("rotate y tooth")
+        chosen_orientation=arch_orientation_vec[1]
     elif(type=="roll"):
-        mesh.rotateZ(val_rotate, False, new_new_center)
+        # mesh.rotateZ(val_rotate, False, new_new_center)
+        mesh.rotate(val_rotate, axis=arch_orientation_vec[2], point=new_new_center)
         print("rotate z tooth")
+        chosen_orientation=arch_orientation_vec[2]
     
     
     # detect collision
@@ -261,8 +267,8 @@ def do_rotate(self, type, val_rotate):
     transform_attachment_on_tooth(self, self.tooth_selected_rotation['label'], type, val_rotate, False, new_new_center)
     self.mesh_selected_rotation['arch'].mesh.points(temp_p)
     # self.mesh_selected_rotation['arch'].extract_tooth()
-    self.mesh_selected_rotation['arch'].update_teeth_point_rotation(self.tooth_selected_rotation['label'], type, val_rotate, new_new_center)
-      
+    # self.mesh_selected_rotation['arch'].update_teeth_point_rotation(self.tooth_selected_rotation['label'], type, val_rotate, new_new_center)
+    self.mesh_selected_rotation['arch'].update_teeth_point_rotation_quarrternion(self.tooth_selected_rotation['label'], type, val_rotate, new_new_center, chosen_orientation)
     self.model_plot.render()
     
     # remove_not_arch(self)
@@ -330,7 +336,7 @@ def mouse_click_rotation(self, event):
             # faces = model.info['labels'][self.mesh_selected_rotation['label']]['cells']
             faces = model.teeth[self.tooth_selected_rotation['label']].index_vertice_cells
             mesh = Mesh([verts, faces])
-            root_point, mean_pts_boundary, tooth_center = get_point_in_root(self, mesh, self.mesh_selected_rotation["arch_type"], self.tooth_selected_rotation['label'])
+            root_point, mean_pts_boundary, arch_orientation_vec = get_point_in_root(self, mesh, self.mesh_selected_rotation["arch_type"], self.tooth_selected_rotation['label'])
             d = abs(np.linalg.norm(root_point - mean_pts_boundary))
             # self.slider_pivot_root.setTickInterval(d)
             self.slider_pivot_root.setMaximum(d)
