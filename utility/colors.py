@@ -62,7 +62,7 @@ def map_landmark_color(ld):
     elif(ld==LandmarkType.CUSP_OUT_MESIAL.value):
         return [40,255,180]
     elif(ld==LandmarkType.CUSP_OUT_MIDDLE.value):
-        return [30,255,90]
+        return [90,160,90]
     elif(ld==LandmarkType.CUSP_OUT_DISTAL.value):
         return [20,255,0]
     
