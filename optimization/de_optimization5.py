@@ -570,9 +570,9 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_chromosome = 6
     # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
     individu_bounds= [
-                [-3, 3],
-                [-3, 3],
-                [-3, 3],
+                [-1, 1],
+                [-1, 1],
+                [-1, 1],
                 [-0.5, 0.5],
                 [-0.5, 0.5],
                 [-0.5, 0.5]]*n_tooth*2

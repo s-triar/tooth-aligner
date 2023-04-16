@@ -24,7 +24,7 @@ def get_candidate_chromosome(start, stop, step):
     return res
 
 
-def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts,max_chr=3, min_chr=-3, step=3):
+def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts,max_chr=1, min_chr=-1, step=1):
     error = 999999999
     rot_x=0
     rot_y=0
@@ -86,7 +86,7 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_stan
                     
     return mov_x, mov_y, mov_z
                                 
-def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts, max_chr_rot=3, min_chr_rot=-3, step_rot=3, max_chr_move=0.5, min_chr_move=-0.5, step_move=0.5):                
+def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts, max_chr_rot=1, min_chr_rot=-1, step_rot=1, max_chr_move=0.5, min_chr_move=-0.5, step_move=0.5):                
     error = 999999999
     rot_x=0
     rot_y=0
