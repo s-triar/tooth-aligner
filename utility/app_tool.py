@@ -24,14 +24,15 @@ def get_saved_path(path_model, extendsion,more_info='',cur_step=None, isProject=
     sign_jaw = os.getenv(ArchType.LOWER.name)
     if(os.getenv(ArchType.UPPER.name) in file.lower()):
         sign_jaw = os.getenv(ArchType.UPPER.name)
-    file_chunk = file.split(' ')
-    person = ''
-    for f in file_chunk:
-        if(sign_jaw in f.lower()):
-            break
-        if(person!=''):
-            person+=" "
-        person+=f
+    # file_chunk = file.split(' ')
+    # person = ''
+    # for f in file_chunk:
+    #     if(sign_jaw in f.lower()):
+    #         break
+    #     if(person!=''):
+    #         person+=" "
+    #     person+=f
+    person = c[-2]
     str_cur_step = str(cur_step)
     if(isProject==False):
         return os.path.join(save_path,person,"step_"+str_cur_step,person+more_info+"_step_"+str_cur_step+extendsion)
