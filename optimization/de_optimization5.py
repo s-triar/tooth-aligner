@@ -696,12 +696,12 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_chromosome = 6
     # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
     individu_bounds= [
-                [-3, 3],
-                [-3, 3],
-                [-3, 3],
-                [-0.15, 0.15],
-                [-0.15, 0.15],
-                [-0.15, 0.15]]*n_tooth*2
+                [-1.75, 1.75],
+                [-1.75, 1.75],
+                [-1.75, 1.75],
+                [-0.5, 0.5],
+                [-0.5, 0.5],
+                [-0.5, 0.5]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
