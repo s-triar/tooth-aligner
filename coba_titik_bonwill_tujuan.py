@@ -25,6 +25,7 @@ from utility.calculation import (
 import math
 from controller.summary_controller import get_bonwill, get_mesial_distal_as_R
 from utility.tooth_label import get_tooth_labels
+from utility.colors import map_label_color
 from sklearn.cluster import KMeans
 
 def get_closest_to_mesial_distal(teeth,spl, B):
@@ -254,12 +255,13 @@ pm=[]
 pd=[]
 for lbl in destinations_pts:
     temp=destinations_pts[lbl]
-    print(temp)
-    c="red"
-    if(i%3==1):
-        c="blue"
-    elif(i%3==2):
-        c="green"
+    c=map_label_color(lbl)
+    # print(temp)
+    # c="red"
+    # if(i%3==1):
+    #     c="blue"
+    # elif(i%3==2):
+    #     c="green"
     l = Line(temp[0],temp[1],lw=13,c=c)
     destinations_line.append(l)
     # pm.append(Point(temp[0],r=20))
