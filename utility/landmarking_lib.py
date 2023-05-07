@@ -648,16 +648,16 @@ def get_cusp_posterior_third_fourth_upper(is_awal, eigen_vec_mesh, center_tooth,
     temp_f_out = np.matmul(forward_backward, np.transpose(vertices_out_new))
 
     vertices_out_mesial=np.where(
-        (temp_f_out < center_f-1.75) #-1.75
+        (temp_f_out < center_f-1.5) #-1.75
     )
     vertices_out_distal=np.where(
-        (temp_f_out >= center_f-0.5)
+        (temp_f_out >= center_f-1.5) #-0.5
     )
     vertices_in_mesial=np.where(
         (temp_f_in < center_f+1.5)
     )
     vertices_in_distal=np.where(
-        (temp_f_in >= center_f+2)
+        (temp_f_in >= center_f+1)
     )
     # pts=[]
     # for i in vertices_in_mesial[0]:
@@ -967,7 +967,7 @@ def get_cusp_posterior_second_molar_lower(is_awal, eigen_vec_mesh, center_tooth,
     temp_f_out = np.matmul(forward_backward, np.transpose(vertices_out_new))
 
     vertices_out_mesial=np.where(
-        (temp_f_out < center_f-1.75)
+        (temp_f_out < center_f-1) #-1.75
     )
     vertices_out_distal=np.where(
         (temp_f_out >= center_f-0.5)
