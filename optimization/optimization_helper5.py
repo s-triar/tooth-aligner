@@ -252,14 +252,15 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     # angle = get_angle_from_2_2d_lines([anchor,ext],[anchor,spl_pt],True)
     # angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
     # angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
-    angle = get_angle_from_2_2d_lines_tan(line_spl,line_tooth_md,True)
+    angle = get_angle_from_2_2d_lines(line_spl,line_tooth_md,True)
+    # angle = get_angle_from_2_2d_lines_tan(line_spl,line_tooth_md,True)
     # print("angle", angle, [anchor,ext],[anchor,spl_pt])
     mesial_distal_balance_err+=angle
     # print("up:",mesial_distal_balance_err)
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
     if(math.isnan(mesial_distal_balance_err)):
         # mesial_distal_balance_err=3.14*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
-        mesial_distal_balance_err=90*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
+        mesial_distal_balance_err=180*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
         
 
         print(tooth.label,"ada NaN", [anchor,ext],[anchor,spl_pt])
@@ -325,8 +326,8 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
         closest_spl_buccallabial2d_real = np.array([closest_spl_buccallabial2d[1],closest_spl_buccallabial2d[2]])
         closest_spl_mesial2d_real = np.array([closest_spl_mesial2d[1],closest_spl_mesial2d[2]])
         
-        # angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
-        angle = get_angle_from_2_2d_lines_tan([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        angle = get_angle_from_2_2d_lines([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
+        # angle = get_angle_from_2_2d_lines_tan([closest_spl_buccallabial2d_real,buccal_labial2d_real],[closest_spl_buccallabial2d_real,closest_spl_mesial2d_real], True)
         angle = abs(angle)
         angle = angle if angle <= 90 else angle - 90
         # angle = abs((math.pi/2)-angle)
