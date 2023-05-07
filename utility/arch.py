@@ -41,7 +41,7 @@ class Arch():
         self.right_left_vec = None
         self.forward_backward_vec = None
         self.upward_downward_vec = None
-        
+        self.eigen_vec = None
         self.gingiva=None
         
         self.teeth={}
@@ -126,6 +126,7 @@ class Arch():
         self.right_left_vec = eigen_vec_mesh[0]
         self.forward_backward_vec = eigen_vec_mesh[1]
         self.upward_downward_vec = eigen_vec_mesh[2]
+        self.eigen_vec =eigen_vec_mesh
         # print("eigen vec mesh", eigen_vec_mesh)
         
         for label in labels:

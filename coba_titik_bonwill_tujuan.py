@@ -27,7 +27,19 @@ from controller.summary_controller import get_bonwill, get_mesial_distal_as_R
 from utility.tooth_label import get_tooth_labels
 from utility.colors import map_label_color
 from sklearn.cluster import KMeans
+import pandas as pd
+from utility.landmarking_lib import draw_eigen_vec
 
+def load_ld(model, filename, typearch):
+    df = pd.read_csv(filename, index_col=0)
+    print(df.head())
+    
+    # index_in_models = Arch._get_index_arch_type(typearch)
+    arch = model
+    for index, row in df.iterrows():
+        tooth = arch.teeth[row['label']]
+        tooth.landmark_pt[row['landmark']]=np.array([row['x'],row['y'],row['z']])
+        
 def get_closest_to_mesial_distal(teeth,spl, B):
     cls_mesial = []
     cls_distal = []
@@ -97,13 +109,9 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
     a_strt = A[:]
     a_end = A[:]
     eig_right_inv = (eig_right[:])*-1
-    print("eigen")
-    print(eig_right)
-    print(eig_right_inv)
     for label in labels_strt:
         if teeth[label]:
             tooth = teeth[label]
-            print(tooth.label)
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
             sph = Sphere(a_strt,r=rf/2)
             dst = get_spl_pts_through_sphere(sph, spl, A)
@@ -126,17 +134,14 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             #     sph = Sphere(a_strt,r=1.5)
             #     yy = get_spl_pts_through_sphere(sph, spl, A)
             #     a_strt=yy[1][:]
-            print(dests)
     for label in labels_end:
         if teeth[label]:
             tooth = teeth[label]
-            print(tooth.label)
-            
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
             sph = Sphere(a_end,r=rf/2)
             dst = get_spl_pts_through_sphere(sph, spl, A)
             dis_mid = dst[1]
-            if(label == 7):
+            if(label == 8):
                 eig_r_m = np.dot(eig_right, dst[0])
                 eig_r_d = np.dot(eig_right, dst[1])
                 if(eig_r_m<eig_r_d):
@@ -154,8 +159,6 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             #     sph = Sphere(a_strt,r=1.5)
             #     yy = get_spl_pts_through_sphere(sph, spl, A)
             #     a_strt=yy[1][:]
-            print(dests)
-            
     return dests
 
 def get_destination_points_depre(arch, spl, A, eig_right): #double sphere
@@ -220,10 +223,17 @@ def get_destination_points_depre(arch, spl, A, eig_right): #double sphere
 
             
 # l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo LowerJawScan _d_predicted_refined.vtp')
-u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
-u4 = load('D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_new_bonwill_standalone\\Gerry Sihaj\\step_4\\Gerry Sihaj_UPPER__step_4.vtp')
+# u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
+# u4 = load('D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_new_bonwill_standalone\\Gerry Sihaj\\step_4\\Gerry Sihaj_UPPER__step_4.vtp')
+u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.vtp')
+u4 = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.vtp')
+path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.csv'
+path_ld_l = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.csv'
+
 model = Arch(ArchType.UPPER.value,u)
 model4 = Arch(ArchType.LOWER.value,u4)
+load_ld(model,path_ld_u,ArchType.UPPER.value)
+load_ld(model4,path_ld_l,ArchType.LOWER.value)
 
 titiks, vertical_line, B, A = get_bonwill(u, model)
 print(len(titiks))
@@ -272,8 +282,9 @@ for lbl in destinations_pts:
 # ln.rotate(45, axis=ln.points()[0], point=ln.points()[0])
 # ln.c("yellow").lw(10)   
 # lp = Line(-ln.points()[0]+ln.points()[0],ln.points()[0]+ln.points()[0], c="orange",lw=10)
+eigdraw= draw_eigen_vec(model.eigen_vec, model.mesh.centerOfMass())
 plt = Plotter(N=3)
 plt.show(model.mesh, spl, cls_mesial, cls_distal, at=0)
 plt.show(model4.mesh, spl, cls_mesial4, cls_distal4, at=1)
-plt.show( model.mesh,spl,destinations_line,pd, at=2)
+plt.show( model.mesh,spl,destinations_line,eigdraw, at=2)
 plt.interactive()
