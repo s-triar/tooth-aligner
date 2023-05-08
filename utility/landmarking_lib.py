@@ -112,12 +112,14 @@ def getEigen(points,idx_faces, cell_data, label_anterior):
     center_anterior = 0
     for label in label_anterior:
         cells_tooth_index = np.where(cell_data == label)
-        label = math.floor(label)
-        cells_tooth = idx_faces[cells_tooth_index]
-        points_tooth_index = np.unique(cells_tooth)
-        points_tooth = points[points_tooth_index]
-        center_tooth = np.mean(points_tooth,axis=0)
-        center_anteriors.append(center_tooth)
+        if(len(cells_tooth_index[0])>0):
+
+            label = math.floor(label)
+            cells_tooth = idx_faces[cells_tooth_index]
+            points_tooth_index = np.unique(cells_tooth)
+            points_tooth = points[points_tooth_index]
+            center_tooth = np.mean(points_tooth,axis=0)
+            center_anteriors.append(center_tooth)
     center_anterior = np.mean(center_anteriors,axis=0)
     
     ori_fb = np.dot(center_anterior,eig_vec[1]) 
@@ -648,7 +650,7 @@ def get_cusp_posterior_third_fourth_upper(is_awal, eigen_vec_mesh, center_tooth,
     temp_f_out = np.matmul(forward_backward, np.transpose(vertices_out_new))
 
     vertices_out_mesial=np.where(
-        (temp_f_out < center_f-1.5) #-1.75
+        (temp_f_out < center_f-1.0) #-1.75
     )
     vertices_out_distal=np.where(
         (temp_f_out >= center_f-1.5) #-0.5
