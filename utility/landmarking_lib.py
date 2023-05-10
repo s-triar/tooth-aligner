@@ -137,10 +137,26 @@ def getEigen(points,idx_faces, cell_data, label_anterior):
     # kanan kiri
     # THIS IS NOT ROBUST. 
     # DONE? TODO CHECK THE DISTANCE WITH MOLAR TOOTH WITH LABEL 1 OR 2 INSTEAD
-    det_eig = np.linalg.det([eig_vec[0], eig_vec[1], eig_vec[2]])
-    if(det_eig==1):
-        eig_vec[0] *=-1
+    # det_eig = np.linalg.det([eig_vec[0], eig_vec[1], eig_vec[2]])
+    # if(det_eig==1):
+    #     eig_vec[0] *=-1
+    center_lefts = []
+    center_left = 0
+    for label in [1,2,3,4]:
+        cells_tooth_index = np.where(cell_data == label)
+        if(len(cells_tooth_index[0])>0):
 
+            label = math.floor(label)
+            cells_tooth = idx_faces[cells_tooth_index]
+            points_tooth_index = np.unique(cells_tooth)
+            points_tooth = points[points_tooth_index]
+            center_tooth = np.mean(points_tooth,axis=0)
+            center_lefts.append(center_tooth)
+    center_left = np.mean(center_lefts,axis=0)
+    ori_rl = np.dot(center_left,eig_vec[0]) 
+    inv_rl = np.dot(center_left,eig_vec[0]*-1) 
+    if(ori_rl<inv_rl):
+        eig_vec[0] *=-1   
     # left_right = eig_vec[0]
     # forward_backward = eig_vec[1]
     # upward_downward = eig_vec[2]
