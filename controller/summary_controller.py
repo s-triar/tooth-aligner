@@ -25,7 +25,7 @@ def init_summary(self):
     self.As_pts=None
     self.destination_tooth=None
 
-def calculate_studi_model(self):
+def calculate_studi_model(self, all=True):
     if(Arch._is_complete()):
         # for m in self.models:
         #     m.extract_tooth()
@@ -35,10 +35,11 @@ def calculate_studi_model(self):
         self.korkhaus_studi_model.calculate_khorkaus(self.models)
         self.pont_studi_model.calculate_pont(self.models)
         self.carey_studi_model.calculate_carey(self.models)
-        self.summary_flat_pts = calculate_flat_plane_points(self)
-        # self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
-        self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts, self.As_pts =calculate_bonwill(self)
-        self.destination_tooth = calculate_destination_points(self)
+        if all==True:
+            self.summary_flat_pts = calculate_flat_plane_points(self)
+            # self.studi_model_summary_pts=calculate_studi_model_summary_pts(self)
+            self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts, self.As_pts =calculate_bonwill(self)
+            self.destination_tooth = calculate_destination_points(self)
         # print("self.studi_model_summary_pts")
         # print(self.studi_model_summary_pts)
         # print()

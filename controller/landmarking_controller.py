@@ -173,7 +173,7 @@ def save_landmark(self):
         df.to_csv(filepath)  
         
 def load_landmark(self, typearch, filename):
-        
+    print(filename)    
     df = pd.read_csv(filename, index_col=0)
     
     

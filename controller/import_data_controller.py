@@ -1,6 +1,5 @@
 from vedo import load
 from constant.enums import ArchType
-from controller.landmarking_controller import load_landmark
 from controller.step_controller import update_transform_arch
 from controller.summary_controller import calculate_studi_model
 from utility.app_tool import get_saved_path
@@ -11,20 +10,31 @@ import os
 import glob
 from dotenv import load_dotenv
 import re
+from numpy import array
+
 
 
 def load_model(self, path, id):
     model_vedo = load(path)
-    model = Arch(id, model_vedo)
+    model = Arch(id, model_vedo, skip_extract_tooth=True)
     self.models.append(model)
     self.model_paths.append(path)
     self.model_plot.add(self.models[-1].get_mesh())
     self.model_plot.addGlobalAxes(axtype=8)
     self.model_plot.resetCamera()
-    calculate_studi_model(self)
+    # calculate_studi_model(self)
     print(path) #D:/NyeMan/KULIAH S2/Thesis/MeshSegNet-master/MeshSegNet-master/down_segement_refine_manual/Gerry Sihaj LowerJawScan Cleaned 10000_d_predicted_refined a.vtp
     
-
+def load_landmark(self, typearch, filename):
+    print(filename)    
+    df = pd.read_csv(filename, index_col=0)
+    
+    
+    index_in_models = Arch._get_index_arch_type(typearch)
+    arch = self.models[index_in_models]
+    for index, row in df.iterrows():
+        tooth = arch.teeth[row['label']]
+        tooth.landmark_pt[row['landmark']]=array([row['x'],row['y'],row['z']])
 
 
 def reset_model(self):
@@ -36,6 +46,7 @@ def reset_model(self):
 
 def check_archs_loaded(self):
     return Arch._is_complete()
+
 
 def load_opt_model(self, path):
     load_dotenv()
@@ -86,6 +97,7 @@ def load_opt_model(self, path):
                 if(ArchType.UPPER.name.lower() in ld.lower()):
                     sign_jaw = ArchType.UPPER.value
                 load_landmark(self, sign_jaw, ld)
+            calculate_studi_model(self, all=not (index!=0 and index != "0"))    
             if(index!=0 and index != "0"):
                 update_transform_arch(self,self.step_model.get_current_step())
                 # load landmark
