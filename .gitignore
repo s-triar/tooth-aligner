@@ -1,3 +1,4 @@
 environment
 saved*
 */__pycache__
+.venv
