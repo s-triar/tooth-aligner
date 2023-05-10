@@ -10,8 +10,8 @@ m_u = Arch(arch_type=ArchType.UPPER.value, mesh=u)
 m_l = Arch(arch_type=ArchType.LOWER.value, mesh=l)
 
 chromosomes=[]
-for i in range(10):
-    temp = [1.5,1.5,1.5,0,0,0]*14*2
+for i in range(1):
+    temp = [3,3,3,0,0,0]*14*2
     chromosomes.append(temp)
 models = [m_u,m_l]
 for chromosome in chromosomes:
