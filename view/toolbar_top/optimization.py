@@ -38,7 +38,7 @@ def create_optimization_menu(self, parent_layout):
 
 
 def click_btn_de_optimization(self, e):
-    error_opt = 1200000
+    error_opt = [1200000, 1200000]
     step_i = 1
     gen = []
     new_models=self.models
@@ -49,7 +49,7 @@ def click_btn_de_optimization(self, e):
     destination_tooth = copy.deepcopy(get_destination_tooth(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
     # while(step_i<16):
-    while(error_opt > 20000):
+    while(error_opt[0] > 20000 and error_opt[1]>20000):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
