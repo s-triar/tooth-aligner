@@ -88,7 +88,7 @@ def click_btn_load_landmark(self, type_arch):
         filenames = dlg.selectedFiles()
         print(filenames)
     load_landmark(self, type_arch, filenames[0])
-    calculate_studi_model(self)
+    # calculate_studi_model(self)
     
     
 def click_btn_load_project(self, e):

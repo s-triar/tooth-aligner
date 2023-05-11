@@ -72,7 +72,9 @@ def get_closest_to_mesial_distal(teeth,spl, B):
 def get_spl_pts_through_sphere(sphere, spl, A):
     # A = spl.getHalwayPoint()
     temp_spl = spl.clone().extrude(1).triangulate()
+    print("temp_spl")
     inter = (sphere.intersectWith(temp_spl)).points()
+    print("inter")
     inter_dst=[]
     cls_pts = []
     for p in inter:
@@ -80,8 +82,10 @@ def get_spl_pts_through_sphere(sphere, spl, A):
         cls_pts.append(cp)
         dis = find_distance_between_two_points(p,cp)
         inter_dst.append(dis)
+    print("inter_dst", inter_dst)
     sk = KMeans(n_clusters=2,max_iter=20)
     sk = sk.fit(inter)
+    print("sk")
     label0dist=9999999
     label1dist=9999999
     label0pt=None
@@ -111,6 +115,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
     eig_right_inv = (eig_right[:])*-1
     for label in labels_strt:
         if teeth[label]:
+            print("str", label)
             tooth = teeth[label]
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
             sph = Sphere(a_strt,r=rf/2)
@@ -130,12 +135,15 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             dst.append(dis_mid)
             a_strt=dst[1][:]
             dests[label]= dst
+            print("str2", label)
+
             # if(arch.arch_type == ArchType.UPPER.value):
             #     sph = Sphere(a_strt,r=1.5)
             #     yy = get_spl_pts_through_sphere(sph, spl, A)
             #     a_strt=yy[1][:]
     for label in labels_end:
         if teeth[label]:
+            print("end", label)
             tooth = teeth[label]
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
             sph = Sphere(a_end,r=rf/2)
@@ -150,11 +158,24 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
                     dis_mid =dst[1]
             a_end=dis_mid[:]
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            print("rf")
             sph = Sphere(a_end,r=rf/2)
+            print("sph")
+            if label == 14:
+                temp_spl = spl.clone().extrude(1).triangulate()
+                plt = Plotter()
+                plt.add(temp_spl, sph)
+                plt.show()
             dst = get_spl_pts_through_sphere(sph, spl, A)
+            print("dst")
+
             dst.append(dis_mid)
+            print("dst append")
+
             a_end=dst[1][:]
+            print("a_end")
             dests[label]= dst
+            print("end2", label)
             # if(arch.arch_type == ArchType.UPPER.value):
             #     sph = Sphere(a_strt,r=1.5)
             #     yy = get_spl_pts_through_sphere(sph, spl, A)
@@ -225,10 +246,10 @@ def get_destination_points_depre(arch, spl, A, eig_right): #double sphere
 # l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo LowerJawScan _d_predicted_refined.vtp')
 # u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
 # u4 = load('D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_new_bonwill_standalone\\Gerry Sihaj\\step_4\\Gerry Sihaj_UPPER__step_4.vtp')
-u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.vtp')
-u4 = load('D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.vtp')
-path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.csv'
-path_ld_l = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.csv'
+u = load('D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp')
+u4 = load('D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp')
+path_ld_u = 'D:\\tesis\\fix\\8. UR\\UR_UPPER.csv'
+path_ld_l = 'D:\\tesis\\fix\\8. UR\\UR_LOWER.csv'
 
 model = Arch(ArchType.UPPER.value,u)
 model4 = Arch(ArchType.LOWER.value,u4)
