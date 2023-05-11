@@ -573,9 +573,9 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
                 [-2.5, 2.5],
                 [-2.5, 2.5],
                 [-2.5, 2.5],
-                [-0.5, 0.5],
-                [-0.5, 0.5],
-                [-0.5, 0.5]]*n_tooth*2
+                [-0.3, 0.3],
+                [-0.3, 0.3],
+                [-0.3, 0.3]]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
