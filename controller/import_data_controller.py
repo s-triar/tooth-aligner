@@ -14,9 +14,9 @@ from numpy import array
 
 
 
-def load_model(self, path, id):
+def load_model(self, path, id, skip=False):
     model_vedo = load(path)
-    model = Arch(id, model_vedo, skip_extract_tooth=True)
+    model = Arch(id, model_vedo, skip_extract_tooth=skip)
     self.models.append(model)
     self.model_paths.append(path)
     self.model_plot.add(self.models[-1].get_mesh())
@@ -71,7 +71,7 @@ def load_opt_model(self, path):
                 if(ArchType.UPPER.name.lower() in model.lower()):
                     sign_jaw = ArchType.UPPER.value
 
-                load_model(self, model, sign_jaw)
+                load_model(self, model, sign_jaw, skip=True)
             if(i==0):
                 if(Arch._is_complete()):
                     temp={
