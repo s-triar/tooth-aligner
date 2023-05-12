@@ -121,15 +121,7 @@ def get_new_model(models,chromosome):
 
 
 def minimize_function_using_delta_current_to_the_first_studi_model_calculation2( models, chromosome, flat_pts, summary_pts, Bs, line_centers,  As, destination_tooth):
-    tot_error_top_view=0
-    tot_error_side_view=0
-    
-    tot_error_top_view_move=0
-    tot_error_side_view_move=0
-    
-    error_summary=0
-    error_summary_i=0
-    punish_collision = 0
+
     i=0
     ArchCopy._clear()
 
@@ -145,8 +137,18 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
             model_lower_cp = model_cp
     
     models_cps=[model_upper_cp,model_lower_cp]
-    
+
+    error_arch = []
     for model_cp in models_cps:
+        tot_error_top_view = 0
+        tot_error_side_view = 0
+
+        tot_error_top_view_move = 0
+        tot_error_side_view_move = 0
+
+        error_summary = 0
+        error_summary_i = 0
+        punish_collision = 0
         eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
         model_cp= de_rotation_and_moving(model_cp, chromosome[(i*(14*6)):(i+1)*(14*6)])
         i+=1
@@ -177,15 +179,20 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 # error_summary+=(error_total**2)
                 error_summary_i+=1
 
-    tot_error_top_view=math.sqrt(tot_error_top_view/error_summary_i)
-    tot_error_side_view=math.sqrt(tot_error_side_view/error_summary_i)
-    
-    tot_error_top_view_move=math.sqrt(tot_error_top_view_move/error_summary_i)
-    tot_error_side_view_move=math.sqrt(tot_error_side_view_move/error_summary_i)
-    ArchCopy._clear()
-    # error_summary = math.sqrt(error_summary/error_summary_i)
-    error_summary = tot_error_top_view+tot_error_side_view+tot_error_top_view_move+tot_error_side_view_move
-    return error_summary+punish_collision
+        tot_error_top_view = math.sqrt(tot_error_top_view / error_summary_i)
+        tot_error_side_view = math.sqrt(tot_error_side_view / error_summary_i)
+
+        tot_error_top_view_move = math.sqrt(tot_error_top_view_move / error_summary_i)
+        tot_error_side_view_move = math.sqrt(tot_error_side_view_move / error_summary_i)
+        ArchCopy._clear()
+        # error_summary = math.sqrt(error_summary/error_summary_i)
+        error_summary = tot_error_top_view + tot_error_side_view + tot_error_top_view_move + tot_error_side_view_move
+        totalerror = error_summary + punish_collision
+        error_arch.append(totalerror)
+        # return error_summary
+
+
+    return error_arch
     # return error_summary
     
     
@@ -482,7 +489,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     return res
     
 
-def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth):
+def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
@@ -490,28 +497,35 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
     myinitIndividu = indvCreate2(models, summaries, pop[0])
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
-    
+
     myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth)
     myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
     pop[-2]=myinit_indv_rot
-    
+
     myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0],As, destination_tooth)
     myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
     pop[-3]=myinit_indv_mov
-    
+
     myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0],As, destination_tooth)
     myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
     pop[-4]=myinit_indv_rot_mov
     
     # print("pop",pop)
     # evaluate initial population of candidate solutions
-    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop]
+    # obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop]
+    obj_all = np.array([minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats,
+                                                                                                    summaries, Bs,
+                                                                                                    line_centers, As,
+                                                                                                    destination_tooth)
+                        for ind in pop])
     # print(obj_all)
     
     # find the best performing vector of initial population
-    best_vector = pop[np.argmin(obj_all)]
-    best_obj = np.min(obj_all)
-    prev_obj = best_obj
+    # best_vector = pop[np.argmin(obj_all)]
+    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome],
+                                  pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:]))
+    best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
+    prev_obj = best_obj[:]
     # run iterations of the algorithm
     for i in range(iter):
         print("iter",i)
@@ -542,19 +556,28 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
             # print(pop[j])
             # print(trial)
             # perform selection
-            if obj_trial <= obj_target:
+            if obj_trial[0] <= obj_target[0]:
                 # replace the target vector with the trial vector
-                pop[j] = trial
+                pop[j][:n_tooth * n_chromosome] = trial[:n_tooth * n_chromosome]
                 # store the new objective function value
-                obj_all[j] = obj_trial
+                obj_all[j][0] = obj_trial[0]
+            if obj_trial[1] <= obj_target[1]:
+                # replace the target vector with the trial vector
+                pop[j][n_tooth * n_chromosome:] = trial[n_tooth * n_chromosome:]
+                # store the new objective function value
+                obj_all[j][1] = obj_trial[1]
         # find the best performing vector at each iteration
-        best_obj = np.min(obj_all)
+        # best_obj = np.min(obj_all)
+        best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
         # store the lowest objective function value
-        if best_obj < prev_obj:
-            best_vector = pop[np.argmin(obj_all)]
-            prev_obj = best_obj
+        if best_obj[0] < prev_obj[0]:
+            best_vector[:n_tooth * n_chromosome] = pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome]
+            prev_obj[0] = best_obj[0]
+        if best_obj[1] < prev_obj[1]:
+            best_vector[n_tooth * n_chromosome:] = pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:]
+            prev_obj[1] = best_obj[1]
             # report progress at each iteration
-            print('Iteration: %d = %.5f' % (i, best_obj))
+        print('Iteration: %d = %.5f and %.5f' % (i, best_obj[0], best_obj[1]))
             # print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
     return [best_vector, best_obj]
     
@@ -585,7 +608,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     # define crossover rate for recombination
     cr = 0.7
     seconds_start = time.time()
-    solution = de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth)
+    solution = de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth)
     seconds_finish = time.time()
     print("waktu de opt", (seconds_finish-seconds_start),"detik")
     new_model = get_new_model(models, solution[0])
