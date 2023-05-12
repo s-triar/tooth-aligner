@@ -485,30 +485,31 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
     if(len(gen)>0):
         pop[0]=gen
-    # myinitIndividu = indvCreate2(models, summaries, pop[0])
-    # myinitIndividu = check_bounds(myinitIndividu, bounds)
-    # pop[-1]=myinitIndividu
+    myinitIndividu = indvCreate2(models, summaries, pop[0])
+    myinitIndividu = check_bounds(myinitIndividu, bounds)
+    pop[-1]=myinitIndividu
     
-    # myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth)
-    # myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
-    # pop[-2]=myinit_indv_rot
+    myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth)
+    myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
+    pop[-2]=myinit_indv_rot
     
-    # myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0],As, destination_tooth)
-    # myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
-    # pop[-3]=myinit_indv_mov
+    myinit_indv_mov = indv_create_move(models,summaries,flats,pop[0],As, destination_tooth)
+    myinit_indv_mov = check_bounds(myinit_indv_mov, bounds)
+    pop[-3]=myinit_indv_mov
     
-    # myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0],As, destination_tooth)
-    # myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
-    # pop[-4]=myinit_indv_rot_mov
+    myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0],As, destination_tooth)
+    myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
+    pop[-4]=myinit_indv_rot_mov
     
     # print("pop",pop)
     # evaluate initial population of candidate solutions
-    obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop]
-    print(obj_all)
-    print("np argmin", np.argmin(obj_all[:, 0]))
+    obj_all = np.array([minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop])
+    # print(obj_all)
+    # print("np argmin", np.argmin(obj_all[:, 0]))
     # find the best performing vector of initial population
-    best_vector = [pop[np.argmin(obj_all[:, 0])][:n_tooth*n_chromosome], pop[np.argmin(obj_all[:,1])][n_tooth*n_chromosome:]]
-    print("len best vector",  len(best_vector[0]), len(best_vector[1]))
+    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth*n_chromosome], pop[np.argmin(obj_all[:,1])][n_tooth*n_chromosome:]))
+    # print(best_vector)
+    # print("len best vector",  len(best_vector[0]), len(best_vector[1]))
     best_obj = [np.min(obj_all[:,0]),np.min(obj_all[:,1])]
     prev_obj = best_obj[:]
     # run iterations of the algorithm
@@ -561,7 +562,7 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
             best_vector[n_tooth*n_chromosome:] = pop[np.argmin(obj_all[:,1])][n_tooth*n_chromosome:]
             prev_obj[1] = best_obj[1]
             # report progress at each iteration
-        print('Iteration: %d = %.5f' % (i, best_obj))
+        print('Iteration: %d = %.5f and %.5f' % (i, best_obj[0], best_obj[1]))
             # print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
     return [best_vector, best_obj]
     
@@ -575,14 +576,14 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     pop_size = 7
     n_tooth = 14
     n_chromosome = 6
-    individu_bounds= [[0, 0]]*n_tooth*2*n_chromosome
-    # individu_bounds = [
-    #                       [-2.5, 2.5],
-    #                       [-2.5, 2.5],
-    #                       [-2.5, 2.5],
-    #                       [-0.3, 0.3],
-    #                       [-0.3, 0.3],
-    #                       [-0.3, 0.3]] * n_tooth * 2
+    # individu_bounds= [[0, 0]]*n_tooth*2*n_chromosome
+    individu_bounds = [
+                          [-2.5, 2.5],
+                          [-2.5, 2.5],
+                          [-2.5, 2.5],
+                          [-0.3, 0.3],
+                          [-0.3, 0.3],
+                          [-0.3, 0.3]] * n_tooth * 2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
