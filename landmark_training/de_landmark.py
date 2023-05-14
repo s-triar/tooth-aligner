@@ -69,7 +69,6 @@ def check_bounds(mutated):
 
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    print(arch_type, tooth_type, landmark_type)
     candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
     vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
     # parameter = landmark_definition[arch_type][tooth_type][landmark_type]
@@ -88,7 +87,7 @@ def minimize_function(individu, mesh_data, arch_type, tooth_type, landmark_type)
                                            data['norm_vertices_tooth'],
                                            data['vertices_tooth'])
         error = find_distance_between_two_points(data['ground_truth'], current_point)
-        se = math.pow(error,2)
+        se = math.pow(error, 2)
         total_se += se
     mse = total_se/len(mesh_data)
     rmse = math.sqrt(mse)
