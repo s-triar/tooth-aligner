@@ -1,6 +1,6 @@
 import numpy as np
 from vedo import load
-from utility import landmarking_lib as ll
+import utility.landmarking_lib as ll
 from constant.enums import ToothType, LandmarkType, ArchType, LandmarkDefinition
 from landmark_training.landmark_helper import get_candidate_points, get_point_landmark_normalized
 from landmark_training.param_landmark_area import candidate_definition
@@ -108,7 +108,7 @@ def de_optimization(data_meshes, pop_size, n_chromosome, iter, F, cr, arch_type,
     prev_obj = best_obj
     # run iterations of the algorithm
     for i in range(iter):
-        print("iter", i)
+        # print("iter", i)
         # iterate over all candidate solutions
         for j in range(pop_size):
             # choose three candidates, a, b and c, that are not the current one

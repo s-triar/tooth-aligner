@@ -35,7 +35,14 @@ candidate_definition = {
                 'f': [True, True],
                 'b': [True, True],
             },
-            LandmarkType.CUSP.value: {}
+            LandmarkType.CUSP.value: {
+                'u': [True, True],
+                'd': [True, True],
+                'r': [-1, 1],
+                'l': [True, True],
+                'f': [-3, 3],
+                'b': [True, True],
+            }
         },
         ToothType.INCISOR_UL1_LR1.value: {
             LandmarkType.MESIAL.value: {

@@ -1,6 +1,6 @@
 import numpy as np
-from param_landmark_area import candidate_definition
-from param_landmark_position import landmark_definition
+from landmark_training.param_landmark_area import candidate_definition
+from landmark_training.param_landmark_position import landmark_definition
 def get_array_compared(key, arr):
     if(key == 'u'):
         return arr[0]
@@ -65,7 +65,6 @@ def get_candidate_points(candidate_def, eigen_vec_mesh, center_tooth, vertices_t
     )
 
     vertices_new = vertices_tooth[query]
-
     return vertices_new
 
 
@@ -79,12 +78,12 @@ def get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
 
     vertices_tooth_trans = np.transpose(vertices_tooth_new)
 
-    temp_r = np.matmul(left_right * parameter[2], vertices_tooth_trans)
-    temp_l = np.matmul(inv_left_right * parameter[3], vertices_tooth_trans)
-    temp_f = np.matmul(forward_backward * parameter[4], vertices_tooth_trans)
-    temp_b = np.matmul(inv_forward_backward * parameter[5], vertices_tooth_trans)
-    temp_u = np.matmul(upward_downward*parameter[0], vertices_tooth_trans)
-    temp_d = np.matmul(inv_upward_downward*parameter[1], vertices_tooth_trans)
+    temp_r = np.matmul(left_right * parameter[0], vertices_tooth_trans)
+    temp_l = np.matmul(inv_left_right * parameter[1], vertices_tooth_trans)
+    temp_f = np.matmul(forward_backward * parameter[2], vertices_tooth_trans)
+    temp_b = np.matmul(inv_forward_backward * parameter[3], vertices_tooth_trans)
+    temp_u = np.matmul(upward_downward*parameter[4], vertices_tooth_trans)
+    temp_d = np.matmul(inv_upward_downward*parameter[5], vertices_tooth_trans)
 
     stacked_array = np.column_stack((temp_u, temp_d, temp_r, temp_l, temp_f, temp_b))
 
