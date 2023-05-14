@@ -1,41 +1,46 @@
 from constant.enums import LandmarkType, ArchType, ToothType
+import pandas as pd
+landmark_definition = {}
 
-landmark_definition = {
-    ArchType.UPPER.value: {
-        ToothType.INCISOR_UR1_LL1.value: {
-            LandmarkType.MESIAL.value: [0,0,0,0,0,0],
-            LandmarkType.DISTAL.value: [0,0,0,0,0,0]
-        }
-    }
-}
+landmark_def_path = "ld_saved_de.txt"
 
-import numpy as np
+def import_landmark_def():
+    df = pd.read_csv(landmark_def_path, encoding='utf-8', header=None)
+    for index, row in df.iterrows():
+        idx_arch = 1
+        idx_tooth = 3
+        idx_landmark = 5
+        idx_coord = 7
+        arch = int(row[idx_arch])
+        tooth = int(row[idx_tooth])
+        landmark = int(row[idx_landmark])
+        coordinate=str(row[idx_coord])
+        coors = []
+        coord = coordinate.split("|")
+        for c in coord:
+            coors.append(float(c))
 
-# Example dictionary with conditions
-conditions = {
-    'condition1': 5,
-    'condition2': 6,
-    'condition3': 3
-}
+        if arch in landmark_definition:
+            if tooth in landmark_definition[arch]:
+                if landmark in landmark_definition[arch][tooth]:
+                    landmark_definition[arch][tooth][landmark] = coors
+                else:
+                    landmark_definition[arch][tooth][landmark] = {}
+                    landmark_definition[arch][tooth][landmark] = coors
+            else:
+                landmark_definition[arch][tooth] = {}
+                landmark_definition[arch][tooth][landmark] = coors
+        else:
+            landmark_definition[arch] = {}
+            landmark_definition[arch][tooth] = {}
+            landmark_definition[arch][tooth][landmark] = coors
+def get_landmark_definition():
+    if landmark_definition != {}:
+        return landmark_definition
+    else:
+        import_landmark_def()
+        return landmark_definition
 
-# Example array
-array = np.array([1, 6, 12, 3, 8, 5])
-arra1 = np.array([5,5,2,5,7,3])
-
-def getty(arr,v):
-    if(v > 5):
-        return  arr[0]
-    return arr[1]
-
-arrt = [array, arra1]
-
-# Create a dynamic condition based on the dictionary
-condition = np.logical_and.reduce([
-        np.logical_and(True, np.where(value < 6, True, getty(arrt, value) > value + 1))
-        for value in conditions.values()
-    ]
-)
-
-# Apply the condition to the array
-result = array[condition]
-print(result)
+if __name__ == '__main__':
+    a = get_landmark_definition()
+    print(a)
