@@ -86,9 +86,10 @@ def get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
     temp_d = np.matmul(inv_upward_downward*parameter[5], vertices_tooth_trans)
 
     stacked_array = np.column_stack((temp_u, temp_d, temp_r, temp_l, temp_f, temp_b))
-
     mean_per_row = np.mean(stacked_array, axis=1)
+    print(mean_per_row.shape, vertices_tooth_new.shape)
     min_mean_index = np.argsort(mean_per_row)[0]
+
     normalize_point = vertices_tooth_new[min_mean_index]
 
     return normalize_point
