@@ -68,9 +68,9 @@ def check_bounds(mutated):
 
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
 
@@ -177,19 +177,44 @@ def start_de_landmark():
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_LOWER.csv",
     ]
 
+    paths_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
+    ]
+    paths_ld_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
+    ]
+    paths_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
+    ]
+    paths_ld_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
+    ]
+
     paths_upper.extend(paths_lower)
     paths_vtp = paths_upper[:]
     paths_ld_upper.extend(paths_ld_lower)
     paths_csv = paths_ld_upper[:]
 
-    pop_size = 1000
+    pop_size = 10
     n_chromosome = 6 # kanan kiri depan belakang atas bawah
     # left_right = eig_vec[0]
     # forward_backward = eig_vec[1]
     # upward_downward = eig_vec[2]
 
     # define number of iterations
-    iter = 10
+    iter = 100
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination

@@ -32,8 +32,8 @@ path_data_csv=[
 # "D:\\tesis\\fix\\15. YS\\YS_landmark_UPPER.csv",
 # "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.csv",
 # "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.csv",
-"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
-"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
+# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
+# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
 # "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.csv",
 # "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.csv",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.csv",
@@ -66,8 +66,8 @@ path_data_vtp = [
 # "D:\\tesis\\fix\\15. YS\\YS_UPPER_.vtp",
 # "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.vtp",
 # "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.vtp",
-"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
-"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
+# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
+# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
 # "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.vtp",
 # "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.vtp",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.vtp",
@@ -148,10 +148,10 @@ def import_landmark_def(landmark_def_path):
     return  landmark_definition
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
-    print(arch_type, tooth_type, landmark_type)
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+    # print(arch_type, tooth_type, landmark_type)
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
 
@@ -189,6 +189,7 @@ path_landmark_files =[
     "ld_saved_de_iter10_pop1000_f05_cr07.csv",
     "ld_saved_de_iter100_pop100_f05_cr07.csv",
     "ld_saved_de_iter1000_pop10_f05_cr07.csv"
+    # "ld_saved_de.csv"
 ]
 df_res = pd.DataFrame.from_dict({
         'FILE':[],
@@ -306,5 +307,5 @@ for path_landmark_file in path_landmark_files:
         'RMSE':[both_rmse_final, upper_rmse_final, lower_rmse_final]
     })
     df_res = pd.concat([df_res, df_arch], ignore_index=True)
-df_res.to_csv("hasil_evaluation_ld_based_on_arch.csv",encoding='utf-8')
-df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld.csv",encoding='utf-8')
+df_res.to_csv("hasil_evaluation_ld_based_on_arch_no_candidate.csv",encoding='utf-8')
+df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_no_candidate.csv",encoding='utf-8')
