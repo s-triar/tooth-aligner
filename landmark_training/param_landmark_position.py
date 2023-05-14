@@ -11,7 +11,6 @@ def import_landmark_def():
         idx_tooth = 3
         idx_landmark = 5
         idx_coord = 7
-
         arch = int(row[idx_arch])
         tooth = int(row[idx_tooth])
         landmark = int(row[idx_landmark])
