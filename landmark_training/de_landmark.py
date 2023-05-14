@@ -184,15 +184,14 @@ def start_de_landmark():
     paths_ld_upper.extend(paths_ld_lower)
     paths_csv = paths_ld_upper[:]
 
-    pop_size = 6
-    n_tooth = 2
+    pop_size = 100
     n_chromosome = 6 # kanan kiri depan belakang atas bawah
     # left_right = eig_vec[0]
     # forward_backward = eig_vec[1]
     # upward_downward = eig_vec[2]
 
     # define number of iterations
-    iter = 5
+    iter = 100
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
