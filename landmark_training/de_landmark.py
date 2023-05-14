@@ -230,7 +230,8 @@ def start_de_landmark():
                     print("waktu de opt", finish_time, "detik")
                     f = open('ld_saved_de.txt', 'a+', encoding='utf-8', newline='')
                     writer = csv.writer(f)
-                    writer.writerow([archtype.name, toothtype.name, get_landmark_name(ld), solution[1], solution[0], finish_time])
+                    coor = '|'.join([str(c) for c in solution[0]])
+                    writer.writerow([archtype.name, archtype.value, toothtype.name, toothtype.value, get_landmark_name(ld), ld, solution[1], coor, finish_time])
                     f.close()
 
 if __name__ == '__main__':

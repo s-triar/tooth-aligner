@@ -54,8 +54,6 @@ def get_candidate_points(candidate_def, eigen_vec_mesh, center_tooth, vertices_t
     temp_b = np.matmul(inv_forward_backward, vertices_tooth_trans)
     arr_comp = [temp_u, temp_d, temp_r, temp_l, temp_f, temp_b]
     centers_comp = [center_u, center_d, center_r, center_l, center_f, center_b]
-    for k, v in candidate_def.items():
-        print(k, v)
     query = np.logical_and.reduce(
         [
             np.logical_and(np.where(isinstance(v[0], bool), v[0], get_array_compared(k, arr_comp) > get_center_compared(k, centers_comp)+v[0]),
