@@ -1,10 +1,9 @@
 import numpy as np
 from vedo import load
-from utility import landmarking_lib as ll
+import utility.landmarking_lib as ll
 from constant.enums import ToothType, LandmarkType, ArchType, LandmarkDefinition
 from landmark_training.landmark_helper import get_candidate_points, get_point_landmark_normalized
 from landmark_training.param_landmark_area import candidate_definition
-from landmark_training.param_landmark_position import landmark_definition
 import time
 import pandas as pd
 import math
@@ -69,10 +68,9 @@ def check_bounds(mutated):
 
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
-    # parameter = landmark_definition[arch_type][tooth_type][landmark_type]
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
 
@@ -108,7 +106,7 @@ def de_optimization(data_meshes, pop_size, n_chromosome, iter, F, cr, arch_type,
     prev_obj = best_obj
     # run iterations of the algorithm
     for i in range(iter):
-        print("iter", i)
+        # print("iter", i)
         # iterate over all candidate solutions
         for j in range(pop_size):
             # choose three candidates, a, b and c, that are not the current one
@@ -179,12 +177,37 @@ def start_de_landmark():
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_LOWER.csv",
     ]
 
+    paths_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
+    ]
+    paths_ld_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
+    ]
+    paths_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
+    ]
+    paths_ld_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
+    ]
+
     paths_upper.extend(paths_lower)
     paths_vtp = paths_upper[:]
     paths_ld_upper.extend(paths_ld_lower)
     paths_csv = paths_ld_upper[:]
 
-    pop_size = 100
+    pop_size = 10
     n_chromosome = 6 # kanan kiri depan belakang atas bawah
     # left_right = eig_vec[0]
     # forward_backward = eig_vec[1]
