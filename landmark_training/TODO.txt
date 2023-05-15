@@ -1,0 +1,5 @@
+1. Make plot
+2. make visualize based on the best result
+3. make flow chart
+4. write
+5. landmark labeling
