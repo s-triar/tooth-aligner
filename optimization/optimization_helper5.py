@@ -358,7 +358,7 @@ def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
             cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN_DISTAL.value])
 
     if tooth.label in tooth_labels['canine'] or tooth.label in tooth_labels['anterior']:
-        cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT.value])
+        cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP.value])
 
     dst = 0
     for cusp in cusp_outs:
