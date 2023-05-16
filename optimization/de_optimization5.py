@@ -146,7 +146,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]),SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -309,7 +309,7 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth)
     models_cps=[model_upper_cp,model_lower_cp]
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]),SplineKu(flat_pts[model_cp.arch_type][1])]
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
@@ -342,7 +342,7 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
     models_cps=[model_upper_cp,model_lower_cp]
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]),SplineKu(flat_pts[model_cp.arch_type][1])]
         
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
@@ -396,7 +396,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]),SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -564,9 +564,9 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_chromosome = 6
     # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
     individu_bounds = [
-                          [-2.5, 2.5],
-                          [-2.5, 2.5],
-                          [-2.5, 2.5],
+                          [-1, 1],
+                          [-1, 1],
+                          [-1, 1],
                           [-0.3, 0.3],
                           [-0.3, 0.3],
                           [-0.3, 0.3]] * n_tooth * 2

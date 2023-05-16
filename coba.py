@@ -125,23 +125,26 @@
 # plt.show(b,Cube((0.3,0.2,0.6),2),viewup='z', mode=tto)
 # plt.close()
 
-from utility.calculation import get_angle_from_2_2d_lines, convert_to_2d,FaceTypeConversion
-import math
-lineA = ((0,4),(9,2)) 
-lineB = ((0,4),(-2,5))
+# from utility.calculation import get_angle_from_2_2d_lines, convert_to_2d,FaceTypeConversion
+# import math
+# lineA = ((0,4),(9,2))
+# lineB = ((0,4),(-2,5))
+#
+# ang = get_angle_from_2_2d_lines(lineA, lineB)
+# print(ang)
+# print((math.pi/2))
+# print()
+#
+# eig =[
+#     [0.1,0.2,0.3],
+#     [0.7,0.8,0.9],
+#     [0.3,0.2,0.1]
+# ]
+#
+# p = [10,20,20]
+#
+# j = convert_to_2d(FaceTypeConversion.FRONT.value,eig, p)
+# print(j)
 
-ang = get_angle_from_2_2d_lines(lineA, lineB)
-print(ang)
-print((math.pi/2))
-print()
 
-eig =[
-    [0.1,0.2,0.3],
-    [0.7,0.8,0.9],
-    [0.3,0.2,0.1]
-]
 
-p = [10,20,20]
-
-j = convert_to_2d(FaceTypeConversion.FRONT.value,eig, p)
-print(j)
