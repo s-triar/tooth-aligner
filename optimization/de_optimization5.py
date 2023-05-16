@@ -433,7 +433,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]),SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -558,7 +558,7 @@ def de_optimization(gen, models, pop_size, bounds, iter, F, cr, flats, summaries
 
 def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth):
     
-    
+
     pop_size = 7
     n_tooth = 14
     n_chromosome = 6
