@@ -14,8 +14,12 @@ def dist(pts1, pts2):
     
 # path_save_ground_truth = 'saved_landmark'
 # path_save_predict = 'saved_landmark_predict_manual'
-path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
-path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+# path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
+# path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+
+path_save_ground_truth = 'D:\\tesis\\fix'
+path_save_predict = 'D:\\Code\\tooth-aligner\\saved_ld_weight_manual'
+
 people = []
 
 up = "UPPER"

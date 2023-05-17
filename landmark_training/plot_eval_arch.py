@@ -7,9 +7,11 @@ filenames=[
 
 "hasil_evaluation_ld_based_on_arch_fcr_variation_no_candidate.csv",
 
+# "hasil_evaluation_ld_based_on_arch_w_manual.csv"
 ]
 # folder='popiter'
 folder='f_cr'
+# folder='w_manual'
 filename=folder+'\\'+filenames[0]
 
 
@@ -34,6 +36,10 @@ print(df_arch)
 # Create unique labels for the nested x-axis
 def create_label_from_file(filename: str):
     names = filename.split("_")
+    if len(names) == 1:
+        return names
+    if "0." in filename:
+        return names[6]+" "+names[7]+("" if "no_candidate" not in filename else " NC")
     return names[3]+" "+names[4]+("" if "no_candidate" not in filename else " NC")
 
 x_labels = [f"{create_label_from_file(c1)} - {c2}" for c1, c2 in zip(df_arch[:]['FILE'], df_arch[:]['Rahang'])]

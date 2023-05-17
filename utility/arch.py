@@ -83,7 +83,55 @@ class Arch():
         self.teeth[label].index_vertice_cells=cells_tooth
         self.teeth[label].center=center_tooth
         self.teeth[label].update_landmark_moving(val_direction)
-    
+
+    def extract_tooth_new(self):
+        N = self.mesh.NCells()
+        labels = np.unique(self.mesh.celldata['Label'])
+        center_mesh = self.mesh.centerOfMass()
+        points_mesh = np.array(self.mesh.points())
+        idx_faces_mesh = np.array(self.mesh.cells())
+        points_mesh_normalized = points_mesh - center_mesh
+        eigen_val_mesh, eigen_vec_mesh = ll.getEigen(points_mesh_normalized, idx_faces_mesh,
+                                                     self.mesh.celldata['Label'], [6,7,8,9])
+        for label in labels:
+            cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
+            label = math.floor(label)
+            cells_tooth = idx_faces_mesh[cells_tooth_index]
+            points_tooth_index = np.unique(cells_tooth)
+            points_tooth = points_mesh[points_tooth_index]
+            points_tooth_normalized = points_mesh_normalized[points_tooth_index]
+            center_tooth = np.mean(points_tooth, axis=0)
+            center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+
+            landmark = {}
+            landmark[LandmarkType.MESIAL.value] = None
+            landmark[LandmarkType.DISTAL.value] = None
+            landmark[LandmarkType.BUCCAL_OR_LABIAL.value] = None
+            landmark[LandmarkType.LINGUAL_OR_PALATAL.value] = None
+            landmark[LandmarkType.PIT.value] = None
+            landmark[LandmarkType.CUSP.value] = None
+            landmark[LandmarkType.CUSP_OUT.value] = None
+            landmark[LandmarkType.CUSP_IN.value] = None
+            landmark[LandmarkType.CUSP_OUT_MESIAL.value] = None
+            landmark[LandmarkType.CUSP_OUT_MIDDLE.value] = None
+            landmark[LandmarkType.CUSP_OUT_DISTAL.value] = None
+            landmark[LandmarkType.CUSP_IN_MESIAL.value] = None
+            landmark[LandmarkType.CUSP_IN_DISTAL.value] = None
+
+            if (math.floor(label) == ToothType.GINGIVA.value):
+                gingiva = Tooth(
+                    math.floor(label),
+                    points_tooth,
+                    cells_tooth,
+                    center_tooth,
+                    landmark
+                )
+                self.gingiva = gingiva
+            else:
+                points_tooth_normalized = tooth_mesh.points() - center_mesh
+                center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+
+
     def extract_tooth(self):
         incisor_teeth = [
             ToothType.INCISOR_UL2_LR2.value, 

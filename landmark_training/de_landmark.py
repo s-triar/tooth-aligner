@@ -44,11 +44,12 @@ def extract_vtp(mesh, label):
     cells_tooth = idx_faces_mesh[cells_tooth_index]
     points_tooth_index = np.unique(cells_tooth)
     points_tooth = points_mesh[points_tooth_index]
-    points_tooth_normalized = points_mesh_normalized[points_tooth_index]
+    # points_tooth_normalized = points_mesh_normalized[points_tooth_index]
     center_tooth = np.mean(points_tooth, axis=0)
-    center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+    vertices_tooth_normalized = points_tooth - center_tooth
+    center_tooth_normalized = np.mean(vertices_tooth_normalized, axis=0)
 
-    return eigen_vec_mesh, points_tooth, points_tooth_normalized, center_tooth_normalized
+    return eigen_vec_mesh, points_tooth, vertices_tooth_normalized, center_tooth_normalized
 
 
 def mutation_best(xb, x, F): #DE/best/1
@@ -207,6 +208,7 @@ def start_de_landmark():
     paths_ld_upper.extend(paths_ld_lower)
     paths_csv = paths_ld_upper[:]
 
+    pops_sizes = [1000, 100, 10]
     pop_size = 10
     n_chromosome = 6 # kanan kiri depan belakang atas bawah
     # left_right = eig_vec[0]
@@ -214,6 +216,7 @@ def start_de_landmark():
     # upward_downward = eig_vec[2]
 
     # define number of iterations
+    iters = [10,100,1000]
     iter = 100
     # define scale factor for mutation
     F = 0.5
@@ -221,41 +224,43 @@ def start_de_landmark():
     cr = 0.7
 
     ld_def = LandmarkDefinition().archs
-    for archtype in ArchType:
-        for toothtype in ToothType:
-            # print(toothtype.value)
-            if toothtype.value == toothtype.GINGIVA.value or toothtype.value == toothtype.DELETED.value:
-                continue
-            for ld in ld_def[archtype.value][toothtype.value]:
-                # print("ld",ld)
-                meshes_data = []
-                for vtp_path, ld_path in (zip(paths_vtp, paths_csv)):
-                    word = 'UPPER'
-                    if archtype.value == ArchType.LOWER.value:
-                        word = 'LOWER'
-                    if word not in vtp_path:
-                        continue
-                    # print(vtp_path)
-                    ground_truth = load_ld(ld_path, toothtype.value, ld)
-                    eigen_vec_mesh, vertices_tooth, norm_vertices_tooth, norm_center_tooth = extract_vtp(load(vtp_path), toothtype.value)
-                    meshes_data.append({
-                        'eigen': eigen_vec_mesh,
-                        'vertices_tooth': vertices_tooth,
-                        'norm_vertices_tooth': norm_vertices_tooth,
-                        'norm_center_tooth':norm_center_tooth,
-                        'ground_truth': ground_truth
-                    })
-                seconds_start = time.time()
-                solution = de_optimization(meshes_data, pop_size, n_chromosome, iter, F, cr, archtype.value, toothtype.value, ld)
-                print("solution: ", archtype.name, toothtype.name, get_landmark_name(ld), solution[1], solution[0])
-                seconds_finish = time.time()
-                finish_time = (seconds_finish-seconds_start)
-                print("waktu de opt", finish_time, "detik")
-                f = open('ld_saved_de.csv', 'a+', encoding='utf-8', newline='')
-                writer = csv.writer(f)
-                coor = '|'.join([str(c) for c in solution[0]])
-                writer.writerow([archtype.name, archtype.value, toothtype.name, toothtype.value, get_landmark_name(ld), ld, solution[1], coor, finish_time])
-                f.close()
+    for iter, pop_size in zip(iters, pops_sizes):
+        for archtype in ArchType:
+            for toothtype in ToothType:
+                # print(toothtype.value)
+                if toothtype.value == toothtype.GINGIVA.value or toothtype.value == toothtype.DELETED.value:
+                    continue
+                for ld in ld_def[archtype.value][toothtype.value]:
+                    # print("ld",ld)
+                    meshes_data = []
+                    for vtp_path, ld_path in (zip(paths_vtp, paths_csv)):
+                        word = 'UPPER'
+                        if archtype.value == ArchType.LOWER.value:
+                            word = 'LOWER'
+                        if word not in vtp_path:
+                            continue
+                        # print(vtp_path)
+                        ground_truth = load_ld(ld_path, toothtype.value, ld)
+                        eigen_vec_mesh, vertices_tooth, norm_vertices_tooth, norm_center_tooth = extract_vtp(load(vtp_path), toothtype.value)
+                        meshes_data.append({
+                            'eigen': eigen_vec_mesh,
+                            'vertices_tooth': vertices_tooth,
+                            'norm_vertices_tooth': norm_vertices_tooth,
+                            'norm_center_tooth':norm_center_tooth,
+                            'ground_truth': ground_truth
+                        })
+                    seconds_start = time.time()
+                    solution = de_optimization(meshes_data, pop_size, n_chromosome, iter, F, cr, archtype.value, toothtype.value, ld)
+                    print("solution: ", archtype.name, toothtype.name, get_landmark_name(ld), solution[1], solution[0])
+                    seconds_finish = time.time()
+                    finish_time = (seconds_finish-seconds_start)
+                    print("waktu de opt", finish_time, "detik")
+                    filenm = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v2.csv'.format(str(pop_size), str(iter))
+                    f = open(filenm, 'a+', encoding='utf-8', newline='')
+                    writer = csv.writer(f)
+                    coor = '|'.join([str(c) for c in solution[0]])
+                    writer.writerow([archtype.name, archtype.value, toothtype.name, toothtype.value, get_landmark_name(ld), ld, solution[1], coor, finish_time])
+                    f.close()
 
 if __name__ == '__main__':
     start_de_landmark()
