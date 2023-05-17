@@ -1,46 +1,79 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
-# Data
-data = [
-    [0, 'ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv', 'BOTH', 33930.91286234167, 3.3903114420706224],
-    [1, 'ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv', 'UPPER', 21305.600897849796, 2.6865115815107505],
-    [2, 'ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv', 'LOWER', 12625.311964491873, 2.0680587991262698],
-    [3, 'ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv', 'BOTH', 33286.84476966829, 3.3579802599240205],
-    [4, 'ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv', 'UPPER', 21160.712470305345, 2.6773612068501804],
-    [5, 'ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv', 'LOWER', 12126.132299362944, 2.0267630335323212],
-    [6, 'ld_saved_de_pop1000_iter10_f05_cr07_no_candidate.csv', 'BOTH', 32180.962700965974, 3.3017283548247143],
-    [7, 'ld_saved_de_pop1000_iter10_f05_cr07_no_candidate.csv', 'UPPER', 20241.58358416189, 2.6185692674025107],
-    [8, 'ld_saved_de_pop1000_iter10_f05_cr07_no_candidate.csv', 'LOWER', 11939.37911680409, 2.0110955026722612]
+filenames=[
+# "hasil_evaluation_ld_based_on_ld.csv",
+# "hasil_evaluation_ld_based_on_ld_no_candidate.csv"
+
+"hasil_evaluation_ld_based_on_ld_fcr_variation_no_candidate.csv",
 ]
 
-# Extract columns for plotting
-column1 = [row[1] for row in data]
-column2 = [row[2] for row in data]
-column4 = [row[4] for row in data]
+# folder='popiter'
+folder='f_cr'
+
+filename=folder+'\\'+filenames[0]
+
+# pop iter
+# _ FILE Rahang         Total      RMSE
+df_arch = pd.read_csv(filename, encoding='utf-8', index_col=0)
+# df_arch = df_arch.sort_values(by=['Rahang'], ascending=False)
+if len(filenames) > 1:
+    filename=folder+'\\'+filenames[1]
+
+    # pop iter
+    # _ FILE Rahang         Total      RMSE
+    df_arch_no_candidate = pd.read_csv(filename, encoding='utf-8', index_col=0)
+    # df_arch_no_candidate = df_arch_no_candidate.sort_values(by=['Rahang'], ascending=False)
+
+    df_arch = pd.concat([df_arch, df_arch_no_candidate])
+df_arch = df_arch.sort_values(by=['Rahang', 'Landmark', 'FILE'], ascending=False)
+
+landmarks = df_arch[:]['Landmark'].drop_duplicates()
+print(landmarks)
+
+archs = df_arch[:]['Rahang'].drop_duplicates()
+print(archs)
 
 # Create unique labels for the nested x-axis
-x_labels = [f"{c1} - {c2}" for c1, c2 in zip(column1, column2)]
+def create_label_from_file(filename: str):
+    names = filename.split("_")
+    return names[3]+" "+names[4]+("" if "no_candidate" not in filename else " NC")
 
-# Assign colors based on the labels
-colors = []
-for label in x_labels:
-    if 'BOTH' in label:
-        colors.append('red')
-    elif 'UPPER' in label:
-        colors.append('blue')
-    elif 'LOWER' in label:
-        colors.append('green')
+for a in archs:
+    df_arch_cp = df_arch[df_arch['Rahang'] == a]
+    x_labels = [f"{create_label_from_file(c1)} - {c2} - {c3}" for c1, c2, c3 in zip(df_arch_cp[:]['FILE'], df_arch_cp[:]['Rahang'], df_arch_cp[:]['Landmark'])]
 
-# Plot based on nested x-axis (column 1 and column 2), and column 4 on the y-axis
-plt.bar(range(len(data)), column4, color=colors)
-plt.xticks(range(len(data)), x_labels, rotation='vertical')
+    # # Assign colors based on the labels
+    colors = []
+    for label in x_labels:
+        if 'BOTH' in label:
+            if("NC" in label):
+                colors.append([1, 1, 0.3, 1])
+            else:
+                colors.append([1,0.4,0.4,1])
+        elif 'UPPER' in label:
+            if ("NC" in label):
+                colors.append([0.3, 1, 1, 1])
+            else:
+                colors.append([0.4,1,0.4,1])
+        elif 'LOWER' in label:
+            if ("NC" in label):
+                colors.append([1, 0.3, 1, 1])
+            else:
+                colors.append([0.4,0.4,1,1])
 
-# Add label values on top of each bar
-for i, v in enumerate(column4):
-    plt.text(i, v, str(round(v, 2)), ha='center', va='bottom')
+    # # Plot based on nested x-axis (column 1 and column 2), and column 4 on the y-axis
+    plt.bar(range(len(df_arch_cp)), df_arch_cp[:]['RMSE'], color=colors)
+    plt.xticks(range(len(df_arch_cp)), x_labels, rotation='vertical')
 
-plt.xlabel('Column 1 - Column 2')
-plt.ylabel('Column 4')
-plt.title('Bar Chart - Columns 1, 2, and 4')
-plt.tight_layout()
-plt.show()
+    # # Add label values on top of each bar
+    for i, v in enumerate(df_arch_cp[:]['RMSE']):
+        plt.text(i, v/2, str(round(v, 2)), ha='center', va='bottom', rotation='vertical')
+    #
+    # plt.legend(x_labels)
+    plt.xlabel('Parameter - Arch')
+    plt.ylabel('RMSE')
+    # plt.title('Comparison RMSE value Landmark based on number of iteration and number of population (cr=0.7 & f=0.5)')
+    plt.title('Comparison RMSE value Arch based on CR and F (iter=10 & popsize=1000)')
+    plt.tight_layout()
+    plt.show()

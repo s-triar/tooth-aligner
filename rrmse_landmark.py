@@ -13,8 +13,11 @@ def dist(pts1, pts2):
     
 # path_save_ground_truth = 'saved_landmark'
 # path_save_predict = 'saved_landmark_predict_manual'
-path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
-path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+# path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
+# path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+
+path_save_ground_truth = 'D:\\tesis\\fix'
+path_save_predict = 'D:\\Code\\tooth-aligner\\saved_ld_weight_manual'
 
 people = []
 
@@ -42,7 +45,9 @@ for p in glob.glob(path_save_predict+"/**"):
         if(up in k):
             upper_path_data_pred.append(k)
         else:
-            lower_path_data_pred.append(k)       
+            lower_path_data_pred.append(k)
+
+exception = ['AE', 'HC', 'KEC','MNF']
 
 total_top=0
 total_bot=0
@@ -51,6 +56,8 @@ i_bot=0
 
 for i in range(len(people)):
     indv="\\"+people[i]+"\\"
+    if people[i].split(" ")[1] in exception:
+        continue
     p=""
     for h in upper_path_data_gt:
         if(indv in h):
@@ -134,9 +141,10 @@ print("RMSE rahang atas",total_top, math.sqrt(total_top/i_up)) #
 print("RMSE rahang bawah",total_bot, math.sqrt(total_bot/i_bot)) 
     
 df_result = pd.DataFrame.from_dict({
-    'Rahang':["rahang atas dan bawah", "rahang atas", "rahang bawah"],
+    'FILE': ['MANUAL WEIGHT','MANUAL WEIGHT','MANUAL WEIGHT'],
+    'Rahang':["BOTH", "UPPER", "LOWER"],
     'Total':[(total_bot+total_top), total_top, total_bot],
     'RMSE':[math.sqrt((total_top+total_bot)/(i_up+i_bot)), math.sqrt(total_top/i_up), math.sqrt(total_bot/i_bot)]
 })
-df_result.to_csv('rmse_landmark_rahang.csv')
+df_result.to_csv('hasil_evaluation_ld_based_on_arch_w_manual.csv')
 

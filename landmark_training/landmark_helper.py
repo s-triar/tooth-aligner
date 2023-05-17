@@ -1,6 +1,8 @@
 import numpy as np
 from landmark_training.param_landmark_area import candidate_definition
-from landmark_training.param_landmark_position import landmark_definition
+from landmark_training.param_landmark_position import landmark_definition, get_landmark_definition
+
+
 def get_array_compared(key, arr):
     if(key == 'u'):
         return arr[0]
@@ -95,9 +97,10 @@ def get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
 
 
 def get_landmark_point(arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
+    ld_def = get_landmark_definition()
     candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
-    parameter = landmark_definition[arch_type][tooth_type][landmark_type]
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+    parameter = ld_def[arch_type][tooth_type][landmark_type]
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]

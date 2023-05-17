@@ -11,9 +11,16 @@ def dist(pts1, pts2):
         math.pow((pts1[1]-pts2[1]),2) +
         math.pow((pts1[2]-pts2[2]),2)
     )
-    
-path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
-path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+def getldname(ldval):
+    for ld in LandmarkType:
+        if ld.value == ldval:
+            return ld.name
+# path_save_ground_truth = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix'
+# path_save_predict = 'D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\saved_ld_auto'
+exception = ['AE', 'HC', 'KEC','MNF']
+
+path_save_ground_truth = 'D:\\tesis\\fix'
+path_save_predict = 'D:\\Code\\tooth-aligner\\saved_ld_weight_manual'
 
 people = []
 
@@ -44,8 +51,9 @@ for p in glob.glob(path_save_predict+"/**"):
             lower_path_data_pred.append(k)       
 
 df_result = pd.DataFrame.from_dict({
+    'FILE':[],
     'Rahang':[],
-    'Landmark Label':[],
+    'Landmark':[],
     'Total':[],
     'RMSE':[]
 })
@@ -61,6 +69,8 @@ for ty in LandmarkType:
     if label != 0:
         for i in range(len(people)):
             indv="\\"+people[i]+"\\"
+            if people[i].split(" ")[1] in exception:
+                continue
             p=""
             for h in upper_path_data_gt:
                 if(indv in h):
@@ -148,13 +158,14 @@ for ty in LandmarkType:
             
             # # for i in range(len(df_gt.head())):
             # #     print(df_gt.head().iloc[i]["x"])
-        print("RMSE rahang keduanya", label, (total_bot+total_top), math.sqrt((total_top+total_bot)/(i_up+i_bot)))
-        print("RMSE rahang atas", label,total_top, (math.sqrt(total_top/i_up) if i_up > 0 else 0)) # 
-        print("RMSE rahang bawah", label,total_bot, (math.sqrt(total_bot/i_bot) if i_bot > 0 else 0)) 
+        print("RMSE rahang keduanya", getldname(int(label)), (total_bot+total_top), math.sqrt((total_top+total_bot)/(i_up+i_bot)))
+        print("RMSE rahang atas", getldname(int(label)),total_top, (math.sqrt(total_top/i_up) if i_up > 0 else 0)) #
+        print("RMSE rahang bawah", getldname(int(label)),total_bot, (math.sqrt(total_bot/i_bot) if i_bot > 0 else 0))
         df_result =df_result.append(
             {
-                'Rahang':"rahang atas dan bawah",
-                'Landmark Label':label,
+                'FILE':"MANUAL WEIGHT",
+                'Rahang':"BOTH",
+                'Landmark':getldname(int(label)),
                 'Total':(total_bot+total_top),
                 'RMSE':math.sqrt((total_top+total_bot)/(i_up+i_bot))
             },
@@ -162,8 +173,9 @@ for ty in LandmarkType:
         )
         df_result=df_result.append(
             {
-                'Rahang':"rahang atas",
-                'Landmark Label':label,
+                'FILE':"MANUAL WEIGHT",
+                'Rahang':"UPPER",
+                'Landmark':getldname(int(label)),
                 'Total':total_top,
                 'RMSE':(math.sqrt(total_top/i_up) if i_up > 0 else 0)
             },
@@ -171,11 +183,13 @@ for ty in LandmarkType:
         )
         df_result=df_result.append(
             {
-                'Rahang':"rahang bawah",
-                'Landmark Label':label,
+                'FILE':"MANUAL WEIGHT",
+                'Rahang':"LOWER",
+                'Landmark':getldname(int(label)),
                 'Total':total_bot,
                 'RMSE':(math.sqrt(total_bot/i_bot) if i_bot > 0 else 0)
             },
             ignore_index=True
         )
-df_result.to_csv('rmse_landmark_landmark.csv')
+        print(i_bot)
+df_result.to_csv('hasil_evaluation_ld_based_on_ld_w_manual.csv')
