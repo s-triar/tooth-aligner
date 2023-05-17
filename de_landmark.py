@@ -45,11 +45,12 @@ def extract_vtp(mesh, label):
     cells_tooth = idx_faces_mesh[cells_tooth_index]
     points_tooth_index = np.unique(cells_tooth)
     points_tooth = points_mesh[points_tooth_index]
-    points_tooth_normalized = points_mesh_normalized[points_tooth_index]
+    # points_tooth_normalized = points_mesh_normalized[points_tooth_index]
     center_tooth = np.mean(points_tooth, axis=0)
-    center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+    vertices_tooth_normalized = points_tooth - center_tooth
+    center_tooth_normalized = np.mean(vertices_tooth_normalized, axis=0)
 
-    return eigen_vec_mesh, points_tooth, points_tooth_normalized, center_tooth_normalized
+    return eigen_vec_mesh, points_tooth, vertices_tooth_normalized, center_tooth_normalized
 
 
 def mutation_best(xb, x, F): #DE/best/1
@@ -200,7 +201,7 @@ def start_de_landmark():
     # Fs=[0.25,0.5,0.75]
     # Crs=[0.3,0.5,0.7]
     ld_def = LandmarkDefinition().archs
-    for popsize, iter in zip(pop_sizes, iters):
+    for pop_size, iter in zip(pop_sizes, iters):
     # for F in Fs:
     #     for cr in Crs:
             for archtype in ArchType:
@@ -233,7 +234,8 @@ def start_de_landmark():
                         seconds_finish = time.time()
                         finish_time = (seconds_finish-seconds_start)
                         print("waktu de opt", finish_time, "detik")
-                        fname = 'ld_saved_de_pop1000_iter10_f{0}_cr{1}_no_candidate.csv'.format(F, cr)
+                        # fname = 'ld_saved_de_pop1000_iter10_f{0}_cr{1}_no_candidate_v2.csv'.format(F, cr)
+                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v2.csv'.format(pop_size, iter)
                         f = open(fname, 'a+', encoding='utf-8', newline='')
                         writer = csv.writer(f)
                         coor = '|'.join([str(c) for c in solution[0]])
