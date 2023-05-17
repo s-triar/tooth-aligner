@@ -2,25 +2,32 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 filenames=[
-"hasil_evaluation_ld_based_on_arch.csv",
-"hasil_evaluation_ld_based_on_arch_no_candidate.csv"
-]
+# "hasil_evaluation_ld_based_on_arch.csv",
+# "hasil_evaluation_ld_based_on_arch_no_candidate.csv"
 
-filename=filenames[0]
+"hasil_evaluation_ld_based_on_arch_fcr_variation_no_candidate.csv",
+
+]
+# folder='popiter'
+folder='f_cr'
+filename=folder+'\\'+filenames[0]
+
 
 # pop iter
 # _ FILE Rahang         Total      RMSE
 df_arch = pd.read_csv(filename, encoding='utf-8', index_col=0)
 # df_arch = df_arch.sort_values(by=['Rahang'], ascending=False)
 
-filename=filenames[1]
+if(len(filenames)>1):
+    filename=folder+'\\'+filenames[1]
 
-# pop iter
-# _ FILE Rahang         Total      RMSE
-df_arch_no_candidate = pd.read_csv(filename, encoding='utf-8', index_col=0)
-# df_arch_no_candidate = df_arch_no_candidate.sort_values(by=['Rahang'], ascending=False)
+    # pop iter
+    # _ FILE Rahang         Total      RMSE
+    df_arch_no_candidate = pd.read_csv(filename, encoding='utf-8', index_col=0)
+    # df_arch_no_candidate = df_arch_no_candidate.sort_values(by=['Rahang'], ascending=False)
 
-df_arch = pd.concat([df_arch, df_arch_no_candidate])
+    df_arch = pd.concat([df_arch, df_arch_no_candidate])
+
 df_arch = df_arch.sort_values(by=['Rahang','FILE'], ascending=False)
 
 print(df_arch)
@@ -61,6 +68,7 @@ for i, v in enumerate(df_arch[:]['RMSE']):
 # plt.legend(x_labels)
 plt.xlabel('Parameter - Arch')
 plt.ylabel('RMSE')
-plt.title('Comparison RMSE value based on number of iteration and number of population')
+# plt.title('Comparison RMSE value Arch based on number of iteration and number of population (cr=0.7 & f=0.5)')
+plt.title('Comparison RMSE value Arch based on CR and F (iter=10 & popsize=1000)')
 plt.tight_layout()
 plt.show()
