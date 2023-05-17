@@ -26,30 +26,30 @@ path_data_csv=[
 "D:\\tesis\\fix\\12. KEC\\KEC_UPPER.csv",
 "D:\\tesis\\fix\\13. HC\\HC_LOWER.csv",
 "D:\\tesis\\fix\\13. HC\\HC_UPPER.csv",
-# "D:\\tesis\\fix\\14. ZR\\ZR_LOWER.csv",
-# "D:\\tesis\\fix\\14. ZR\\ZR_UPPER.csv",
-# "D:\\tesis\\fix\\15. YS\\YS_landmark_LOWER.csv",
-# "D:\\tesis\\fix\\15. YS\\YS_landmark_UPPER.csv",
-# "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.csv",
-# "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.csv",
-# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
-# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
-# "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.csv",
-# "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.csv",
+"D:\\tesis\\fix\\14. ZR\\ZR_LOWER.csv",
+"D:\\tesis\\fix\\14. ZR\\ZR_UPPER.csv",
+"D:\\tesis\\fix\\15. YS\\YS_landmark_LOWER.csv",
+"D:\\tesis\\fix\\15. YS\\YS_landmark_UPPER.csv",
+"D:\\tesis\\fix\\16. FAW\\FAW_LOWER.csv",
+"D:\\tesis\\fix\\16. FAW\\FAW_UPPER.csv",
+"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
+"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
+"D:\\tesis\\fix\\19. Sam\\Sam_LOWER.csv",
+"D:\\tesis\\fix\\19. Sam\\Sam_UPPER.csv",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.csv",
 "D:\\tesis\\fix\\2. MJK\\MJK_UPPER.csv",
 "D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.csv",
 "D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.csv",
-# "D:\\tesis\\fix\\22. NS\\NS_LOWER.csv",
-# "D:\\tesis\\fix\\22. NS\\NS_UPPER.csv",
-# "D:\\tesis\\fix\\23. AP\\AP_landmark_LOWER.csv",
-# "D:\\tesis\\fix\\23. AP\\AP_landmark_UPPER.csv",
+"D:\\tesis\\fix\\22. NS\\NS_LOWER.csv",
+"D:\\tesis\\fix\\22. NS\\NS_UPPER.csv",
+"D:\\tesis\\fix\\23. AP\\AP_landmark_LOWER.csv",
+"D:\\tesis\\fix\\23. AP\\AP_landmark_UPPER.csv",
 "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.csv",
 "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.csv",
-# "D:\\tesis\\fix\\5. BA\\BA_LOWER.csv",
-# "D:\\tesis\\fix\\5. BA\\BA_UPPER.csv",
-# "D:\\tesis\\fix\\6. NR\\NR_LOWER.csv",
-# "D:\\tesis\\fix\\6. NR\\NR_UPPER.csv",
+"D:\\tesis\\fix\\5. BA\\BA_LOWER.csv",
+"D:\\tesis\\fix\\5. BA\\BA_UPPER.csv",
+"D:\\tesis\\fix\\6. NR\\NR_LOWER.csv",
+"D:\\tesis\\fix\\6. NR\\NR_UPPER.csv",
 ]
 path_data_vtp = [
 "D:\\tesis\\fix\\10. CPL\\CPL_LOWER.vtp",
@@ -60,30 +60,30 @@ path_data_vtp = [
 "D:\\tesis\\fix\\12. KEC\\KEC_UPPER.vtp",
 "D:\\tesis\\fix\\13. HC\\HC_LOWER.vtp",
 "D:\\tesis\\fix\\13. HC\\HC_UPPER.vtp",
-# "D:\\tesis\\fix\\14. ZR\\ZR_LOWER.vtp",
-# "D:\\tesis\\fix\\14. ZR\\ZR_UPPER.vtp",
-# "D:\\tesis\\fix\\15. YS\\YS_LOWER.vtp",
-# "D:\\tesis\\fix\\15. YS\\YS_UPPER_.vtp",
-# "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.vtp",
-# "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.vtp",
-# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
-# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
-# "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.vtp",
-# "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.vtp",
+"D:\\tesis\\fix\\14. ZR\\ZR_LOWER.vtp",
+"D:\\tesis\\fix\\14. ZR\\ZR_UPPER.vtp",
+"D:\\tesis\\fix\\15. YS\\YS_LOWER.vtp",
+"D:\\tesis\\fix\\15. YS\\YS_UPPER_.vtp",
+"D:\\tesis\\fix\\16. FAW\\FAW_LOWER.vtp",
+"D:\\tesis\\fix\\16. FAW\\FAW_UPPER.vtp",
+"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
+"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
+"D:\\tesis\\fix\\19. Sam\\Sam_LOWER.vtp",
+"D:\\tesis\\fix\\19. Sam\\Sam_UPPER.vtp",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.vtp",
 "D:\\tesis\\fix\\2. MJK\\MJK_UPPER.vtp",
 "D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.vtp",
 "D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.vtp",
-# "D:\\tesis\\fix\\22. NS\\NS_LOWER.vtp",
-# "D:\\tesis\\fix\\22. NS\\NS_UPPER.vtp",
-# "D:\\tesis\\fix\\23. AP\\AP_LOWER.vtp",
-# "D:\\tesis\\fix\\23. AP\\AP_UPPER.vtp",
+"D:\\tesis\\fix\\22. NS\\NS_LOWER.vtp",
+"D:\\tesis\\fix\\22. NS\\NS_UPPER.vtp",
+"D:\\tesis\\fix\\23. AP\\AP_LOWER.vtp",
+"D:\\tesis\\fix\\23. AP\\AP_UPPER.vtp",
 "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.vtp",
 "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.vtp",
-# "D:\\tesis\\fix\\5. BA\\BA_LOWER.vtp",
-# "D:\\tesis\\fix\\5. BA\\BA_UPPER.vtp",
-# "D:\\tesis\\fix\\6. NR\\NR_LOWER.vtp",
-# "D:\\tesis\\fix\\6. NR\\NR_UPPER.vtp",
+"D:\\tesis\\fix\\5. BA\\BA_LOWER.vtp",
+"D:\\tesis\\fix\\5. BA\\BA_UPPER.vtp",
+"D:\\tesis\\fix\\6. NR\\NR_LOWER.vtp",
+"D:\\tesis\\fix\\6. NR\\NR_UPPER.vtp",
 ]
 print(len(path_data_vtp), len(path_data_csv))
 ld_def = LandmarkDefinition().archs
@@ -189,7 +189,10 @@ path_landmark_files =[
     "ld_saved_de_iter10_pop1000_f05_cr07.csv",
     "ld_saved_de_iter100_pop100_f05_cr07.csv",
     "ld_saved_de_iter1000_pop10_f05_cr07.csv"
-    # "ld_saved_de.csv"
+
+    # "ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv",
+    # "ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv",
+    # "ld_saved_de_pop1000_iter10_f05_cr07_no_candidate.csv"
 ]
 df_res = pd.DataFrame.from_dict({
         'FILE':[],
@@ -229,8 +232,12 @@ for path_landmark_file in path_landmark_files:
         eigen_vec_mesh = extract_eigen_mesh(mesh)
         for tooth_type in landmark_constant[arch_type]:
             vertices_tooth, norm_vertices_tooth, norm_center_tooth = extract_mesh_tooth(mesh,tooth_type)
+            if len(vertices_tooth) == 0:
+                continue
             for landmark_type in landmark_constant[arch_type][tooth_type]:
-                print(vtp_path)
+                print(vtp_path, ArchType.UPPER.value, tooth_type, landmark_type)
+                # if "NR" in vtp_path and "LOWER" in vtp_path:
+                #     print(vertices_tooth)
                 row = df_gt[(df_gt['label'] == tooth_type) & (df_gt['landmark'] == landmark_type)]
                 landmark_point_gt = np.ndarray.flatten(np.array([row['x'], row['y'], row['z']]))
                 landmark_point = get_landmark_point(landmark_constant[arch_type][tooth_type][landmark_type],
@@ -307,5 +314,5 @@ for path_landmark_file in path_landmark_files:
         'RMSE':[both_rmse_final, upper_rmse_final, lower_rmse_final]
     })
     df_res = pd.concat([df_res, df_arch], ignore_index=True)
-df_res.to_csv("hasil_evaluation_ld_based_on_arch_no_candidate.csv",encoding='utf-8')
-df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_no_candidate.csv",encoding='utf-8')
+df_res.to_csv("hasil_evaluation_ld_based_on_arch.csv",encoding='utf-8')
+df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld.csv",encoding='utf-8')
