@@ -183,25 +183,26 @@ def start_de_landmark():
     paths_vtp = paths_upper[:]
     paths_ld_upper.extend(paths_ld_lower)
     paths_csv = paths_ld_upper[:]
-    # pop_sizes = [1000,100,10]
-    pop_size = 1000
+    pop_sizes = [1000,100,10]
+    # pop_size = 1000
     n_chromosome = 6 # kanan kiri depan belakang atas bawah
     # left_right = eig_vec[0]
     # forward_backward = eig_vec[1]
     # upward_downward = eig_vec[2]
 
     # define number of iterations
-    # iters=[10,100,1000]
+    iters=[10,100,1000]
     iter = 10
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
     cr = 0.7
-    Fs=[0.25,0.5,0.75]
-    Crs=[0.3,0.5,0.7]
+    # Fs=[0.25,0.5,0.75]
+    # Crs=[0.3,0.5,0.7]
     ld_def = LandmarkDefinition().archs
-    for F in Fs:
-        for cr in Crs:
+    for popsize, iter in zip(pop_sizes, iters):
+    # for F in Fs:
+    #     for cr in Crs:
             for archtype in ArchType:
                 for toothtype in ToothType:
                     # print(toothtype.value)
