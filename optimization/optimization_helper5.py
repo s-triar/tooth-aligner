@@ -11,7 +11,7 @@ BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 500 #sudut
 DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 1
 
 
-DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 1
+DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 2
 DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 1
 
 def get_candidate_chromosome(start, stop, step):
@@ -331,7 +331,7 @@ def calculate_buccallabial_to_bonwill_line(tooth, spl, eigvector, is_upper, A, d
     buccal_labial2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[buccal_labial])[0]
     closest_buccallabial_to_spl2D = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[closest_buccallabial_to_spl])[0]
     dst = find_distance_between_two_points(buccal_labial2d,closest_buccallabial_to_spl2D)
-    return dst*DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT
+    return abs(dst)*DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT
 
 
 def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
