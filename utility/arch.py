@@ -7,11 +7,11 @@ from scipy.spatial import KDTree
 import os
 # from dotenv import load_dotenv
 # load_dotenv()
-from constant.enums import ArchType, LandmarkType, ToothType
+from constant.enums import ArchType, LandmarkType, ToothType, LandmarkDefinition
 from utility.tooth import Tooth
 from utility.colors import convert_labels_to_colors
 from utility import landmarking_lib as ll
-
+from landmark_training.landmark_helper import get_landmark_point
 
 class Arch():
     ids=[]
@@ -45,7 +45,8 @@ class Arch():
         self.gingiva=None
         
         self.teeth={}
-        self.extract_tooth()
+        # self.extract_tooth()
+        self.extract_tooth_new()
         self.convert_to_colors()
     
     def get_mesh(self):
@@ -85,7 +86,7 @@ class Arch():
         self.teeth[label].update_landmark_moving(val_direction)
 
     def extract_tooth_new(self):
-        N = self.mesh.NCells()
+        # N = self.mesh.NCells()
         labels = np.unique(self.mesh.celldata['Label'])
         center_mesh = self.mesh.centerOfMass()
         points_mesh = np.array(self.mesh.points())
@@ -93,6 +94,9 @@ class Arch():
         points_mesh_normalized = points_mesh - center_mesh
         eigen_val_mesh, eigen_vec_mesh = ll.getEigen(points_mesh_normalized, idx_faces_mesh,
                                                      self.mesh.celldata['Label'], [6,7,8,9])
+        self.right_left_vec = eigen_vec_mesh[0]
+        self.forward_backward_vec = eigen_vec_mesh[1]
+        self.upward_downward_vec = eigen_vec_mesh[2]
         for label in labels:
             cells_tooth_index = np.where(self.mesh.celldata['Label'] == label)
             label = math.floor(label)
@@ -128,8 +132,29 @@ class Arch():
                 )
                 self.gingiva = gingiva
             else:
+                point_tooth_index_map = ll.map_point_index(points_tooth_index)
+                cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, cells_tooth)
+                try:
+                    tooth_mesh = Mesh([points_tooth, cells_tooth_mapped]).subdivide(1, method=0)
+                    if (len(tooth_mesh.points()) == 0):
+                        raise Exception("Possibility of there is a non-manyfold")
+                except:
+                    tooth_mesh = Mesh([points_tooth, cells_tooth_mapped])
                 points_tooth_normalized = tooth_mesh.points() - center_mesh
                 center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
+
+                ld_def = LandmarkDefinition().archs
+                for ld in ld_def[self.arch_type][label]:
+                    landmark[ld] = get_landmark_point(self.arch_type, label, ld, eigen_vec_mesh, center_tooth_normalized, points_tooth_normalized, tooth_mesh.points())
+                tooth = Tooth(
+                    label,
+                    points_tooth,
+                    cells_tooth,
+                    center_tooth,
+                    landmark
+                )
+                self.teeth[label] = tooth
+
 
 
     def extract_tooth(self):

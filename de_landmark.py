@@ -71,10 +71,10 @@ def check_bounds(mutated):
 
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+    candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+    vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
     # parameter = landmark_definition[arch_type][tooth_type][landmark_type]
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
 
@@ -181,6 +181,31 @@ def start_de_landmark():
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_LOWER.csv",
     ]
 
+    paths_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
+    ]
+    paths_ld_upper = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
+    ]
+    paths_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.vtp",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
+    ]
+    paths_ld_lower = [
+        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.csv",
+        "D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
+        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
+        "D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
+    ]
+
     paths_upper.extend(paths_lower)
     paths_vtp = paths_upper[:]
     paths_ld_upper.extend(paths_ld_lower)
@@ -237,6 +262,8 @@ def start_de_landmark():
                         print("waktu de opt", finish_time, "detik")
                         # fname = 'ld_saved_de_pop1000_iter10_f{0}_cr{1}_no_candidate_v2.csv'.format(F, cr)
                         fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v3_no_bound.csv'.format(pop_size, iter)
+                        # fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v2.csv'.format(pop_size, iter)
+                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_v2.csv'.format(pop_size, iter)
                         f = open(fname, 'a+', encoding='utf-8', newline='')
                         writer = csv.writer(f)
                         coor = '|'.join([str(c) for c in solution[0]])
