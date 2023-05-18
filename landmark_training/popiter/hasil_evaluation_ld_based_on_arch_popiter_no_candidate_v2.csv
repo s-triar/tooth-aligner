@@ -1,0 +1,10 @@
+,FILE,Rahang,Total,N,RMSE
+0,popiter\ld_saved_de_pop1000_iter10_f05_cr07_no_candidate_v2.csv,BOTH,32361.024759986216,2952.0,3.310952545947004
+1,popiter\ld_saved_de_pop1000_iter10_f05_cr07_no_candidate_v2.csv,UPPER,20250.409488840036,1444.0,3.744840355195439
+2,popiter\ld_saved_de_pop1000_iter10_f05_cr07_no_candidate_v2.csv,LOWER,12110.615271146195,1508.0,2.8338863744897567
+3,popiter\ld_saved_de_pop100_iter100_f05_cr07_no_candidate_v2.csv,BOTH,32825.43625134665,2952.0,3.334625575296416
+4,popiter\ld_saved_de_pop100_iter100_f05_cr07_no_candidate_v2.csv,UPPER,20576.26520570966,1444.0,3.774849816838828
+5,popiter\ld_saved_de_pop100_iter100_f05_cr07_no_candidate_v2.csv,LOWER,12249.171045636998,1508.0,2.8500513101664615
+6,popiter\ld_saved_de_pop10_iter1000_f05_cr07_no_candidate_v2.csv,BOTH,32433.863076252448,2952.0,3.314676603816788
+7,popiter\ld_saved_de_pop10_iter1000_f05_cr07_no_candidate_v2.csv,UPPER,20344.04621370258,1444.0,3.7534883326352477
+8,popiter\ld_saved_de_pop10_iter1000_f05_cr07_no_candidate_v2.csv,LOWER,12089.816862549875,1508.0,2.831451912955242
