@@ -2,7 +2,7 @@ from constant.enums import LandmarkType, ArchType, ToothType
 import pandas as pd
 landmark_definition = {}
 
-landmark_def_path = "landmark_training\\f_cr\\ld_saved_de_pop1000_iter10_f0.25_cr0.3_no_candidate.csv"
+landmark_def_path = "landmark_training\\popiter\\ld_saved_de_pop100_iter100_f05_cr07_v2.csv"
 
 def import_landmark_def():
     df = pd.read_csv(landmark_def_path, encoding='utf-8', header=None)
