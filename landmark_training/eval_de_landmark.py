@@ -185,24 +185,29 @@ def extract_mesh_tooth(mesh, label):
     center_tooth_normalized = np.mean(points_tooth_normalized, axis=0)
     return points_tooth, points_tooth_normalized, center_tooth_normalized
 
-folder = 'f_cr'
+# folder = 'f_cr'
+folder = 'popiter'
 path_landmark_files =[
     # folder = f_cr
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.3_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.5_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.7_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.3_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.5_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.7_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.3_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.5_no_candidate.csv",
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.7_no_candidate.csv"
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.3_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.5_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.7_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.3_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.5_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.25_cr0.7_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.3_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.5_no_candidate.csv",
+    # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.75_cr0.7_no_candidate.csv"
 
 
     # folder = popiter
-    # folder+"\\"+"ld_saved_de_iter10_pop1000_f05_cr07.csv",
-    # folder+"\\"+"ld_saved_de_iter100_pop100_f05_cr07.csv",
-    # folder+"\\"+"ld_saved_de_iter1000_pop10_f05_cr07.csv"
+    folder+"\\"+"ld_saved_de_iter10_pop1000_f05_cr07.csv",
+    folder+"\\"+"ld_saved_de_iter100_pop100_f05_cr07.csv",
+    folder+"\\"+"ld_saved_de_iter1000_pop10_f05_cr07.csv",
+
+    folder+"\\"+"ld_saved_de_pop1000_iter10_f05_cr07_v2.csv",
+    folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_v2.csv",
+    folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_v2.csv",
 
     # folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv",
     # folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv",
@@ -328,5 +333,7 @@ for path_landmark_file in path_landmark_files:
         'RMSE':[both_rmse_final, upper_rmse_final, lower_rmse_final]
     })
     df_res = pd.concat([df_res, df_arch], ignore_index=True)
-df_res.to_csv("hasil_evaluation_ld_based_on_arch_fcr_variation_no_candidate.csv",encoding='utf-8')
-df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_fcr_variation_no_candidate.csv",encoding='utf-8')
+df_res.to_csv("hasil_evaluation_ld_based_on_arch_popiter_with_v2.csv",encoding='utf-8')
+df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_popiter_with_v2.csv",encoding='utf-8')
+# df_res.to_csv("hasil_evaluation_ld_based_on_arch_fcr_variation_no_candidate.csv",encoding='utf-8')
+# df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_fcr_variation_no_candidate.csv",encoding='utf-8')

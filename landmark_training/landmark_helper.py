@@ -98,7 +98,7 @@ def get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
 
 def get_landmark_point(arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
     ld_def = get_landmark_definition()
-    candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
     # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
     parameter = ld_def[arch_type][tooth_type][landmark_type]
     normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
