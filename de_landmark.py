@@ -66,7 +66,8 @@ def crossover(mutated, target, dims, cr):
 
 
 def check_bounds(mutated):
-    return mutated/np.sum(mutated)
+    # return mutated/np.sum(mutated)
+    return mutated
 
 
 def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
@@ -235,7 +236,7 @@ def start_de_landmark():
                         finish_time = (seconds_finish-seconds_start)
                         print("waktu de opt", finish_time, "detik")
                         # fname = 'ld_saved_de_pop1000_iter10_f{0}_cr{1}_no_candidate_v2.csv'.format(F, cr)
-                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v2.csv'.format(pop_size, iter)
+                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v3_no_bound.csv'.format(pop_size, iter)
                         f = open(fname, 'a+', encoding='utf-8', newline='')
                         writer = csv.writer(f)
                         coor = '|'.join([str(c) for c in solution[0]])
