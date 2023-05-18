@@ -49,7 +49,7 @@ def click_btn_de_optimization(self, e):
     destination_tooth = copy.deepcopy(get_destination_tooth(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
     # while(step_i<16):
-    while(error_opt > 10000):
+    while(error_opt > 500 and step_i<=100):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
