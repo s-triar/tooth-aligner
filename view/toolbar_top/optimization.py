@@ -59,7 +59,7 @@ def click_btn_de_optimization(self, e):
     error_upper = 35
     error_lower = 35
     # while(step_i<16):
-    while((is_arch_finish[0] == False and is_arch_finish[1] == False) and step_i <= 100):
+    while((is_arch_finish[0] == False or is_arch_finish[1] == False) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
