@@ -6,12 +6,12 @@ import numpy as np
 import math
 import copy
 
-INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 10
-BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 500 #sudut
-DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 1
+INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT = 1 #10
+BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 1 #500 #sudut
+DISTANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT = 0.5 # 1
 
 
-DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 1
+DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT = 1 #4 #1
 DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT = 1
 
 def get_candidate_chromosome(start, stop, step):
@@ -199,9 +199,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     distal_spl_to_center = find_distance_between_two_points(closest_spl_distal2d,B_distal2d)
     
     # is_upper jika spl bukan standalone
-    out_of_spl_err += 0 if (mesial_to_center-mesial_spl_to_center)<0 else abs(mesial_to_center-mesial_spl_to_center)
-    out_of_spl_err += 0 if (distal_to_center-distal_spl_to_center)<0 else abs(distal_to_center-distal_spl_to_center)
-    out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
+    # out_of_spl_err += 0 if (mesial_to_center-mesial_spl_to_center)<0 else abs(mesial_to_center-mesial_spl_to_center)
+    # out_of_spl_err += 0 if (distal_to_center-distal_spl_to_center)<0 else abs(distal_to_center-distal_spl_to_center)
+    # out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
     
     mesial_to_spl = find_distance_between_two_points(mesial2d,closest_spl_mesial2d)
     distal_to_spl = find_distance_between_two_points(distal2d,closest_spl_distal2d)
@@ -243,9 +243,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
         mesial_distal_balance_err=90*BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
         print(tooth.label,"ada NaN", [anchor,ext],[anchor,spl_pt])
     # print("calculate_mesiodistal_balance_to_bonwill_line_from_top_view",tooth.label ,out_of_spl_err,mesial_distal_to_spl_err,mesial_distal_balance_err)
-    out_of_spl_err=out_of_spl_err*0.2
-    mesial_distal_to_spl_err=mesial_distal_to_spl_err*1   #0.1
-    mesial_distal_balance_err=mesial_distal_balance_err*0.7
+    # out_of_spl_err=out_of_spl_err #*0.2
+    mesial_distal_to_spl_err=mesial_distal_to_spl_err #*1   #0.1
+    mesial_distal_balance_err=mesial_distal_balance_err #*0.7
     if(for_cr):
         return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
@@ -303,9 +303,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     distal_spl_to_upper = np.dot(closest_spl_distal2d,eig_up_down)
     
     # is_upper jika spl bukan standalone
-    out_of_spl_err += 0 if mesial_to_upper < mesial_spl_to_upper else abs(mesial_to_upper-mesial_spl_to_upper)
-    out_of_spl_err += 0 if distal_to_upper < distal_spl_to_upper else abs(distal_to_upper-distal_spl_to_upper)
-    out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
+    # out_of_spl_err += 0 if mesial_to_upper < mesial_spl_to_upper else abs(mesial_to_upper-mesial_spl_to_upper)
+    # out_of_spl_err += 0 if distal_to_upper < distal_spl_to_upper else abs(distal_to_upper-distal_spl_to_upper)
+    # out_of_spl_err *= INNER_OUTER_MESIODISTAL_BONWILL_ERROR_WEIGHT
     
     mesial_to_spl = find_distance_between_two_points(mesial2d,closest_spl_mesial2d)
     distal_to_spl = find_distance_between_two_points(distal2d,closest_spl_distal2d)
@@ -323,9 +323,9 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eig
     angle = abs(90-angle)
     mesial_distal_balance_err+=angle
     mesial_distal_balance_err*=BALANCE_MESIODISTAL_BONWILL_ERROR_WEIGHT
-    out_of_spl_err=out_of_spl_err*0.2
-    mesial_distal_to_spl_err=mesial_distal_to_spl_err*1  #0.1
-    mesial_distal_balance_err=mesial_distal_balance_err*0.7
+    # out_of_spl_err=out_of_spl_err #*0.2
+    mesial_distal_to_spl_err=mesial_distal_to_spl_err #*1  #0.1
+    mesial_distal_balance_err=mesial_distal_balance_err #*0.7
     if(for_cr):
         return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
@@ -337,9 +337,49 @@ def calculate_buccallabial_to_bonwill_line(tooth, spl, eigvector, is_upper, A, d
     buccal_labial2d = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[buccal_labial])[0]
     closest_buccallabial_to_spl2D = convert_to_2d(FaceTypeConversion.UP.value,eigvector,[closest_buccallabial_to_spl])[0]
     dst = find_distance_between_two_points(buccal_labial2d,closest_buccallabial_to_spl2D)
-    return dst*DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT
+    return abs(dst)*DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT
 
 def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
+    spl_out = spl[0]
+    spl_in = spl[1]
+    cusp_outs=[]
+    cusp_ins=[]
+    tooth_labels = get_tooth_labels()
+    if tooth.label in tooth_labels['posterior']:
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value])
+
+        if tooth.landmark_pt[LandmarkType.CUSP_IN.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_IN_MESIAL.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN_MESIAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_IN_DISTAL.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN_DISTAL.value])
+
+    if tooth.label in tooth_labels['canine'] or tooth.label in tooth_labels['anterior']:
+        cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP.value])
+
+    dst = 0
+    for cusp in cusp_outs:
+        closest_cusp_to_spl = spl_out.closestPoint(cusp)
+        cusp2d = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [cusp])[0]
+        closest_cusp_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [closest_cusp_to_spl])[0]
+        dst += find_distance_between_two_points(cusp2d, closest_cusp_to_spl2D)
+    for cusp in cusp_ins:
+        closest_cusp_to_spl = spl_in.closestPoint(cusp)
+        cusp2d = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [cusp])[0]
+        closest_cusp_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [closest_cusp_to_spl])[0]
+        dst += find_distance_between_two_points(cusp2d, closest_cusp_to_spl2D)
+    return abs(dst) * DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT
+
+
+def calculate_cusp_to_flat_level_line_DEPRECATED(tooth, spl, eigvector, is_upper):
     cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
     if(cusp is None):
         cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT.value]
