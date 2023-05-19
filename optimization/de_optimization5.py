@@ -526,9 +526,9 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     
     # find the best performing vector of initial population
     # best_vector = pop[np.argmin(obj_all)]
-    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome],
-                                  pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:]))
-    best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
+    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome] if is_arch_finish[0] == False else gen[:n_tooth * n_chromosome],
+                                  pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:] if is_arch_finish[1] == False else gen[n_tooth * n_chromosome:]))
+    best_obj = [np.min(obj_all[:, 0]) if is_arch_finish[0] == False else obj_all[0][0], np.min(obj_all[:, 1]) if is_arch_finish[1] == False else obj_all[0][1]]
     prev_obj = best_obj[:]
     # run iterations of the algorithm
     for i in range(iter):
@@ -561,18 +561,21 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
             # print(trial)
             # perform selection
             if obj_trial[0] <= obj_target[0]:
-                # replace the target vector with the trial vector
-                pop[j][:n_tooth * n_chromosome] = trial[:n_tooth * n_chromosome]
-                # store the new objective function value
-                obj_all[j][0] = obj_trial[0]
+                if is_arch_finish[0] == False:
+                    # replace the target vector with the trial vector
+                    pop[j][:n_tooth * n_chromosome] = trial[:n_tooth * n_chromosome]
+                    # store the new objective function value
+                    obj_all[j][0] = obj_trial[0]
             if obj_trial[1] <= obj_target[1]:
-                # replace the target vector with the trial vector
-                pop[j][n_tooth * n_chromosome:] = trial[n_tooth * n_chromosome:]
-                # store the new objective function value
-                obj_all[j][1] = obj_trial[1]
+                if is_arch_finish[1] == False:
+                    # replace the target vector with the trial vector
+                    pop[j][n_tooth * n_chromosome:] = trial[n_tooth * n_chromosome:]
+                    # store the new objective function value
+                    obj_all[j][1] = obj_trial[1]
         # find the best performing vector at each iteration
         # best_obj = np.min(obj_all)
-        best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
+        # best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
+        best_obj = [np.min(obj_all[:, 0]) if is_arch_finish[0] == False else obj_all[0][0], np.min(obj_all[:, 1]) if is_arch_finish[1] == False else obj_all[0][1]]
         # store the lowest objective function value
         if best_obj[0] < prev_obj[0] and is_arch_finish[0] == False:
             best_vector[:n_tooth * n_chromosome] = pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome]

@@ -20,7 +20,7 @@ from view.components.toolbar_top_section import ToolbarTopSection
 from view.components.tool_top_button import ToolTopButton
 import copy
 import csv
-
+from pathlib import Path
 def create_optimization_menu(self, parent_layout):
     self.container_tool_btn = QWidget()
     self.container_tool_btn_layout = QHBoxLayout()
@@ -42,6 +42,9 @@ def create_optimization_menu(self, parent_layout):
 def click_btn_de_optimization(self, e):
     path_model = self.model_paths[0]
     filepathsave = get_saved_optimization_step_value(path_model)
+    filepath = Path(filepathsave)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
     error_opt = [1200000, 1200000] #uppper, lower
     is_arch_finish = [False, False] #upper, lower
     step_i = 1
@@ -53,10 +56,10 @@ def click_btn_de_optimization(self, e):
     As = copy.deepcopy(get_As_pts(self))
     destination_tooth = copy.deepcopy(get_destination_tooth(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
-    error_upper = 1000
-    error_lower = 1000
+    error_upper = 35
+    error_lower = 35
     # while(step_i<16):
-    while((error_opt[0] > error_upper or error_opt[1]>error_lower) and step_i < 100):
+    while((error_opt[0] > error_upper or error_opt[1]>error_lower) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1

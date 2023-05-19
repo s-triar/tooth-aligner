@@ -30,8 +30,8 @@ def get_saved_optimization_step_value(path_model):
         if (person != ''):
             person += " "
         person += f
-    else:
-        return os.path.join(save_path, person, person+"+_de_step.csv")
+    person = person.split("_")[0]+" de"
+    return os.path.join(save_path, person, person+"_de_step.csv")
 
 def get_saved_path(path_model, extendsion,more_info='',cur_step=None, isProject=False):
     load_dotenv()
