@@ -497,6 +497,12 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
 
+    bef = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[-4], flats,
+                                                                                      summaries, Bs,
+                                                                                      line_centers, As,
+                                                                                      destination_tooth)
+    bef_chromo = pop[-4][:]
+
     if(len(gen)>0):
         pop[0]=gen[:]
         bef = error_opt[:]
