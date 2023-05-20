@@ -1,3 +1,5 @@
+import math
+
 from PyQt5.QtWidgets import (
     QHBoxLayout,
     QPushButton,
@@ -39,13 +41,26 @@ def create_optimization_menu(self, parent_layout):
     parent_layout.addWidget(section)
 
 
+def is_arch_need_continue(last_three_errors):
+    if len(last_three_errors) < 3:
+        return True
+    check_decrease = math.floor(last_three_errors[0]) - math.floor(last_three_errors[2]) # harus > 1 untuk lanjut
+    # check_increase = last_three_errors[0] - last_three_errors[2] # harus < -1 untuk lanjut
+    if check_decrease <= 1:
+        return False
+    return True
+
 def click_btn_de_optimization(self, e):
     path_model = self.model_paths[0]
     filepathsave = get_saved_optimization_step_value(path_model)
     filepath = Path(filepathsave)
     filepath.parent.mkdir(parents=True, exist_ok=True)
 
+    last_three_errors_upper = []
+    last_three_errors_lower = []
+
     error_opt = [1200000, 1200000] #uppper, lower
+
     is_arch_finish = [False, False] #upper, lower
     step_i = 1
     gen = []
@@ -59,18 +74,31 @@ def click_btn_de_optimization(self, e):
     error_upper = 35
     error_lower = 35
     # while(step_i<16):
-    while((is_arch_finish[0] == False or is_arch_finish[1] == False) and step_i <= 100):
+    while((is_arch_finish[0] == False or is_arch_finish[1] == False) and (is_arch_need_continue(last_three_errors_upper) or is_arch_need_continue(last_three_errors_lower)) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt, is_arch_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish)
+        new_models, gen, error_opt, is_arch_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, error_opt)
+
+        if len(last_three_errors_upper) < 3:
+            last_three_errors_upper.append(error_opt[0])
+        else:
+            last_three_errors_upper.append(error_opt[0])
+            last_three_errors_upper = last_three_errors_upper[1:]
+        if len(last_three_errors_lower) < 3:
+            last_three_errors_lower.append(error_opt[1])
+        else:
+            last_three_errors_lower.append(error_opt[1])
+            last_three_errors_lower = last_three_errors_lower[1:]
+
         if error_opt[0] < error_upper:
             is_arch_finish[0] = True
         if error_opt[1] < error_lower:
             is_arch_finish[1] = True
+
         print("eror in while", error_opt)
         print(gen)
         #     save optimization process

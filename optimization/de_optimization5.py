@@ -493,12 +493,15 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     return res
     
 
-def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish):
+def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish, error_opt):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
 
     if(len(gen)>0):
         pop[0]=gen[:]
+        bef = error_opt[:]
+        bef_chromo = gen[:]
+
 
     myinitIndividu = indvCreate2(models, summaries, pop[0])
     myinitIndividu = check_bounds(myinitIndividu, bounds)
@@ -516,17 +519,6 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
     pop[-4]=myinit_indv_rot_mov
 
-    bef = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[-4], flats,
-                                                                                          summaries, Bs,
-                                                                                          line_centers, As,
-                                                                                          destination_tooth)
-    bef_chromo = pop[-4][:]
-    if len(gen) > 0:
-        bef = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, gen, flats,
-                                                                                          summaries, Bs,
-                                                                                          line_centers, As,
-                                                                                          destination_tooth)
-        bef_chromo = gen[:]
     # print("pop",pop)
     # evaluate initial population of candidate solutions
     # obj_all = [minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop]
@@ -623,7 +615,7 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     # return de models yang paling optimum
 
 
-def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish):
+def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, error_opt):
     
     
     pop_size = 7
@@ -646,7 +638,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     # define crossover rate for recombination
     cr = 0.7
     seconds_start = time.time()
-    solution = de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish)
+    solution = de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish, error_opt)
     seconds_finish = time.time()
     timede = seconds_finish-seconds_start
     print("waktu de opt", timede,"detik")
