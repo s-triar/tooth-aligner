@@ -148,7 +148,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        # flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -313,7 +314,8 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth)
     models_cps=[model_upper_cp,model_lower_cp]
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        # flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
@@ -346,8 +348,8 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
     models_cps=[model_upper_cp,model_lower_cp]
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        
+        # flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
@@ -400,7 +402,8 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        # flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -437,7 +440,8 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         i+=1
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
-        flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        # flat_line = SplineKu(flat_pts[model_cp.arch_type])
+        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -480,11 +484,21 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     return res
     
 
-def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth):
+def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish, error_opt):
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
+
+    bef = minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, pop[-4], flats,
+                                                                                      summaries, Bs,
+                                                                                      line_centers, As,
+                                                                                      destination_tooth)
+    bef_chromo = pop[-4][:]
+
     if(len(gen)>0):
-        pop[0]=gen
+        pop[0]=gen[:]
+        bef = error_opt[:]
+        bef_chromo = gen[:]
+
     myinitIndividu = indvCreate2(models, summaries, pop[0])
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
@@ -500,17 +514,24 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     myinit_indv_rot_mov = indv_create_rot_and_move(models,summaries,flats,Bs,line_centers,pop[0],As, destination_tooth)
     myinit_indv_rot_mov = check_bounds(myinit_indv_rot_mov, bounds)
     pop[-4]=myinit_indv_rot_mov
-    
+
+
+
     # print("pop",pop)
     # evaluate initial population of candidate solutions
     obj_all = np.array([minimize_function_using_delta_current_to_the_first_studi_model_calculation2(models, ind, flats, summaries, Bs, line_centers,  As, destination_tooth) for ind in pop])
     # print(obj_all)
     # print("np argmin", np.argmin(obj_all[:, 0]))
     # find the best performing vector of initial population
-    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth*n_chromosome], pop[np.argmin(obj_all[:,1])][n_tooth*n_chromosome:]))
-    # print(best_vector)
-    # print("len best vector",  len(best_vector[0]), len(best_vector[1]))
-    best_obj = [np.min(obj_all[:,0]),np.min(obj_all[:,1])]
+    best_vector = np.concatenate((pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome] if is_arch_finish[
+                                                                                                0] == False else bef_chromo[
+                                                                                                                 :n_tooth * n_chromosome],
+                                  pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:] if is_arch_finish[
+                                                                                                1] == False else bef_chromo[
+                                                                                                                 n_tooth * n_chromosome:]))
+    best_obj = [np.min(obj_all[:, 0]) if is_arch_finish[0] == False else bef[0],
+                np.min(obj_all[:, 1]) if is_arch_finish[1] == False else bef[1]]
+
     prev_obj = best_obj[:]
     # run iterations of the algorithm
     for i in range(iter):
@@ -543,24 +564,45 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
             # print(trial)
             # perform selection
             if obj_trial[0] <= obj_target[0]:
-                # replace the target vector with the trial vector
-                pop[j][:n_tooth*n_chromosome] = trial[:n_tooth*n_chromosome]
-                # store the new objective function value
-                obj_all[j][0] = obj_trial[0]
+                if is_arch_finish[0] == False:
+                    # replace the target vector with the trial vector
+                    pop[j][:n_tooth * n_chromosome] = trial[:n_tooth * n_chromosome]
+                    # store the new objective function value
+                    obj_all[j][0] = obj_trial[0]
+                else:
+                    # replace the target vector with the trial vector
+                    pop[j][:n_tooth * n_chromosome] = bef_chromo[:n_tooth * n_chromosome]
+                    # store the new objective function value
+                    obj_all[j][0] = bef[0]
             if obj_trial[1] <= obj_target[1]:
-                # replace the target vector with the trial vector
-                pop[j][n_tooth*n_chromosome:] = trial[n_tooth*n_chromosome:]
-                # store the new objective function value
-                obj_all[j][1] = obj_trial[1]
+                if is_arch_finish[1] == False:
+                    # replace the target vector with the trial vector
+                    pop[j][n_tooth * n_chromosome:] = trial[n_tooth * n_chromosome:]
+                    # store the new objective function value
+                    obj_all[j][1] = obj_trial[1]
+                else:
+                    # replace the target vector with the trial vector
+                    pop[j][n_tooth * n_chromosome:] = bef_chromo[n_tooth * n_chromosome:]
+                    # store the new objective function value
+                    obj_all[j][1] = bef[1]
         # find the best performing vector at each iteration
-        best_obj = [np.min(obj_all[:,0]),np.min(obj_all[:,1])]
+        # best_obj = [np.min(obj_all[:,0]),np.min(obj_all[:,1])]
+        best_obj = [np.min(obj_all[:, 0]) if is_arch_finish[0] == False else bef[0], np.min(obj_all[:, 1]) if is_arch_finish[1] == False else bef[1]]
         # store the lowest objective function value
         if best_obj[0] < prev_obj[0]:
-            best_vector[:n_tooth*n_chromosome] = pop[np.argmin(obj_all[:,0])][:n_tooth*n_chromosome]
-            prev_obj[0] = best_obj[0]
+            if is_arch_finish[0] == False:
+                best_vector[:n_tooth * n_chromosome] = pop[np.argmin(obj_all[:, 0])][:n_tooth * n_chromosome]
+                prev_obj[0] = best_obj[0]
+            else:
+                best_vector[:n_tooth * n_chromosome] = bef_chromo[:n_tooth * n_chromosome]
+                prev_obj[0] = bef[0]
         if best_obj[1] < prev_obj[1]:
-            best_vector[n_tooth*n_chromosome:] = pop[np.argmin(obj_all[:,1])][n_tooth*n_chromosome:]
-            prev_obj[1] = best_obj[1]
+            if is_arch_finish[1] == False:
+                best_vector[n_tooth * n_chromosome:] = pop[np.argmin(obj_all[:, 1])][n_tooth * n_chromosome:]
+                prev_obj[1] = best_obj[1]
+            else:
+                best_vector[n_tooth * n_chromosome:] = bef_chromo[n_tooth * n_chromosome:]
+                prev_obj[1] = bef[1]
             # report progress at each iteration
         print('Iteration: %d = %.5f and %.5f' % (i, best_obj[0], best_obj[1]))
             # print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
@@ -570,7 +612,7 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     # return de models yang paling optimum
 
 
-def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth):
+def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, error_opt):
     
     
     pop_size = 7
@@ -578,9 +620,9 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_chromosome = 6
     # individu_bounds= [[0, 0]]*n_tooth*2*n_chromosome
     individu_bounds = [
-                          [-2.5, 2.5],
-                          [-2.5, 2.5],
-                          [-2.5, 2.5],
+                          [-1, 1],
+                          [-1, 1],
+                          [-1, 1],
                           [-0.3, 0.3],
                           [-0.3, 0.3],
                           [-0.3, 0.3]] * n_tooth * 2
@@ -593,9 +635,10 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     # define crossover rate for recombination
     cr = 0.7
     seconds_start = time.time()
-    solution = de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth)
+    solution = de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth, is_arch_finish, error_opt)
     seconds_finish = time.time()
-    print("waktu de opt", (seconds_finish-seconds_start),"detik")
+    timede = seconds_finish - seconds_start
+    print("waktu de opt", timede, "detik")
     new_model = get_new_model(models, solution[0])
-    return new_model,solution[0], solution[1]
-    
+    # return new_model,solution[0], solution[1]
+    return new_model, solution[0], solution[1], is_arch_finish, timede

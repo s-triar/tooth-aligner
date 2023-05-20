@@ -14,7 +14,24 @@ from vedo import load
 
 
 
-
+def get_saved_optimization_step_value(path_model):
+    load_dotenv()
+    save_path = os.getenv("SAVE")
+    c = path_model.split(os.altsep)
+    file = c[-1]
+    sign_jaw = os.getenv(ArchType.LOWER.name)
+    if (os.getenv(ArchType.UPPER.name) in file.lower()):
+        sign_jaw = os.getenv(ArchType.UPPER.name)
+    file_chunk = file.split(' ')
+    person = ''
+    for f in file_chunk:
+        if (sign_jaw in f.lower()):
+            break
+        if (person != ''):
+            person += " "
+        person += f
+    person = person.split("_")[0] + " de"
+    return os.path.join(save_path, person, person + "_de_step.csv")
 
 def get_saved_path(path_model, extendsion,more_info='',cur_step=None, isProject=False):
     load_dotenv()
