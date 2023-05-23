@@ -1,5 +1,6 @@
 import math
 
+import numpy as np
 from PyQt5.QtWidgets import (
     QHBoxLayout,
     QPushButton,
@@ -50,6 +51,9 @@ def is_arch_need_continue(last_three_errors):
         return False
     return True
 
+def is_tooth_need_continue(states):
+    return np.array(states).all() == True
+
 def click_btn_de_optimization(self, e):
     path_model = self.model_paths[0]
     filepathsave = get_saved_optimization_step_value(path_model)
@@ -60,8 +64,9 @@ def click_btn_de_optimization(self, e):
     last_three_errors_lower = []
 
     error_opt = [1200000, 1200000] #uppper, lower
-
+    n_tooth = 14
     is_arch_finish = [False, False] #upper, lower
+    is_tooth_finish = [False] * (2 * n_tooth)
     step_i = 1
     gen = []
     new_models=self.models
@@ -71,8 +76,8 @@ def click_btn_de_optimization(self, e):
     As = copy.deepcopy(get_As_pts(self))
     destination_tooth = copy.deepcopy(get_destination_tooth(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
-    error_upper = 35
-    error_lower = 35
+    error_upper = 10
+    error_lower = 10
     # while(step_i<16):
     while((is_arch_finish[0] == False or is_arch_finish[1] == False) and (is_arch_need_continue(last_three_errors_upper) or is_arch_need_continue(last_three_errors_lower)) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()
@@ -81,7 +86,7 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt, is_arch_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, error_opt)
+        new_models, gen, error_opt, is_arch_finish, is_tooth_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, error_opt)
 
         if len(last_three_errors_upper) < 3:
             last_three_errors_upper.append(error_opt[0])
