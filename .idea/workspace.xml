@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="bef update weight" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="pisah/main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2PYZM6QPPb1G6lqSSOZexzFJsbN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;pisah/main__quarternion&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Code/tooth-aligner/landmark_training/w_manual&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Code\tooth-aligner\landmark_training\w_manual" />
+      <recent name="D:\Code\tooth-aligner" />
+      <recent name="D:\Code\tooth-aligner\landmark_training\wmanual" />
+      <recent name="D:\Code\tooth-aligner\landmark_training\popiter" />
+      <recent name="D:\Code\tooth-aligner\landmark_training" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\tooth-aligner\landmark_training\trash" />
+      <recent name="D:\Code\tooth-aligner\landmark_training\popiter" />
+      <recent name="D:\Code\tooth-aligner\landmark_training\f_cr" />
+      <recent name="D:\Code\tooth-aligner\landmark_training" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.de_landmark">
+    <configuration name="de_landmark" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/de_landmark.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="eval_de_landmark" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/eval_de_landmark.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="landmark_helper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/landmark_helper.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="param_landmark_area (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/param_landmark_area.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="param_landmark_position" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/param_landmark_position.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.param_landmark_position" />
+        <item itemvalue="Python.param_landmark_area (1)" />
+        <item itemvalue="Python.landmark_helper" />
+        <item itemvalue="Python.eval_de_landmark" />
+        <item itemvalue="Python.de_landmark" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="" />
+      <created>1683635926536</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1683635926536</updated>
+    </task>
+    <task id="LOCAL-00001" summary="add env and gitignore">
+      <created>1683678273828</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683678273828</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add trying rotate">
+      <created>1683681944538</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1683681944538</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add trying rotate">
+      <created>1683682189487</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1683682189487</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add trying rotate">
+      <created>1683682607411</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1683682607411</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update landmark_lib">
+      <created>1683740611074</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740611074</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update landmark_lib">
+      <created>1683740656085</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740656085</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update landmark_lib">
+      <created>1683740726937</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740726937</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update landmark_lib">
+      <created>1683740760384</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740760384</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update landmark_lib">
+      <created>1683740813084</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740813084</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update landmark_lib">
+      <created>1683740845462</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683740845462</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update bound">
+      <created>1683769303212</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683769303212</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update import">
+      <created>1683773479204</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683773479204</updated>
+    </task>
+    <task id="LOCAL-00013" summary="investigate UR">
+      <created>1683783533749</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683783533749</updated>
+    </task>
+    <task id="LOCAL-00014" summary="rubah ke pisah per rahang">
+      <created>1683868860273</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1683868860273</updated>
+    </task>
+    <task id="LOCAL-00015" summary="rubah ke pisah per rahang">
+      <created>1683871096367</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1683871096367</updated>
+    </task>
+    <task id="LOCAL-00016" summary="update landmark lib">
+      <created>1683952214919</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1683952214919</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add de for landmark">
+      <created>1684034891282</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1684034891282</updated>
+    </task>
+    <task id="LOCAL-00018" summary="add landmark definition">
+      <created>1684042684514</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1684042684514</updated>
+    </task>
+    <task id="LOCAL-00019" summary="de landmark is running">
+      <created>1684044126668</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1684044126668</updated>
+    </task>
+    <task id="LOCAL-00020" summary="de landmark is running 2">
+      <created>1684044577662</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1684044577662</updated>
+    </task>
+    <task id="LOCAL-00021" summary="read parameter landmark">
+      <created>1684051483044</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1684051483044</updated>
+    </task>
+    <task id="LOCAL-00022" summary="read parameter landmark">
+      <created>1684051526975</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1684051526975</updated>
+    </task>
+    <task id="LOCAL-00023" summary="eval ld">
+      <created>1684083483487</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1684083483487</updated>
+    </task>
+    <task id="LOCAL-00024" summary="eval ld no candidate">
+      <created>1684085564769</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1684085564769</updated>
+    </task>
+    <task id="LOCAL-00025" summary="eval ld no candidate">
+      <created>1684153927889</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1684153927889</updated>
+    </task>
+    <task id="LOCAL-00026" summary="change flat target">
+      <created>1684204702600</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1684204702600</updated>
+    </task>
+    <task id="LOCAL-00027" summary="change flat target no incisors in ins">
+      <created>1684204875022</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1684204875022</updated>
+    </task>
+    <task id="LOCAL-00028" summary="change flat target no incisors add if upper">
+      <created>1684205781388</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1684205781388</updated>
+    </task>
+    <task id="LOCAL-00029" summary="change flat error">
+      <created>1684206545639</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1684206545639</updated>
+    </task>
+    <task id="LOCAL-00030" summary="change flat error co">
+      <created>1684206754135</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1684206754135</updated>
+    </task>
+    <task id="LOCAL-00031" summary="create plor comparison arch">
+      <created>1684308277607</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1684308277607</updated>
+    </task>
+    <task id="LOCAL-00032" summary="create plor comparison arch">
+      <created>1684308363069</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1684308363069</updated>
+    </task>
+    <task id="LOCAL-00033" summary="ff">
+      <created>1684308449806</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1684308449806</updated>
+    </task>
+    <task id="LOCAL-00034" summary="add eval variation f and cr">
+      <created>1684338088652</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1684338088652</updated>
+    </task>
+    <task id="LOCAL-00035" summary="re run again">
+      <created>1684366540777</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1684366540777</updated>
+    </task>
+    <task id="LOCAL-00036" summary="re run again with normalized tooth point no candidate">
+      <created>1684375092691</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1684375092691</updated>
+    </task>
+    <task id="LOCAL-00037" summary="re run again with normalized tooth point no candidate">
+      <created>1684394324325</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1684394324325</updated>
+    </task>
+    <task id="LOCAL-00038" summary="ready">
+      <created>1684394638649</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1684394638649</updated>
+    </task>
+    <task id="LOCAL-00039" summary="update buccal labial distance weight">
+      <created>1684402672818</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1684402672819</updated>
+    </task>
+    <task id="LOCAL-00040" summary="update GLOBAL WEIGHT for optimization helper5">
+      <created>1684403345019</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1684403345019</updated>
+    </task>
+    <task id="LOCAL-00041" summary="update GLOBAL WEIGHT for optimization helper5 and flat target">
+      <created>1684508140241</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1684508140241</updated>
+    </task>
+    <task id="LOCAL-00042" summary="update file save de and error">
+      <created>1684510245840</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1684510245840</updated>
+    </task>
+    <task id="LOCAL-00043" summary="update file save de and error">
+      <created>1684535434840</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1684535434840</updated>
+    </task>
+    <task id="LOCAL-00044" summary="update file save de and error">
+      <created>1684537518854</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1684537518854</updated>
+    </task>
+    <task id="LOCAL-00045" summary="stopping condition">
+      <created>1684558578394</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1684558578394</updated>
+    </task>
+    <task id="LOCAL-00046" summary="stopping condition, update weight">
+      <created>1684564832749</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1684564832749</updated>
+    </task>
+    <task id="LOCAL-00047" summary="bef update weight">
+      <created>1684564865646</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1684564865646</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="dev/main_quarternion" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="branch/landmark_training" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add de for landmark" />
+    <MESSAGE value="add landmark definition" />
+    <MESSAGE value="de landmark is running" />
+    <MESSAGE value="de landmark is running 2" />
+    <MESSAGE value="read parameter landmark" />
+    <MESSAGE value="eval ld" />
+    <MESSAGE value="eval ld no candidate" />
+    <MESSAGE value="change flat target" />
+    <MESSAGE value="change flat target no incisors in ins" />
+    <MESSAGE value="change flat target no incisors add if upper" />
+    <MESSAGE value="change flat error" />
+    <MESSAGE value="change flat error co" />
+    <MESSAGE value="create plor comparison arch" />
+    <MESSAGE value="ff" />
+    <MESSAGE value="add eval variation f and cr" />
+    <MESSAGE value="re run again" />
+    <MESSAGE value="re run again with normalized tooth point no candidate" />
+    <MESSAGE value="ready" />
+    <MESSAGE value="update buccal labial distance weight" />
+    <MESSAGE value="update GLOBAL WEIGHT for optimization helper5" />
+    <MESSAGE value="update GLOBAL WEIGHT for optimization helper5 and flat target" />
+    <MESSAGE value="update file save de and error" />
+    <MESSAGE value="stopping condition" />
+    <MESSAGE value="stopping condition, update weight" />
+    <MESSAGE value="bef update weight" />
+    <option name="LAST_COMMIT_MESSAGE" value="bef update weight" />
+  </component>
+</project>
