@@ -534,7 +534,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
                 final_solution.extend([0,0,0,0,0,0])
                 final_error.append(0)
     seconds_finish = time.time()
-    sum_final_error = np.sum(np.array(final_solution[:]))/len(final_error)
+    sum_final_error = np.sum(np.array(final_error[:]))/len(final_error)
     rmse_final_error = math.sqrt(sum_final_error)
     timede = seconds_finish-seconds_start
     print("waktu de opt", timede,"detik")
