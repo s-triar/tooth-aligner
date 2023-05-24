@@ -106,7 +106,7 @@ def click_btn_de_optimization(self, e):
         writer = csv.writer(f)
         chromo = '|'.join([str(c) for c in gen])
         t_chromo = '|'.join(["T" if c == True else "F" for c in is_tooth_finish])
-        writer.writerow([step_i, error_opt[0], error_opt[1], is_arch_finish[0], is_arch_finish[1], timede, t_chromo, chromo])
+        writer.writerow([step_i, error_opt, timede, t_chromo, chromo])
         f.close()
 
         for i in range(len(self.models)):
