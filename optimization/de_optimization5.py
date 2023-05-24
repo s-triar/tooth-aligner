@@ -202,28 +202,29 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
 
     error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
     error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
-    print(error_top_view, error_side_view, error_top_view_move, error_side_view_move)
-    tot_error_top_view+=error_top_view**2
-    tot_error_side_view+=error_side_view**2
 
-    tot_error_top_view_move+=error_top_view_move**2
-    tot_error_side_view_move+=error_side_view_move**2
-    print(tot_error_top_view, tot_error_side_view, tot_error_top_view_move, tot_error_side_view_move)
+    # print(error_top_view, error_side_view, error_top_view_move, error_side_view_move)
+    # tot_error_top_view+=error_top_view**2
+    # tot_error_side_view+=error_side_view**2
+    #
+    # tot_error_top_view_move+=error_top_view_move**2
+    # tot_error_side_view_move+=error_side_view_move**2
+    # print(tot_error_top_view, tot_error_side_view, tot_error_top_view_move, tot_error_side_view_move)
     # error_total = error_top_view+error_side_view+error_top_view_move+error_side_view_move
 
     # error_summary+=(error_total**2)
     error_summary_i+=1
 
-    tot_error_top_view = math.sqrt(tot_error_top_view / error_summary_i)
-    tot_error_side_view = math.sqrt(tot_error_side_view / error_summary_i)
-
-    tot_error_top_view_move = math.sqrt(tot_error_top_view_move / error_summary_i)
-    tot_error_side_view_move = math.sqrt(tot_error_side_view_move / error_summary_i)
+    # tot_error_top_view = math.sqrt(tot_error_top_view / error_summary_i)
+    #
+    # tot_error_top_view_move = math.sqrt(tot_error_top_view_move / error_summary_i)
+    # tot_error_side_view_move = math.sqrt(tot_error_side_view_move / error_summary_i)
+    # tot_error_side_view = math.sqrt(tot_error_side_view / error_summary_i)
     ArchCopy._clear()
     # error_summary = math.sqrt(error_summary/error_summary_i)
-    error_summary = tot_error_top_view + tot_error_side_view + tot_error_top_view_move + tot_error_side_view_move
-    totalerror = error_summary + punish_collision
-
+    # error_summary = tot_error_top_view + tot_error_side_view + tot_error_top_view_move + tot_error_side_view_move
+    # totalerror = error_summary + punish_collision
+    totalerror = (error_top_view + error_side_view + error_top_view_move + error_side_view_move)/4
         # return error_summary
 
 

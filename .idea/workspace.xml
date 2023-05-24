@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="printing to csv">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="error">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,13 +188,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00003" summary="add trying rotate">
-      <created>1683682189487</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1683682189487</updated>
     </task>
     <task id="LOCAL-00004" summary="add trying rotate">
       <created>1683682607411</created>
@@ -531,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684893114031</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="error">
+      <created>1684894145436</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1684894145436</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -573,7 +574,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="read parameter landmark" />
     <MESSAGE value="eval ld" />
     <MESSAGE value="eval ld no candidate" />
     <MESSAGE value="change flat target" />
@@ -598,6 +598,7 @@
     <MESSAGE value="UNPACK" />
     <MESSAGE value="Stopping cond" />
     <MESSAGE value="printing to csv" />
-    <option name="LAST_COMMIT_MESSAGE" value="printing to csv" />
+    <MESSAGE value="error" />
+    <option name="LAST_COMMIT_MESSAGE" value="error" />
   </component>
 </project>
