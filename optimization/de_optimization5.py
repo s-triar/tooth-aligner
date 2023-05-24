@@ -535,5 +535,5 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     timede = seconds_finish-seconds_start
     print("waktu de opt", timede,"detik")
     new_model = get_new_model(models, final_solution)
-    return new_model,final_solution, rmse_final_error, is_arch_finish, timede
+    return new_model,final_solution, rmse_final_error, is_arch_finish,is_tooth_finish, timede
     
