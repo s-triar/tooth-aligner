@@ -148,3 +148,30 @@ j = convert_to_2d(FaceTypeConversion.FRONT.value,eig, p)
 print(j)
 states = [False, False, False]
 print(not (np.array(states).all()))
+
+
+
+A=[]
+n_tooth = 14
+n_chromosome = 6
+for i in range(14*2*6):
+    A.append(i+1)
+print(len(A)/6)
+print(A)
+kk = []
+for i in range(2):
+    print(i)
+    for j in range(14):
+
+        arch_type=i+1
+        tooth_type = j+1
+
+        # pop = A[(((arch_type-1)*n_tooth)*(n_chromosome) +(tooth_type-1)):
+        #                    ((((arch_type-1)*n_tooth) *(n_chromosome)+(tooth_type-1))+1)]
+        pop = A[
+            ((arch_type-1)*n_tooth*n_chromosome) + (n_chromosome*(tooth_type-1)):
+            ((arch_type-1)*n_tooth*n_chromosome) + (n_chromosome*(tooth_type-1+1))
+        ]
+        kk.append(pop)
+        print(pop)
+print(len(kk))

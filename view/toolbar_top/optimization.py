@@ -78,7 +78,7 @@ def click_btn_de_optimization(self, e):
     # error_upper = 10
     # error_lower = 10
     # while(step_i<16):
-    while(is_tooth_need_continue(is_tooth_finish) and (is_arch_need_continue(last_three_errors)) and step_i <= 100):
+    while(is_tooth_need_continue(is_tooth_finish) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()
         print("step_i",step_i)
         step_i+=1

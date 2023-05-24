@@ -398,7 +398,8 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
 
     if(len(gen)>0):
         # mutated[(i*(14*6)):(i+1)*(14*6)]
-        pop[0]=gen[(((arch_type-1)*n_tooth)+(tooth_type-1)*(n_chromosome)):((((arch_type-1)*n_tooth)+(tooth_type-1))+1)*(n_chromosome)]
+        pop[0]=gen[((arch_type-1)*n_tooth*n_chromosome) + (n_chromosome*(tooth_type-1)):
+            ((arch_type-1)*n_tooth*n_chromosome) + (n_chromosome*(tooth_type-1+1))]
 
 
     myinitIndividu = indvCreate2(arch_type, tooth_type, models, summaries, pop[0])
