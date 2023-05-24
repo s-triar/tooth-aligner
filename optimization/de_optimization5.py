@@ -227,7 +227,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     totalerror = (error_top_view + error_side_view + error_top_view_move + error_side_view_move)/4
         # return error_summary
 
-
+    print((error_top_view + error_side_view + error_top_view_move + error_side_view_move), totalerror)
     return totalerror
     # return error_summary
     
@@ -479,10 +479,10 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
 
             prev_obj = best_obj
             # report progress at each iteration
-            print('Iteration: %d = %.5f and %.5f' % (i, best_obj, best_obj))
+            print('Iteration: ', i, str(prev_obj))
     print("best: ", arch_type, tooth_type, prev_obj, best_vector)
             # print('Iteration: %d f([%s]) = %.5f' % (i, np.around(best_vector, decimals=5), best_obj))
-    return [best_vector, best_obj]
+    return [best_vector, prev_obj]
     
     # dilakukan de dan return models yang paling optimum
     # return de models yang paling optimum
