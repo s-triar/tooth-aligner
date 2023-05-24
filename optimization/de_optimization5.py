@@ -512,7 +512,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     F = 0.5
     # define crossover rate for recombination
     cr = 0.7
-    error_tooth = 5
+    error_tooth = 3
     final_solution = []
     final_error = []
     seconds_start = time.time()
