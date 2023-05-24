@@ -204,30 +204,30 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
     error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
 
     # print(error_top_view, error_side_view, error_top_view_move, error_side_view_move)
-    # tot_error_top_view+=error_top_view**2
-    # tot_error_side_view+=error_side_view**2
-    #
-    # tot_error_top_view_move+=error_top_view_move**2
-    # tot_error_side_view_move+=error_side_view_move**2
+    tot_error_top_view+=error_top_view**2
+    tot_error_side_view+=error_side_view**2
+
+    tot_error_top_view_move+=error_top_view_move**2
+    tot_error_side_view_move+=error_side_view_move**2
     # print(tot_error_top_view, tot_error_side_view, tot_error_top_view_move, tot_error_side_view_move)
     # error_total = error_top_view+error_side_view+error_top_view_move+error_side_view_move
 
     # error_summary+=(error_total**2)
     error_summary_i+=1
 
-    # tot_error_top_view = math.sqrt(tot_error_top_view / error_summary_i)
-    #
-    # tot_error_top_view_move = math.sqrt(tot_error_top_view_move / error_summary_i)
-    # tot_error_side_view_move = math.sqrt(tot_error_side_view_move / error_summary_i)
-    # tot_error_side_view = math.sqrt(tot_error_side_view / error_summary_i)
+    tot_error_top_view = math.sqrt(tot_error_top_view / error_summary_i)
+    tot_error_top_view_move = math.sqrt(tot_error_top_view_move / error_summary_i)
+    tot_error_side_view_move = math.sqrt(tot_error_side_view_move / error_summary_i)
+    tot_error_side_view = math.sqrt(tot_error_side_view / error_summary_i)
+
     ArchCopy._clear()
     # error_summary = math.sqrt(error_summary/error_summary_i)
-    # error_summary = tot_error_top_view + tot_error_side_view + tot_error_top_view_move + tot_error_side_view_move
-    # totalerror = error_summary + punish_collision
-    totalerror = (error_top_view + error_side_view + error_top_view_move + error_side_view_move)/4
+    error_summary = tot_error_top_view + tot_error_side_view + tot_error_top_view_move + tot_error_side_view_move
+    totalerror = error_summary / 4
+    # totalerror = (error_top_view + error_side_view + error_top_view_move + error_side_view_move)/4
         # return error_summary
 
-    print((error_top_view + error_side_view + error_top_view_move + error_side_view_move), totalerror)
+    # print((error_top_view + error_side_view + error_top_view_move + error_side_view_move), totalerror)
     return totalerror
     # return error_summary
     
@@ -425,12 +425,14 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
                                                                                                     line_centers, As,
                                                                                                     destination_tooth)
                         for ind in pop])
+    print(obj_all)
     # print(obj_all)
     
     # find the best performing vector of initial population
     best_vector = pop[np.argmin(obj_all)]
 
-    best_obj = np.argmin(obj_all)
+    best_obj = obj_all[np.argmin(obj_all)]
+    print(best_obj)
     prev_obj = best_obj
     # run iterations of the algorithm
     for i in range(iter):
@@ -471,7 +473,7 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
         # find the best performing vector at each iteration
         # best_obj = np.min(obj_all)
         # best_obj = [np.min(obj_all[:, 0]), np.min(obj_all[:, 1])]
-        best_obj = np.argmin(obj_all)
+        best_obj = obj_all[np.argmin(obj_all)]
         # store the lowest objective function value
         if best_obj < prev_obj:
 
@@ -510,7 +512,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     F = 0.5
     # define crossover rate for recombination
     cr = 0.7
-    error_tooth = 1
+    error_tooth = 5
     final_solution = []
     final_error = []
     seconds_start = time.time()

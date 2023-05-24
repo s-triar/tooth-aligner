@@ -127,6 +127,7 @@
 
 from utility.calculation import get_angle_from_2_2d_lines, convert_to_2d,FaceTypeConversion
 import math
+import numpy as np
 lineA = ((0,4),(9,2)) 
 lineB = ((0,4),(-2,5))
 
@@ -145,3 +146,5 @@ p = [10,20,20]
 
 j = convert_to_2d(FaceTypeConversion.FRONT.value,eig, p)
 print(j)
+states = [False, False, False]
+print(not (np.array(states).all()))

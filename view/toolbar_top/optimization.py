@@ -52,7 +52,7 @@ def is_arch_need_continue(last_three_errors):
     return True
 
 def is_tooth_need_continue(states):
-    return np.array(states).any() == False
+    return not np.array(states).all()
 
 def click_btn_de_optimization(self, e):
     path_model = self.model_paths[0]
