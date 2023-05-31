@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="update TOOTH WEIGHT">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="update stop condition and number iteration">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -189,13 +188,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00010" summary="update landmark_lib">
-      <created>1683740845462</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1683740845462</updated>
     </task>
     <task id="LOCAL-00011" summary="update bound">
       <created>1683769303212</created>
@@ -533,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685499673294</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="update stop condition and number iteration">
+      <created>1685510145158</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1685510145159</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -575,7 +574,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change flat target" />
     <MESSAGE value="change flat target no incisors in ins" />
     <MESSAGE value="change flat target no incisors add if upper" />
     <MESSAGE value="change flat error" />
@@ -600,6 +598,7 @@
     <MESSAGE value="error" />
     <MESSAGE value="error minim fuct" />
     <MESSAGE value="update TOOTH WEIGHT" />
-    <option name="LAST_COMMIT_MESSAGE" value="update TOOTH WEIGHT" />
+    <MESSAGE value="update stop condition and number iteration" />
+    <option name="LAST_COMMIT_MESSAGE" value="update stop condition and number iteration" />
   </component>
 </project>
