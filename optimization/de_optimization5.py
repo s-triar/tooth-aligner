@@ -494,7 +494,7 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
 def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, final_error_before):
     
     
-    pop_size = 14
+    pop_size = 12
     n_tooth = 14
     n_chromosome = 6
     # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
@@ -508,7 +508,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations
-    iter = 30
+    iter = 20
     # define scale factor for mutation
     F = 0.5
     # define crossover rate for recombination
