@@ -47,6 +47,7 @@ def check_decrement_teeth_error(last_three_errors):
     if len(last_three_errors) < 3:
         for j in last_three_errors[-1]:
             res.append(False)
+        return res
     for i in range(len(last_three_errors[0])):
         check_decrease = math.floor(last_three_errors[0][i]) - math.floor(last_three_errors[2][i]) # harus > 1 untuk lanjut
         if check_decrease <= 1:
