@@ -491,7 +491,7 @@ def de_optimization(arch_type, tooth_type, n_tooth,n_chromosome, gen, models, po
     # return de models yang paling optimum
 
 
-def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, error_opt):
+def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, final_error_before):
     
     
     pop_size = 7
@@ -513,7 +513,7 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     F = 0.5
     # define crossover rate for recombination
     cr = 0.7
-    error_tooth = 3
+    error_tooth = 2
     final_solution = []
     final_error = []
     seconds_start = time.time()
@@ -539,5 +539,5 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     timede = seconds_finish-seconds_start
     print("waktu de opt", timede,"detik")
     new_model = get_new_model(models, final_solution)
-    return new_model,final_solution, rmse_final_error, is_arch_finish,is_tooth_finish, timede
+    return new_model,final_solution, rmse_final_error, final_error, is_arch_finish,is_tooth_finish, timede
     

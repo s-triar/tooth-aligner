@@ -42,14 +42,17 @@ def create_optimization_menu(self, parent_layout):
     parent_layout.addWidget(section)
 
 
-def is_arch_need_continue(last_three_errors):
+def check_decrement_teeth_error(last_three_errors):
+    res = []
     if len(last_three_errors) < 3:
         return True
-    check_decrease = math.floor(last_three_errors[0]) - math.floor(last_three_errors[2]) # harus > 1 untuk lanjut
-    # check_increase = last_three_errors[0] - last_three_errors[2] # harus < -1 untuk lanjut
-    if check_decrease <= 1:
-        return False
-    return True
+    for i in range(len(last_three_errors[0])):
+        check_decrease = math.floor(last_three_errors[0][i]) - math.floor(last_three_errors[2][i]) # harus > 1 untuk lanjut
+        if check_decrease <= 1:
+            res.append(True)
+        else:
+            res.append(False)
+    return res
 
 def is_tooth_need_continue(states):
     return not np.array(states).all()
@@ -61,9 +64,10 @@ def click_btn_de_optimization(self, e):
     filepath.parent.mkdir(parents=True, exist_ok=True)
 
     last_three_errors = []
-    error_opt = 120000
-    # error_opt = [1200000, 1200000] #uppper, lower
     n_tooth = 14
+
+    teeth_errors = [120000] * (2 * n_tooth)
+    # error_opt = [1200000, 1200000] #uppper, lower
     is_arch_finish = [False, False] #upper, lower
     is_tooth_finish = [False] * (2 * n_tooth)
     step_i = 1
@@ -85,13 +89,15 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt, is_arch_finish, is_tooth_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, error_opt)
+        new_models, gen, error_opt,teeth_errors, is_arch_finish, is_tooth_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, is_tooth_finish, teeth_errors)
 
         if len(last_three_errors) < 3:
-            last_three_errors.append(error_opt)
+            last_three_errors.append(teeth_errors)
         else:
-            last_three_errors.append(error_opt)
+            last_three_errors.append(teeth_errors)
             last_three_errors = last_three_errors[1:]
+
+        is_tooth_finish = check_decrement_teeth_error(last_three_errors)
 
 
         # if error_opt[0] < error_upper:
@@ -104,9 +110,10 @@ def click_btn_de_optimization(self, e):
         #     save optimization process
         f = open(filepathsave, 'a+', encoding='utf-8', newline='')
         writer = csv.writer(f)
+        teeth_err = '|'.join(['%.4f'.format(c) for c in teeth_errors])
         chromo = '|'.join([str(c) for c in gen])
         t_chromo = '|'.join(["T" if c == True else "F" for c in is_tooth_finish])
-        writer.writerow([step_i, error_opt, timede, t_chromo, chromo])
+        writer.writerow([step_i, error_opt, timede, t_chromo, teeth_err, chromo])
         f.close()
 
         for i in range(len(self.models)):
