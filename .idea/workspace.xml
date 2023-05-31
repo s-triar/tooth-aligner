@@ -190,13 +190,6 @@
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
     </task>
-    <task id="LOCAL-00009" summary="update landmark_lib">
-      <created>1683740813084</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1683740813084</updated>
-    </task>
     <task id="LOCAL-00010" summary="update landmark_lib">
       <created>1683740845462</created>
       <option name="number" value="00010" />
@@ -533,7 +526,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684897851409</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="update TOOTH WEIGHT">
+      <created>1685499673294</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1685499673294</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
