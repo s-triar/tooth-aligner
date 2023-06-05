@@ -2,3 +2,8 @@ environment
 saved*
 */__pycache__
 .venv
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/tooth-aligner.iml
+/.idea/vcs.xml
