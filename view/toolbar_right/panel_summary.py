@@ -17,10 +17,11 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QSizePolicy
 )
+from utility.colors import map_label_color
 import numpy as np
 from PyQt5.QtCore import Qt, QSize
 from constant.enums import ArchType, LandmarkType, ToothType
-from controller.summary_controller import  get_studi_model_summary_pts, get_summary_flat_pts
+from controller.summary_controller import  get_studi_model_summary_pts, get_summary_flat_pts, get_destination_tooth
 from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.names import convert_arch_val_to_name
@@ -397,12 +398,22 @@ def draw_summary_lines_DEPRECATED(self): #deprecated
         draw_spline(self, preds, True, i.value)
 
 def draw_summary_lines(self):
+    destinations = get_destination_tooth(self)
     # pts = calculate_studi_model_summary_pts(self)
     wirearchs = get_studi_model_summary_pts(self)
+
     for a in wirearchs:
         # draw_spline(self, pts[a][0], False, a)
         # draw_spline(self, pts[a][1], True, a)
         draw_spline(self, wirearchs[a], True, a)
+    # for lbl_arch in destinations:
+    #     for lbl in destinations[lbl_arch]:
+    #         temp = destinations[lbl_arch][lbl]
+    #         c = map_label_color(lbl)
+    #         l = Line(temp[0], temp[1], lw=13, c=c)
+    #         self.model_plot.add(l)
+    # self.model_plot.render()
+
 
 def draw_spline(self, pts, isPred, arch):
     c = 'orange'
@@ -411,24 +422,31 @@ def draw_spline(self, pts, isPred, arch):
     if(arch == ArchType.UPPER.value):
         c+='5'
     line = SplineKu(pts)
-    line.lw(8)
+    line.lw(6)
     line.c(c)
     self.model_plot.add(line)
     # for pt in pts:
     #     self.model_plot.add(Point(pt))
+
+    # draw_spline_flat(self)
     self.model_plot.render()
+
     
 def draw_spline_flat(self):
     coords = get_summary_flat_pts(self)
     for a in coords:
         pts = coords[a]
-        print(pts)
-        c = 'blue4'
-        line = SplineKu(pts, degree=2, smooth=0, res=600)
-        line.ps(8)
-        line.c(c)
-        self.model_plot.add(line)
-        # for pt in pts:
-        #     self.model_plot.add(Point(pt))
-        self.model_plot.render()
+        for pt in pts[0]:
+            self.model_plot.add(Point(pt, c='yeallow'))
+        for pt in pts[1]:
+            self.model_plot.add(Point(pt, c='orange'))
+        # print(pts)
+        # c = 'blue4'
+        # line = SplineKu(pts, degree=2, smooth=0, res=600)
+        # line.ps(8)
+        # line.c(c)
+        # self.model_plot.add(line)
+        # # for pt in pts:
+        # #     self.model_plot.add(Point(pt))
+        # self.model_plot.render()
     
