@@ -75,8 +75,8 @@ def click_btn_de_optimization(self, e):
     destination_tooth_cusp = copy.deepcopy(get_destination_tooth_cusp(self))
     destination_tooth_gum = copy.deepcopy(get_destination_tooth_gum(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
-    error_upper = 10
-    error_lower = 10
+    error_upper = 5
+    error_lower = 5
     # while(step_i<16):
     while((is_arch_finish[0] == False or is_arch_finish[1] == False) and (is_arch_need_continue(last_three_errors_upper) or is_arch_need_continue(last_three_errors_lower)) and step_i <= 100):
         self.btn_addmin_step_aligner.btn_increase.click()

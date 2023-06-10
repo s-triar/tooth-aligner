@@ -23,7 +23,8 @@ class Tooth():
         self.landmark_pt = landmark
 
         self.buccal_labial_side_index = None
-        self.find_buccal_labial_side()
+        if(self.label != ToothType.GINGIVA.value and self.label != ToothType.DELETED.value):
+            self.find_buccal_labial_side()
         # self.landmark_index = landmark
         # self.mesial_index=mesial_index
         # self.distal_index=distal_index
@@ -85,5 +86,5 @@ class Tooth():
     def find_buccal_labial_side(self):
         self.buccal_labial_side_index = find_neighborhood_point_index(
             self.get_mesh(),
-            self.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],
+            np.array(self.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]),
         )

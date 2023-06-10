@@ -162,8 +162,8 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
-        destination_pts = destination_tooth_belt[model_cp.arch_type][1]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0], destination_tooth_belt[model_cp.arch_type][1], destination_tooth_belt[model_cp.arch_type][2]]
+        destination_pts = destination_tooth_belt[1][model_cp.arch_type]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 
@@ -171,7 +171,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 error_top_view, error_top_view_move = calculate_tooth_balance_to_bonwill_belt(teeth[tooth_type],
                                                                                                    destination_belt,
                                                                                                    for_cr=True)
-                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts)
+                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, flat_mesh)
                 
                 # error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
@@ -284,7 +284,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
     return np.array(tempGen)
 
 
-def indv_create_rot(models, summary_pts, Bs, line_centers, chrs,  As, destination_tooth_belt):
+def indv_create_rot(models, summary_pts, Bs, line_centers, chrs,  As, destination_tooth_belt, flat_pts):
     ArchCopy._clear()
     tempGen = []
     for m in models:
@@ -300,12 +300,13 @@ def indv_create_rot(models, summary_pts, Bs, line_centers, chrs,  As, destinatio
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0], destination_tooth_belt[model_cp.arch_type][1], destination_tooth_belt[model_cp.arch_type][2]]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type], [[0, 1, 2]]])
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                rx,ry,rz = get_closest_possible_rotations(teeth[i.value],summary_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True, A, destination_belt)
+                rx,ry,rz = get_closest_possible_rotations(teeth[i.value],summary_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True, A, destination_belt, flat_mesh)
                 tempGen.append(rx)
                 tempGen.append(ry)
                 tempGen.append(rz)
@@ -336,9 +337,7 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth_
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         # destination_pts = destination_tooth[model_cp.arch_type]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0],
-                            destination_tooth_belt[model_cp.arch_type][1],
-                            destination_tooth_belt[model_cp.arch_type][2]]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
@@ -375,9 +374,7 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         # destination_pts = destination_tooth[model_cp.arch_type]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0],
-                            destination_tooth_belt[model_cp.arch_type][1],
-                            destination_tooth_belt[model_cp.arch_type][2]]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
@@ -433,18 +430,18 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
-        destination_pts = destination_tooth_belt[model_cp.arch_type][1]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0], destination_tooth_belt[model_cp.arch_type][1], destination_tooth_belt[model_cp.arch_type][2]]
+        destination_pts = destination_tooth_belt[1][model_cp.arch_type]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
         angle_error={}
         dst_error={}
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 error_top_view_angle, error_top_view_dst = calculate_tooth_balance_to_bonwill_belt(teeth[tooth_type], destination_belt, for_cr=True)
-                # error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
-                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
+                error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, flat_mesh,True)
+                # error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
-                angle_error[tooth_type] = error_top_view_angle
-                dst_error[tooth_type] = error_top_view_dst+error_top_view_move+error_side_view_move
+                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
+                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_side_view_move
         teeth_err_mutated_angle[model_cp.arch_type] = angle_error
         teeth_err_mutated_dst[model_cp.arch_type] = dst_error
                 
@@ -474,10 +471,8 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
-        destination_pts = destination_tooth_belt[model_cp.arch_type][1]
-        destination_belt = [destination_tooth_belt[model_cp.arch_type][0],
-                            destination_tooth_belt[model_cp.arch_type][1],
-                            destination_tooth_belt[model_cp.arch_type][2]]
+        destination_pts = destination_tooth_belt[1][model_cp.arch_type]
+        destination_belt = [destination_tooth_belt[0][model_cp.arch_type], destination_tooth_belt[1][model_cp.arch_type], destination_tooth_belt[2][model_cp.arch_type]]
         angle_error={}
         dst_error={}
         for tooth_type in teeth:
@@ -486,11 +481,11 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 error_top_view_angle, error_top_view_dst = calculate_tooth_balance_to_bonwill_belt(teeth[tooth_type],
                                                                                                    destination_belt,
                                                                                                    for_cr=True)
-                error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
-                error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
+                error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, flat_mesh,True)
+                # error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
                 angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
-                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
+                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_side_view_move
         teeth_err_target_angle[model_cp.arch_type] = angle_error
         teeth_err_target_dst[model_cp.arch_type] = dst_error
     ArchCopy._clear()
@@ -520,6 +515,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     
 
 def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F, cr, flats, summaries, line_centers, Bs,  As, destination_tooth_belt, is_arch_finish, error_opt):
+
     # initialise population of candidate solutions randomly within the specified bounds
     pop = bounds[:, 0] + (np.random.rand(pop_size, len(bounds)) * (bounds[:, 1] - bounds[:, 0]))
 
@@ -539,7 +535,7 @@ def de_optimization(n_tooth,n_chromosome, gen, models, pop_size, bounds, iter, F
     myinitIndividu = check_bounds(myinitIndividu, bounds)
     pop[-1]=myinitIndividu
 
-    myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth_belt)
+    myinit_indv_rot = indv_create_rot(models,summaries,Bs,line_centers,pop[0], As, destination_tooth_belt, flats)
     myinit_indv_rot = check_bounds(myinit_indv_rot, bounds)
     pop[-2]=myinit_indv_rot
 
