@@ -112,10 +112,8 @@ class SplineKu(Line):
         self.temp_distance_to_point=0
         self.point_target=np.array(point).reshape(3,1)
         # self.point_target=point
-        closestu = fmin(self.calculateToPoint_, np.mean(point*10), disp=False)
-        # print(closestu,"closestu")
+        closestu = fmin(self.calculateToPoint_, np.mean(point+10), disp=False)
         closest = np.array(splev(closestu, self.tckp)).reshape(3)
-        
         if return_u==True:
             return closest, closestu
         return closest

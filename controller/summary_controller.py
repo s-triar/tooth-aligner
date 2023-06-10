@@ -828,7 +828,9 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
         print("dst label", label)
         if teeth[label]:
             tooth = teeth[label]
+            # print(tooth.vertices, 'tooth v', label)
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
+            print(rf, 'rf', label)
             sph = Sphere(a_end,r=rf/2)
             dst = get_spl_pts_through_sphere(sph, spl, A)
             dis_mid = dst[1]
