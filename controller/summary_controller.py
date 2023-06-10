@@ -24,6 +24,8 @@ def init_summary(self):
     self.Bs_pts=None
     self.As_pts=None
     self.destination_tooth=None
+    self.destination_tooth_cusp = None
+    self.destination_tooth_gum = None
 
 def calculate_studi_model(self):
     if(Arch._is_complete()):
@@ -45,10 +47,18 @@ def calculate_studi_model(self):
         self.studi_model_summary_pts, self.line_center_pts, self.Bs_pts, self.As_pts = calculate_bonwill(self)
         print("calculating bonwill is done")
         self.destination_tooth = calculate_destination_points(self)
+        self.destination_tooth_cusp, self.destination_tooth_gum = calculate_bonwill_destination_points_belt(self)
         print("calculating bonwill destination is done")
+        find_buccal_labial_tooth_side(self.models)
         # print("self.studi_model_summary_pts")
         # print(self.studi_model_summary_pts)
         # print()
+
+def find_buccal_labial_tooth_side(models):
+    for m in models:
+        for tp in ToothType:
+            if (tp.value != ToothType.GINGIVA.value and tp.value != ToothType.DELETED.value):
+                m.teeth[tp.value].find_buccal_labial_side()
 
 def get_As_pts(self):
     return self.As_pts 
@@ -65,6 +75,11 @@ def get_studi_model_summary_pts(self):
 def get_destination_tooth(self):
     return self.destination_tooth
 
+def get_destination_tooth_cusp(self):
+    return self.destination_tooth_cusp
+
+def get_destination_tooth_gum(self):
+    return self.destination_tooth_gum
 
 def get_summary_flat_pts(self):
     return self.summary_flat_pts
@@ -226,6 +241,83 @@ def calculate_bonwill(self):
             Bs[i.value] = B
             As[i.value] = A
     return archwire, center_line, Bs, As
+
+def calculate_bonwill_destination_points_belt(self):
+    belt_cusp = {}
+    belt_gum = {}
+    if (Arch._is_complete()):
+        for i in ArchType:
+            idx = Arch._get_index_arch_type(i.value)
+            model = self.models[idx]
+            dst_pts = self.destination_tooth[i.value]
+            teeth = model.teeth
+            arch_type = model.arch_type
+            if arch_type == ArchType.UPPER.value:
+                pts = np.array([
+                    np.mean([
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                    ], axis=0),
+                    np.mean([
+                        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+                        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                    ], axis=0),
+                    np.mean([
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                    ], axis=0),
+                ])
+            if arch_type == ArchType.LOWER.value:
+                pts = np.array([
+                    np.mean([
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                    ], axis=0),
+                    np.mean([
+                        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+                        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                    ], axis=0),
+                    np.mean([
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                    ], axis=0),
+                ])
+            res = {}
+            res_gum = {}
+            for pt in dst_pts:
+                temp = []
+                temp_gum = []
+                new_coord = find_closest_point_between_a_point_and_a_3pts_plane(dst_pts[pt][0], pts)
+                temp.append(new_coord)
+                new_coord = find_new_point_in_a_line_with_new_distance(new_coord, dst_pts[pt][0],
+                                                                       find_distance_between_two_points(new_coord,
+                                                                                                        dst_pts[pt][0]) * 2)
+                temp_gum.append(new_coord)
+                new_coord = find_closest_point_between_a_point_and_a_3pts_plane(dst_pts[pt][1], pts)
+                temp.append(new_coord)
+                new_coord = find_new_point_in_a_line_with_new_distance(new_coord, dst_pts[pt][1],
+                                                                       find_distance_between_two_points(new_coord,
+                                                                                                        dst_pts[pt][1]) * 2)
+                temp_gum.append(new_coord)
+                new_coord = find_closest_point_between_a_point_and_a_3pts_plane(dst_pts[pt][2], pts)
+                temp.append(new_coord)
+                new_coord = find_new_point_in_a_line_with_new_distance(new_coord, dst_pts[pt][2],
+                                                                       find_distance_between_two_points(new_coord,
+                                                                                                        dst_pts[pt][2]) * 2)
+                temp_gum.append(new_coord)
+                res[pt] = temp
+                res_gum[pt] = temp_gum
+            belt_cusp[i.value] = res
+            belt_gum[i.value] = res_gum
+    return belt_cusp, belt_gum
 
 def calculate_flat_plane_points(self):
     if Arch._is_complete():
@@ -799,7 +891,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
     a_end = A[:]
     eig_right_inv = (eig_right[:])*-1
     for label in labels_strt:
-        print("dst label", label)
+        # print("dst label", label)
         if teeth[label]:
             tooth = teeth[label]
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
@@ -825,12 +917,12 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             #     yy = get_spl_pts_through_sphere(sph, spl, A)
             #     a_strt=yy[1][:]
     for label in labels_end:
-        print("dst label", label)
+        # print("dst label", label)
         if teeth[label]:
             tooth = teeth[label]
             # print(tooth.vertices, 'tooth v', label)
             rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
-            print(rf, 'rf', label)
+            # print(rf, 'rf', label)
             sph = Sphere(a_end,r=rf/2)
             dst = get_spl_pts_through_sphere(sph, spl, A)
             dis_mid = dst[1]

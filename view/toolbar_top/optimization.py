@@ -14,7 +14,9 @@ from constant.enums import PanelMode
 from controller.bite_contact_controller import reset_bite_contact
 from controller.segmentation_controller import set_selected_arch, set_selected_label
 from controller.step_controller import update_transform_arch
-from controller.summary_controller import (calculate_studi_model, get_Bs_pts, get_line_centers_pts, get_studi_model_summary_pts, get_summary_flat_pts, get_As_pts, get_destination_tooth)
+from controller.summary_controller import (
+    calculate_studi_model, get_Bs_pts, get_line_centers_pts, get_studi_model_summary_pts,
+    get_summary_flat_pts, get_As_pts, get_destination_tooth, get_destination_tooth_cusp, get_destination_tooth_gum)
 from optimization.de_optimization5 import start_de
 from utility.app_tool import get_saved_optimization_step_value
 
@@ -70,6 +72,8 @@ def click_btn_de_optimization(self, e):
     Bs = copy.deepcopy(get_Bs_pts(self))
     As = copy.deepcopy(get_As_pts(self))
     destination_tooth = copy.deepcopy(get_destination_tooth(self))
+    destination_tooth_cusp = copy.deepcopy(get_destination_tooth_cusp(self))
+    destination_tooth_gum = copy.deepcopy(get_destination_tooth_gum(self))
     line_centers = copy.deepcopy(get_line_centers_pts(self))
     error_upper = 10
     error_lower = 10
@@ -81,7 +85,7 @@ def click_btn_de_optimization(self, e):
         # new_models, gen, error_opt = start_de(self.models, get_summary_flat_pts(self), get_studi_model_summary_pts(self), gen)
         # print("eror", error_opt)
         # while(error_opt>5000):
-        new_models, gen, error_opt, is_arch_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, destination_tooth, is_arch_finish, error_opt)
+        new_models, gen, error_opt, is_arch_finish,timede = start_de(new_models, flats, summary, line_centers, Bs, gen, As, [destination_tooth_cusp, destination_tooth, destination_tooth_gum], is_arch_finish, error_opt)
 
         if len(last_three_errors_upper) < 3:
             last_three_errors_upper.append(error_opt[0])

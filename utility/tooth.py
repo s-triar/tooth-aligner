@@ -6,7 +6,7 @@ import os
 from constant.enums import ToothType, LandmarkType
 from vedo import vtk2numpy, Mesh, Point
 from utility import landmarking_lib as ll
-
+from app_tool import find_neighborhood_point_index
 class Tooth():    
 
     def __init__(self, 
@@ -21,7 +21,9 @@ class Tooth():
         self.index_vertice_cells=index_vertice_cells
         self.center=center
         self.landmark_pt = landmark
-        
+
+        self.buccal_labial_side_index = None
+        self.find_buccal_labial_side()
         # self.landmark_index = landmark
         # self.mesial_index=mesial_index
         # self.distal_index=distal_index
@@ -79,9 +81,9 @@ class Tooth():
             if(pt is not None):
                 pt = pt+val_direction
                 self.landmark_pt[k]=pt
-            
-        
-        
-        
-        
-        
+
+    def find_buccal_labial_side(self):
+        self.buccal_labial_side_index = find_neighborhood_point_index(
+            self.get_mesh(),
+            self.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value],
+        )

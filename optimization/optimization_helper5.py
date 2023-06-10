@@ -1,7 +1,7 @@
 
 from constant.enums import LandmarkType, ToothType
 from utility.calculation import FaceTypeConversion, convert_to_2d, find_closest_point_between_a_point_and_a_line, find_distance_between_two_points, find_new_point_in_a_line_with_delta_distance, get_angle_from_2_2d_lines
-from utility.calculation import find_closest_point_between_a_point_and_a_3pts_plane
+from utility.calculation import find_closest_point_between_a_point_and_a_3pts_plane, is_point_in_triangle_3d, is_point_in_a_line
 from utility.tooth_label import get_tooth_labels
 import numpy as np
 import math
@@ -25,7 +25,7 @@ def get_candidate_chromosome(start, stop, step):
     return res
 
 
-def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts,max_chr=1, min_chr=-1, step=1):
+def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,is_standalone, A, destination_belt,max_chr=1, min_chr=-1, step=1):
     error = 999999999
     rot_x=0
     rot_y=0
@@ -48,8 +48,9 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
                 # tooth_clone.update_landmark_rotation("roll", vz, tx_center)
                 tooth_clone.update_landmark_rotation_quarternion("roll", vz, tx_center, eigenvec[2])
                 
-                error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone, A, destination_pts) 
-                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone, A, destination_pts)
+                # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone, A, destination_belt[1])
+                error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
+                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone, A, destination_belt[1])
                 error_total = error_top_view+error_side_view
                 if(error > error_total):
                     error = error_total
@@ -59,7 +60,7 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
                     
     return rot_x, rot_y, rot_z
                 
-def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_standalone, A, destination_pts, max_chr=0.5, min_chr=-0.5, step=0.5):
+def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_standalone, A, destination_belt, max_chr=0.5, min_chr=-0.5, step=0.5):
     error = 999999999
     mov_x=0
     mov_y=0
@@ -76,7 +77,8 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_stan
                 val_direction=[vx,vy,vz]
                 # tooth_clone.points(tooth_clone.points()+val_direction)
                 tooth_clone.update_landmark_moving(val_direction)
-                error_top_view = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper,A, destination_pts)
+                # error_top_view = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper,A, destination_belt[1])
+                error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
                 error_side_view = calculate_cusp_to_flat_level_line(tooth_clone, spl_flat,eigenvec, is_upper)
                 error_total = error_top_view+error_side_view
                 if(error > error_total):
@@ -87,7 +89,7 @@ def get_closest_possible_movements(tooth,spl, spl_flat,eigenvec,is_upper,is_stan
                     
     return mov_x, mov_y, mov_z
                                 
-def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_standalone, A, destination_pts, max_chr_rot=1, min_chr_rot=-1, step_rot=1, max_chr_move=0.5, min_chr_move=-0.5, step_move=0.5):                
+def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_center, eigenvec,is_upper,is_standalone, A, destination_belt, max_chr_rot=1, min_chr_rot=-1, step_rot=1, max_chr_move=0.5, min_chr_move=-0.5, step_move=0.5):
     error = 999999999
     rot_x=0
     rot_y=0
@@ -139,13 +141,14 @@ def get_closest_possible_rotations_and_movements(tooth,spl, spl_flat,B, line_cen
                 # tooth_clone.points(tooth_clone.points()+val_direction)
                 tooth_clone.update_landmark_moving(val_direction)
                 
-                error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone,A, destination_pts) 
-                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone,A, destination_pts)
+                # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone,A, destination_pts)
+                error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
+                error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone,A, destination_pts[1])
                 
-                error_top_view_move = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper, A, destination_pts)
+                # error_top_view_move = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper, A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(tooth_clone, spl_flat,eigenvec, is_upper)
                 
-                error_total = error_top_view+error_side_view+error_top_view_move+error_side_view_move
+                error_total = error_top_view+error_side_view+error_side_view_move
                 
                 if(error > error_total):
                     error = error_total
@@ -250,8 +253,71 @@ def calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth,B, line_ce
     if(for_cr):
         return out_of_spl_err+mesial_distal_balance_err, mesial_distal_to_spl_err
     return out_of_spl_err+mesial_distal_to_spl_err+mesial_distal_balance_err
-    
-    
+
+def calculate_angle_bucal_labial_to_bonwill_belt_with_std(tooth, belts):
+    # belts = custp, mid, gum -> udah diambil per arch
+    points = tooth.vertices[tooth.buccal_labial_side_index]
+    distances = []
+    plane = np.array([
+            belts[0][tooth.label][0], #cusp mesial,
+            belts[0][tooth.label][1], #cusp distal
+            belts[2][tooth.label][1]  #gum distal
+        ])
+    for p in points:
+        g = find_closest_point_between_a_point_and_a_3pts_plane(p,plane)
+        distances.append(g)
+    mean = np.mean(np.array(distances))
+    sqr = 0
+    for d in distances:
+        sqr += d**2
+    return math.sqrt(sqr/len(distances))
+
+def calculate_distance_bucal_labial_to_bonwill_belt(tooth, belts):
+    # belts = custp, mid, gum -> udah diambil per arch
+    points = tooth.vertices[tooth.buccal_labial_side_index]
+    plane = np.array([
+        belts[0][tooth.label][0],  # cusp mesial,
+        belts[0][tooth.label][1],  # cusp distal
+        belts[2][tooth.label][1]  # gum distal
+    ])
+    plane1 = np.array([
+        belts[0][tooth.label][0],  # cusp mesial,
+        belts[0][tooth.label][1],  # cusp distal
+        belts[2][tooth.label][0]  # gum mesial
+    ])
+    rect = np.array([
+        belts[0][tooth.label][0],  # cusp mesial,
+        belts[0][tooth.label][1],  # cusp distal
+        belts[2][tooth.label][0],  # gum mesial
+        belts[2][tooth.label][1]  # gum distal
+    ])
+    distances=[]
+    for p in points:
+        g = find_closest_point_between_a_point_and_a_3pts_plane(p,plane)
+        if (is_point_in_triangle_3d(g, plane)):
+            distances.append(find_distance_between_two_points(p,g))
+        elif( is_point_in_triangle_3d(g, plane1)):
+            distances.append(find_distance_between_two_points(p, g))
+        else:
+            dd = []
+            for j in rect:
+                dd.append(find_distance_between_two_points(g, j))
+            cls = np.amin(np.array(dd))
+            distances.append(cls)
+
+    return distances/len(distances)
+
+
+def calculate_tooth_balance_to_bonwill_belt(tooth, belts, for_cr=False):
+    # belts = custp, mid, gum -> udah diambil per arch dan per tooth
+    if for_cr:
+        return calculate_angle_bucal_labial_to_bonwill_belt_with_std(tooth,
+                                                                     belts), calculate_distance_bucal_labial_to_bonwill_belt(
+            tooth, belts)
+    return calculate_angle_bucal_labial_to_bonwill_belt_with_std(tooth, belts) + calculate_distance_bucal_labial_to_bonwill_belt(tooth,belts)
+
+
+
 
 def calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth, spl, eigvector, is_upper, is_spl_standalone, A, destination_pts, for_cr=False):
     tooth_labels = get_tooth_labels()

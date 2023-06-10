@@ -12,7 +12,27 @@ from vedo import load
 #     UPPER=1
 #     LOWER=2
 
-
+def find_neighborhood_point_index(mesh, pt, deep=3):
+    if deep < 0:
+        raise Exception("deep must be min 1")
+    g = np.linalg.norm(mesh.points() - pt, axis=1)
+    ind = np.argmin(g)
+    cells = np.array(mesh.cells())
+    t = np.where(cells == ind)
+    hasil = np.unique(cells[t[0]])
+    if deep < 1:
+        return hasil
+    already_check = [ind]
+    for i in range(deep - 1):
+        search = np.delete(hasil, np.where(np.isin(hasil, already_check)))
+        temp = np.where(np.isin(cells, search))
+        htemp = np.unique(cells[temp[0]])
+        hasil = np.concatenate((hasil, htemp), axis=0)
+        hasil = np.unique(hasil)
+        already_check.extend(search)
+    bound = mesh.boundaries(returnPointIds=True)
+    hasil = np.delete(hasil, np.where(np.isin(hasil, bound)))
+    return hasil
 
 def get_saved_optimization_step_value(path_model):
     load_dotenv()

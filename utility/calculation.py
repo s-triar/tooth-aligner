@@ -47,8 +47,54 @@ def get_angle_from_2_2d_lines(lineA, lineB, is_return_degree=False):
         return math.degrees(angle) #0-180
     else:
         return angle
-    
-    
+
+def is_point_in_a_line(point, line):
+    d_p_l1 = find_distance_between_two_points(point, line[0])
+    d_p_l2 = find_distance_between_two_points(point, line[1])
+    d_l1_l2 = find_distance_between_two_points(line[0], line[1])
+
+    if(d_p_l1 + d_p_l2 == d_l1_l2):
+        return True
+    else:
+        return False
+def is_point_in_triangle_3d(point, triangle):
+    """
+    Check if a point is inside a triangle in 3D space.
+
+    Args:
+        point: A tuple or list containing the coordinates of the point in (x, y, z) format.
+        triangle: A list of three tuples or lists, each representing the coordinates of a vertex of the triangle.
+
+    Returns:
+        True if the point lies inside the triangle, False otherwise.
+    """
+    p = np.array(point)
+    a = np.array(triangle[0])
+    b = np.array(triangle[1])
+    c = np.array(triangle[2])
+
+    # Calculate the vectors from vertex A to the other two vertices
+    v0 = c - a
+    v1 = b - a
+    v2 = p - a
+
+    # Calculate dot products
+    dot00 = np.dot(v0, v0)
+    dot01 = np.dot(v0, v1)
+    dot02 = np.dot(v0, v2)
+    dot11 = np.dot(v1, v1)
+    dot12 = np.dot(v1, v2)
+
+    # Calculate barycentric coordinates
+    inv_denom = 1.0 / (dot00 * dot11 - dot01 * dot01)
+    u = (dot11 * dot02 - dot01 * dot12) * inv_denom
+    v = (dot00 * dot12 - dot01 * dot02) * inv_denom
+
+    # Check if the barycentric coordinates satisfy the condition for the point to lie inside the triangle
+    if (u >= 0) and (v >= 0) and (u + v <= 1):
+        return True
+    else:
+        return False
 
 def find_distance_between_two_points(pt1,pt2):
     return np.linalg.norm(pt1 - pt2)

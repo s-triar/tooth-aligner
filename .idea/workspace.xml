@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="update spl closest point and flat">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="update spl closest point and flat2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/summary_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/summary_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utility/splineku.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/splineku.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/app_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/app_tool.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/calculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/calculation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/tooth.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/tooth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +34,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="pisah/main" />
+        <entry key="$PROJECT_DIR$" value="pisah/main_quarternion" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,14 +47,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;pisah/main__quarternion&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Code/tooth-aligner/landmark_training/w_manual&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "pisah__belt/main__quarternion",
+    "last_opened_file_path": "D:/Code/tooth-aligner/landmark_training/w_manual"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Code\tooth-aligner\landmark_training\w_manual" />
@@ -526,7 +531,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686367305124</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="update spl closest point and flat2">
+      <created>1686368489856</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1686368489856</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -568,7 +580,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add landmark definition" />
     <MESSAGE value="de landmark is running" />
     <MESSAGE value="de landmark is running 2" />
     <MESSAGE value="read parameter landmark" />
@@ -593,6 +604,7 @@
     <MESSAGE value="stopping condition, update weight" />
     <MESSAGE value="bef update weight" />
     <MESSAGE value="update spl closest point and flat" />
-    <option name="LAST_COMMIT_MESSAGE" value="update spl closest point and flat" />
+    <MESSAGE value="update spl closest point and flat2" />
+    <option name="LAST_COMMIT_MESSAGE" value="update spl closest point and flat2" />
   </component>
 </project>
