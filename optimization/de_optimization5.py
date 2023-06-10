@@ -155,7 +155,10 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         # flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        # flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type],[[0,1,2]]])
+
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -167,7 +170,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts)
                 
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
-                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
                 
                 tot_error_top_view+=error_top_view**2
                 tot_error_side_view+=error_side_view**2
@@ -324,7 +327,8 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth)
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         # flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        # flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type], [[0, 1, 2]]])
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
@@ -332,7 +336,7 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth)
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                mx,my,mz = get_closest_possible_movements(teeth[i.value],summary_line, flat_line,eigenvec,False,True,  A, destination_pts)
+                mx,my,mz = get_closest_possible_movements(teeth[i.value],summary_line, flat_mesh,eigenvec,False,True,  A, destination_pts)
                 tempGen.append(chr[0])
                 tempGen.append(chr[1])
                 tempGen.append(chr[2])
@@ -358,7 +362,9 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
     for model_cp in models_cps:
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         # flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        # flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type], [[0, 1, 2]]])
+
         teeth = copy.deepcopy(model_cp.teeth)
         A = As[model_cp.arch_type]
         destination_pts = destination_tooth[model_cp.arch_type]
@@ -366,7 +372,7 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
-                rx,ry,rz,mx,my,mz = get_closest_possible_rotations_and_movements(teeth[i.value],summary_line, flat_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True,  A, destination_pts)
+                rx,ry,rz,mx,my,mz = get_closest_possible_rotations_and_movements(teeth[i.value],summary_line, flat_mesh,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True,  A, destination_pts)
                 tempGen.append(rx)
                 tempGen.append(ry)
                 tempGen.append(rz)
@@ -412,7 +418,8 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         # flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        # flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type], [[0, 1, 2]]])
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -424,7 +431,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
-                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
                 angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
                 dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
         teeth_err_mutated_angle[model_cp.arch_type] = angle_error
@@ -450,7 +457,9 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         teeth = copy.deepcopy(model_cp.teeth)
         summary_line = SplineKu(summary_pts[model_cp.arch_type])
         # flat_line = SplineKu(flat_pts[model_cp.arch_type])
-        flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+        # flat_line = [SplineKu(flat_pts[model_cp.arch_type][0]), SplineKu(flat_pts[model_cp.arch_type][1])]
+
+        flat_mesh = Mesh([flat_pts[model_cp.arch_type],[[0,1,2]]])
         B = Bs[model_cp.arch_type]
         line_center = line_centers[model_cp.arch_type]
         A = As[model_cp.arch_type]
@@ -462,7 +471,7 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True) 
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
-                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_line,eigenvec, False)
+                error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
                 angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
                 dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_top_view_move+error_side_view_move
         teeth_err_target_angle[model_cp.arch_type] = angle_error

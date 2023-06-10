@@ -1,6 +1,7 @@
 
 from constant.enums import LandmarkType, ToothType
 from utility.calculation import FaceTypeConversion, convert_to_2d, find_closest_point_between_a_point_and_a_line, find_distance_between_two_points, find_new_point_in_a_line_with_delta_distance, get_angle_from_2_2d_lines
+from utility.calculation import find_closest_point_between_a_point_and_a_3pts_plane
 from utility.tooth_label import get_tooth_labels
 import numpy as np
 import math
@@ -339,7 +340,44 @@ def calculate_buccallabial_to_bonwill_line(tooth, spl, eigvector, is_upper, A, d
     dst = find_distance_between_two_points(buccal_labial2d,closest_buccallabial_to_spl2D)
     return abs(dst)*DISTANCE_BUCCALLABIAL_BONWILL_ERROR_WEIGHT
 
-def calculate_cusp_to_flat_level_line(tooth, spl, eigvector, is_upper):
+def calculate_cusp_to_flat_level_line(tooth, trianglemesh, eigvector, is_upper):
+    cusp_outs=[]
+    cusp_ins=[]
+    tooth_labels = get_tooth_labels()
+    if tooth.label in tooth_labels['posterior']:
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value] is not None:
+            cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value])
+
+        if tooth.landmark_pt[LandmarkType.CUSP_IN.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_IN_MESIAL.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN_MESIAL.value])
+        if tooth.landmark_pt[LandmarkType.CUSP_IN_DISTAL.value] is not None:
+            cusp_ins.append(tooth.landmark_pt[LandmarkType.CUSP_IN_DISTAL.value])
+
+    if tooth.label in tooth_labels['canine'] or tooth.label in tooth_labels['anterior']:
+        cusp_outs.append(tooth.landmark_pt[LandmarkType.CUSP.value])
+
+    dst = 0
+    for cusp in cusp_outs:
+        closest_cusp_to_spl = find_closest_point_between_a_point_and_a_3pts_plane(cusp, np.array(trianglemesh.points()))
+        cusp2d = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [cusp])[0]
+        closest_cusp_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [closest_cusp_to_spl])[0]
+        dst += find_distance_between_two_points(cusp2d, closest_cusp_to_spl2D)
+    for cusp in cusp_ins:
+        closest_cusp_to_spl = find_closest_point_between_a_point_and_a_3pts_plane(cusp, np.array(trianglemesh.points()))
+        cusp2d = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [cusp])[0]
+        closest_cusp_to_spl2D = convert_to_2d(FaceTypeConversion.FRONT.value, eigvector, [closest_cusp_to_spl])[0]
+        dst += find_distance_between_two_points(cusp2d, closest_cusp_to_spl2D)
+    return abs(dst) * DISTANCE_CUSP_FLAT_LEVEL_ERROR_WEIGHT
+
+def calculate_cusp_to_flat_level_line_DEPRECATED2(tooth, spl, eigvector, is_upper):
     spl_out = spl[0]
     spl_in = spl[1]
     cusp_outs=[]

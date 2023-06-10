@@ -25,7 +25,7 @@ from controller.vedo_plotter_controller import remove_not_arch
 from utility.arch import Arch
 from utility.names import convert_arch_val_to_name
 # from view.components.summary_section_group import PontArchSection
-from vedo import Line, Point
+from vedo import Line, Point, Mesh
 from utility.splineku import SplineKu
 from view.components.line import QHSeperationLine
 
@@ -424,10 +424,11 @@ def draw_spline_flat(self):
         pts = coords[a]
         print(pts)
         c = 'blue4'
-        line = SplineKu(pts, degree=2, smooth=0, res=600)
-        line.ps(8)
-        line.c(c)
-        self.model_plot.add(line)
+        # line = SplineKu(pts, degree=2, smooth=0, res=600)
+        # line.ps(8)
+        # line.c(c)
+        m = Mesh([pts,[[1,2,3]]])
+        self.model_plot.add(m)
         # for pt in pts:
         #     self.model_plot.add(Point(pt))
         self.model_plot.render()

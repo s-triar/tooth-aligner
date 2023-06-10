@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="bef update weight" />
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="add bonwill belt 2">
+      <change afterPath="$PROJECT_DIR$/coba_titik_bonwill_tujuan2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/summary_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/summary_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/splineku.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/splineku.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/toolbar_right/panel_summary.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_right/panel_summary.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,8 +69,8 @@
       <recent name="D:\Code\tooth-aligner\landmark_training" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.de_landmark">
-    <configuration name="de_landmark" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.coba_titik_bonwill_tujuan2">
+    <configuration name="coba_titik_bonwill_tujuan2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tooth-aligner" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -70,11 +78,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/de_landmark.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coba_titik_bonwill_tujuan2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -169,11 +177,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.coba_titik_bonwill_tujuan2" />
         <item itemvalue="Python.param_landmark_position" />
         <item itemvalue="Python.param_landmark_area (1)" />
         <item itemvalue="Python.landmark_helper" />
         <item itemvalue="Python.eval_de_landmark" />
-        <item itemvalue="Python.de_landmark" />
       </list>
     </recent_temporary>
   </component>
