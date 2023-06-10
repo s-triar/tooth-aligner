@@ -228,10 +228,16 @@ def get_bonwill(u, model):
     ]
     return msh, [AA,GG], B
 
-l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
-u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
-path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
-path_ld_l = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_LOWER__step_0.csv'
+# l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
+# u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj UpperJawScan _d_predicted_refined.vtp')
+# path_ld_u = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_UPPER__step_0.csv'
+# path_ld_l = 'D:\\NyeMan\\KULIAH S2\\Thesis\\tooth-aligner\\saved_landmark\\Gerry Sihaj\\step_0\\Gerry Sihaj_landmark_LOWER__step_0.csv'
+
+u = load('D:\\tesis\\fix\\12. KEC\\KEC_UPPER.vtp')
+l = load('D:\\tesis\\fix\\12. KEC\\KEC_LOWER.vtp')
+path_ld_u = 'D:\\tesis\\fix\\12. KEC\\KEC_UPPER.csv'
+path_ld_l = 'D:\\tesis\\fix\\12. KEC\\KEC_LOWER.csv'
+
 model = Arch(ArchType.UPPER.value,u)
 load_ld(model,path_ld_u,ArchType.UPPER.value)
 model_lw = Arch(ArchType.LOWER.value,l)

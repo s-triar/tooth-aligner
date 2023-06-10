@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="fix change to optimization with belt">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="fix change to optimization with belt3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utility/tooth.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/tooth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coba_bontwill.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bontwill.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,14 +42,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "pisah__belt/main__quarternion",
-    "last_opened_file_path": "D:/Code/tooth-aligner/landmark_training/w_manual"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;pisah__belt/main__quarternion&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Code/tooth-aligner/landmark_training/w_manual&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Code\tooth-aligner\landmark_training\w_manual" />
@@ -67,7 +65,49 @@
       <recent name="D:\Code\tooth-aligner\landmark_training" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.coba_titik_bonwill_tujuan2">
+  <component name="RunManager" selected="Python.coba_bonwill_hawley_studi_model_simulation_standalone">
+    <configuration name="coba_bontwill" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coba_bontwill.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="coba_bonwill_hawley_studi_model_simulation_standalone" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="coba_titik_bonwill_tujuan2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tooth-aligner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -81,48 +121,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coba_titik_bonwill_tujuan2.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="eval_de_landmark" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="tooth-aligner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/eval_de_landmark.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="landmark_helper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="tooth-aligner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/landmark_helper.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -175,11 +173,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.coba_bonwill_hawley_studi_model_simulation_standalone" />
+        <item itemvalue="Python.coba_bontwill" />
         <item itemvalue="Python.coba_titik_bonwill_tujuan2" />
         <item itemvalue="Python.param_landmark_position" />
         <item itemvalue="Python.param_landmark_area (1)" />
-        <item itemvalue="Python.landmark_helper" />
-        <item itemvalue="Python.eval_de_landmark" />
       </list>
     </recent_temporary>
   </component>
@@ -191,13 +189,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00003" summary="add trying rotate">
-      <created>1683682189487</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1683682189487</updated>
     </task>
     <task id="LOCAL-00004" summary="add trying rotate">
       <created>1683682607411</created>
@@ -535,7 +526,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686373794795</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="fix change to optimization with belt3">
+      <created>1686376670472</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1686376670472</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -577,7 +575,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="read parameter landmark" />
     <MESSAGE value="eval ld" />
     <MESSAGE value="eval ld no candidate" />
     <MESSAGE value="change flat target" />
@@ -602,6 +599,7 @@
     <MESSAGE value="update spl closest point and flat2" />
     <MESSAGE value="chnage to optimization with belt" />
     <MESSAGE value="fix change to optimization with belt" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix change to optimization with belt" />
+    <MESSAGE value="fix change to optimization with belt3" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix change to optimization with belt3" />
   </component>
 </project>

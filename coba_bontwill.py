@@ -19,11 +19,24 @@ from utility.calculation import (
     find_closest_point_between_a_point_and_a_line,
     getToothLabelSeberang,
 )
-import math
+import pandas as pd
+
+def load_ld(model, filename, typearch):
+    df = pd.read_csv(filename, index_col=0)
+    print(df.head())
+
+    # index_in_models = Arch._get_index_arch_type(typearch)
+    arch = model
+    for index, row in df.iterrows():
+        tooth = arch.teeth[row['label']]
+        tooth.landmark_pt[row['landmark']] = np.array([row['x'], row['y'], row['z']])
 
 # l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo LowerJawScan _d_predicted_refined.vtp')
-u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo UpperJawScan _d_predicted_refined.vtp')
+# u = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo UpperJawScan _d_predicted_refined.vtp')
+u = load('D:\\tesis\\fix\\12. KEC\\KEC_UPPER.vtp')
+path_ld_u = 'D:\\tesis\\fix\\12. KEC\\KEC_UPPER.csv'
 model = Arch(ArchType.UPPER.value,u)
+load_ld(model, path_ld_u, ArchType.UPPER.value)
 
 centermeshPT=Point(u.centerOfMass(),c='black',r=20)
 
