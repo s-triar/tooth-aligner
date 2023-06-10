@@ -74,7 +74,7 @@ def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_ve
     candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
     vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
     # parameter = landmark_definition[arch_type][tooth_type][landmark_type]
-    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+    normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
 
@@ -155,56 +155,67 @@ def get_landmark_name(ld_val):
         if ld.value == ld_val:
             return ld.name
 
+
+
 def start_de_landmark():
     paths_upper=[
+        # "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\1 MNF\\MNF_UPPER.vtp",
+        # "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\4. SN\\SN._UPPER.vtp",
+        # "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\7. GSF\\GSF_UPPER.vtp",
+        # "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_UPPER.vtp",
+        
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\1 MNF\\MNF_UPPER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\4. SN\\SN._UPPER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\7. GSF\\GSF_UPPER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_UPPER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\24. GS\\Gerry Sihaj_UPPER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\18. WPP\\WPP_UPPER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\10. CPL\\CPL_UPPER.vtp",
     ]
     paths_ld_upper = [
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\1 MNF\\MNF_UPPER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\4. SN\\SN._UPPER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\7. GSF\\GSF_UPPER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_UPPER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\24. GS\\Gerry Sihaj_UPPER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\18. WPP\\WPP_UPPER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_UPPER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\10. CPL\\CPL_UPPER.csv",
     ]
     paths_lower = [
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\1 MNF\\MNF_LOWER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\4. SN\\SN._LOWER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\7. GSF\\GSF_LOWER.vtp",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_LOWER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\24. GS\\Gerry Sihaj_LOWER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\18. WPP\\WPP_LOWER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.vtp",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\10. CPL\\CPL_LOWER.vtp",
     ]
     paths_ld_lower = [
         "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\1 MNF\\MNF_LOWER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\4. SN\\SN._LOWER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\7. GSF\\GSF_LOWER.csv",
-        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\8. UR\\UR_LOWER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\24. GS\\Gerry Sihaj_LOWER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\18. WPP\\WPP_LOWER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\21. MRAI\\MRAI_LOWER.csv",
+        "D:\\NyeMan\\KULIAH S2\\Thesis\\3Shape new-20220223T024758Z-001\\fix\\10. CPL\\CPL_LOWER.csv",
     ]
 
-    paths_upper = [
-        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.vtp",
-        "D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
-        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
-        "D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
-    ]
-    paths_ld_upper = [
-        "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.csv",
-        "D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
-        "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
-        "D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
-    ]
-    paths_lower = [
-        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.vtp",
-        "D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
-        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
-        "D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
-    ]
-    paths_ld_lower = [
-        "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.csv",
-        "D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
-        "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
-        "D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
-    ]
+    # paths_upper = [
+    #     "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.vtp",
+    #     "D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
+    #     "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
+    #     "D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
+    # ]
+    # paths_ld_upper = [
+    #     "D:\\tesis\\fix\\1 MNF\\MNF_UPPER.csv",
+    #     "D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
+    #     "D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
+    #     "D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
+    # ]
+    # paths_lower = [
+    #     "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.vtp",
+    #     "D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
+    #     "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
+    #     "D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
+    # ]
+    # paths_ld_lower = [
+    #     "D:\\tesis\\fix\\1 MNF\\MNF_LOWER.csv",
+    #     "D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
+    #     "D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
+    #     "D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
+    # ]
 
     paths_upper.extend(paths_lower)
     paths_vtp = paths_upper[:]
@@ -261,9 +272,9 @@ def start_de_landmark():
                         finish_time = (seconds_finish-seconds_start)
                         print("waktu de opt", finish_time, "detik")
                         # fname = 'ld_saved_de_pop1000_iter10_f{0}_cr{1}_no_candidate_v2.csv'.format(F, cr)
-                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v3_no_bound.csv'.format(pop_size, iter)
+                        # fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v3_no_bound.csv'.format(pop_size, iter)
                         # fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_no_candidate_v2.csv'.format(pop_size, iter)
-                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_v2.csv'.format(pop_size, iter)
+                        fname = 'ld_saved_de_pop{0}_iter{1}_f05_cr07_v2_new_data_nc.csv'.format(pop_size, iter)
                         f = open(fname, 'a+', encoding='utf-8', newline='')
                         writer = csv.writer(f)
                         coor = '|'.join([str(c) for c in solution[0]])
