@@ -285,11 +285,15 @@ def get_closest_to_mesial_distal(teeth,spl, B):
         cls_distal.append(ln_distal)
     return cls_mesial, cls_distal
 
-def get_spl_pts_through_sphere(sphere, spl, A):
+def get_spl_pts_through_sphere(sphere, spl, A,):
     # A = spl.getHalwayPoint()
+
     temp_spl = spl.clone().extrude(1).triangulate()
     # print("temp_spl")
     inter = (sphere.intersectWith(temp_spl)).points()
+
+
+
     # print("inter")
     inter_dst=[]
     cls_pts = []
@@ -298,8 +302,15 @@ def get_spl_pts_through_sphere(sphere, spl, A):
         cls_pts.append(cp)
         dis = find_distance_between_two_points(p,cp)
         inter_dst.append(dis)
+
+    # plt = Plotter()
+    # plt.add(spl)
+    # plt.add(Points(inter))
+    # plt.add(Points(cls_pts, c='red',r=16))
+    # plt.add(Points(spl.points(), c='green'))
+    # plt.show()
     # print("inter_dst", inter_dst)
-    sk = KMeans(n_clusters=2,max_iter=20)
+    sk = KMeans(n_clusters=2,max_iter=80)
     sk = sk.fit(inter)
     # print("sk")
     label0dist=9999999
@@ -320,7 +331,10 @@ def get_spl_pts_through_sphere(sphere, spl, A):
     else:
         return [label1pt,label0pt]
     # return mesial distal
-
+global OJK
+OJK = None
+global OKK
+OKK = None
 def get_destination_points(arch, spl, A, eig_right): #double sphere
     teeth = arch.teeth
     dests = {}
@@ -383,12 +397,27 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             #     plt.add(temp_spl, sph)
             #     plt.show()
             dst = get_spl_pts_through_sphere(sph, spl, A)
+            # if label == 14:
+            #     global OJK, OKK
+            #     OJK = dis_mid[:]
+            #     OKK = dst[:]
+            #     print('OJK', OJK)
+            #     print('DST', dst)
             # print("dst")
 
             dst.append(dis_mid)
             # print("dst append")
 
+
             a_end=dst[1][:]
+            # if label == 13:
+            #     print(dst)
+            # if label == 14:
+            #     # global OJK, OKK
+            #     OJK = dis_mid[:]
+            #     OKK = dst[:]
+            #     print('OJK', OJK)
+            #     print('DST', dst)
             # print("a_end")
             dests[label]= dst
             # print("end2", label)
@@ -398,68 +427,7 @@ def get_destination_points(arch, spl, A, eig_right): #double sphere
             #     a_strt=yy[1][:]
     return dests
 
-def get_destination_points_depre(arch, spl, A, eig_right): #double sphere
-    print(spl.points())
-    teeth = arch.teeth
-    dests = {}
-    labels_strt = [7,6,5,4,3,2,1]
-    labels_end =  [8,9,10,11,12,13,14]
-    a_strt = A[:]
-    a_end = A[:]
-    eig_right_inv = (eig_right[:])*-1
-    for label in labels_strt:
-        if teeth[label]:
-            tooth = teeth[label]
-            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
-            sph = Sphere(a_strt,r=rf/2)
-            dst = get_spl_pts_through_sphere(sph, spl, A)
-            dis_mid = dst[1]
-            if(label == 7):
-                eig_l_m = np.dot(eig_right_inv, dst[0])
-                eig_l_d = np.dot(eig_right_inv, dst[1])
-                if(eig_l_m<eig_l_d):
-                    dis_mid =dst[0]
-                else:
-                    dis_mid =dst[1]
-            a_strt=dis_mid[:]
-            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
-            sph = Sphere(a_strt,r=rf/2)
-            dst = get_spl_pts_through_sphere(sph, spl, A)
-            dst.append(dis_mid)
-            a_strt=dst[1][:]
-            dests[label]= dst
-            # sph = Sphere(a_strt,r=0.5)
-            # yy = get_spl_pts_through_sphere(sph, spl, A)
-            # a_strt=yy[1][:]
-    for label in labels_end:
-        if teeth[label]:
-            tooth = teeth[label]
-            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
-            sph = Sphere(a_end,r=rf/2)
-            dst = get_spl_pts_through_sphere(sph, spl, A)
-            dis_mid = dst[1]
-            if(label == 8):
-                eig_r_m = np.dot(eig_right, dst[0])
-                eig_r_d = np.dot(eig_right, dst[1])
-                if(eig_r_m<eig_r_d):
-                    dis_mid =dst[0]
-                else:
-                    dis_mid =dst[1]
-            a_end=dis_mid[:]
-            rf = find_distance_between_two_points(tooth.landmark_pt[LandmarkType.MESIAL.value], tooth.landmark_pt[LandmarkType.DISTAL.value])
-            sph = Sphere(a_end,r=rf/2)
-            dst = get_spl_pts_through_sphere(sph, spl, A)
-            dst.append(dis_mid)
-            a_end=dst[1][:]
-            dests[label]= dst
-            # sph = Sphere(a_strt,r=0.5)
-            # yy = get_spl_pts_through_sphere(sph, spl, A)
-            # a_strt=yy[1][:]
-    print(dests)
-    return dests
-
 def calculate_flat_plane_points_belt(model, dst_pts):
-    mesh = model.mesh
     teeth = model.teeth
     arch_type = model.arch_type
     if arch_type == ArchType.UPPER.value:
@@ -548,121 +516,6 @@ def calculate_flat_plane_points_belt(model, dst_pts):
                 teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
             ], axis=0),
         ])
-
-    if arch_type == ArchType.UPPER.value:
-        pts_cusps_OUT = np.array([
-        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-        teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-
-        teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-
-        teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
-        teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
-        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
-        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-        teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-        teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
-
-        teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-        teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-
-        teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-        teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-    ])
-    if arch_type == ArchType.LOWER.value:
-        pts_cusps_OUT = np.array([
-            teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-            teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-            teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-            teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
-            teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-
-            teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-            teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-
-            teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
-            teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
-            teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
-            teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-            teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-            teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
-
-            teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-            teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-
-            teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-            teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
-            teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-            teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-            teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-        ])
-    if arch_type == ArchType.UPPER.value:
-        pts_cusps_IN = np.array([
-        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-        teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-        teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-
-        teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN.value],
-        teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
-
-        # teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
-        # teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
-        # teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-        # teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-
-        teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
-        teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN.value],
-
-        teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-        teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-    ])
-    if arch_type == ArchType.LOWER.value:
-        pts_cusps_IN = np.array([
-            teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-            teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-            teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-            teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-
-            teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-            teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-            teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
-
-            # teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
-            # teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
-            # teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-            # teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-
-            teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
-            teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-            teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-            teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-            teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-            teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-            teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-        ])
-
-    # new_coords_OUT = []
-    # for pt in pts_cusps_OUT:
-    #     # new_coord = abs(np.dot(pt - pts[1],n))
-    #     new_coord = find_closest_point_between_a_point_and_a_3pts_plane(pt, pts)
-    #     new_coords_OUT.append(new_coord)
-    # new_coords_IN = []
-    # for pt in pts_cusps_IN:
-    #     # new_coord = abs(np.dot(pt - pts[1],n))
-    #     new_coord = find_closest_point_between_a_point_and_a_3pts_plane(pt, pts)
-    #     new_coords_IN.append(new_coord)
-    # coords[arch_type] = [new_coords_OUT, new_coords_IN]
     res = {}
 
     for pt in dst_pts:
@@ -671,10 +524,32 @@ def calculate_flat_plane_points_belt(model, dst_pts):
         temp.append(new_coord)
         new_coord = find_closest_point_between_a_point_and_a_3pts_plane(dst_pts[pt][1], pts)
         temp.append(new_coord)
+        new_coord = find_closest_point_between_a_point_and_a_3pts_plane(dst_pts[pt][2], pts)
+        temp.append(new_coord)
         res[pt]=temp
     return  res
 
-
+def find_neighborhood_point(mesh, pt, deep=3):
+    if deep<0:
+        raise Exception("deep must be min 1")
+    g = np.linalg.norm(mesh.points()-pt, axis=1)
+    ind = np.argmin(g)
+    cells = np.array(mesh.cells())
+    t = np.where(cells==ind)
+    hasil = np.unique(cells[t[0]])
+    if deep <1:
+        return hasil
+    already_check = [ind]
+    for i in range(deep-1):
+        search = np.delete(hasil, np.where(np.isin(hasil, already_check)))
+        temp = np.where(np.isin(cells, search))
+        htemp = np.unique(cells[temp[0]])
+        hasil = np.concatenate((hasil, htemp), axis=0)
+        hasil = np.unique(hasil)
+        already_check.extend(search)
+    bound = mesh.boundaries(returnPointIds=True)
+    hasil = np.delete(hasil, np.where(np.isin(hasil, bound)))
+    return mesh.points()[hasil]
 
             
 # l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\gak bisa karena gigi kurang\\Sulaiman Triarjo LowerJawScan _d_predicted_refined.vtp')
@@ -684,6 +559,11 @@ u = load('D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.vtp')
 u4 = load('D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.vtp')
 path_ld_u = 'D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.csv'
 path_ld_l = 'D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.csv'
+
+u = load('D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp')
+u4 = load('D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp')
+path_ld_u = 'D:\\tesis\\fix\\4. SN\\SN._LOWER.csv'
+path_ld_l = 'D:\\tesis\\fix\\4. SN\\SN._LOWER.csv'
 
 model = Arch(ArchType.UPPER.value,u)
 model4 = Arch(ArchType.LOWER.value,u4)
@@ -760,18 +640,73 @@ new_coords_in = coords[model.arch_type][1]
 
 mm = Mesh([pts, [[0,1,2]]],c='red')
 
+def is_point_in_triangle_3d(point, triangle):
+    """
+    Check if a point is inside a triangle in 3D space.
+
+    Args:
+        point: A tuple or list containing the coordinates of the point in (x, y, z) format.
+        triangle: A list of three tuples or lists, each representing the coordinates of a vertex of the triangle.
+
+    Returns:
+        True if the point lies inside the triangle, False otherwise.
+    """
+    p = np.array(point)
+    a = np.array(triangle[0])
+    b = np.array(triangle[1])
+    c = np.array(triangle[2])
+
+    # Calculate the vectors from vertex A to the other two vertices
+    v0 = c - a
+    v1 = b - a
+    v2 = p - a
+
+    # Calculate dot products
+    dot00 = np.dot(v0, v0)
+    dot01 = np.dot(v0, v1)
+    dot02 = np.dot(v0, v2)
+    dot11 = np.dot(v1, v1)
+    dot12 = np.dot(v1, v2)
+
+    # Calculate barycentric coordinates
+    inv_denom = 1.0 / (dot00 * dot11 - dot01 * dot01)
+    u = (dot11 * dot02 - dot01 * dot12) * inv_denom
+    v = (dot00 * dot12 - dot01 * dot02) * inv_denom
+
+    # Check if the barycentric coordinates satisfy the condition for the point to lie inside the triangle
+    if (u >= 0) and (v >= 0) and (u + v <= 1):
+        return True
+    else:
+        return False
+
 trgt_pts_out = Points(new_coords_out, c='orange', r=12)
 trgt_pts_in = Points(new_coords_in, c='yellow', r=12)
 spl_out = SplineKu(trgt_pts_out)
 spl_in = SplineKu(trgt_pts_in)
+
+
+tri = [
+    [0,0,0],
+    [-3,6,8],
+    [3,-1,-1]
+]
+
+trip = [0.2,4,2]
+gh = find_closest_point_between_a_point_and_a_3pts_plane(trip,np.array(tri))
+meshtri = Mesh([tri,[[0,1,2]]])
+opopop = is_point_in_triangle_3d(gh,meshtri.points())
+print("in tri", opopop)
+
+
 # ff= Point(ptd.points()[0],c="black",r=20)
 # ln.rotate(45, axis=ln.points()[0], point=ln.points()[0])
 # ln.c("yellow").lw(10)   
 # lp = Line(-ln.points()[0]+ln.points()[0],ln.points()[0]+ln.points()[0], c="orange",lw=10)
 eigdraw= draw_eigen_vec(model.eigen_vec, model.mesh.centerOfMass())
-plt = Plotter(N=4)
+plt = Plotter(N=5, axes=1)
 plt.show(model.mesh, spl, cls_mesial, cls_distal, at=0)
 plt.show(model4.mesh, spl, cls_mesial4, cls_distal4, at=1)
 plt.show( model.mesh,spl,destinations_line,eigdraw, at=2)
 plt.show( model.mesh,eigdraw, mm, trgt_pts_out, trgt_pts_in, spl_out, spl_in, at=3)
+plt.show(Point(trip,c='red',r=16),meshtri, Points(tri), Point(gh, c='green', r=15), at=4)
 plt.interactive()

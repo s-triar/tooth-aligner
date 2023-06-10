@@ -4,7 +4,7 @@ from vedo import Line, Points
 import numpy as np
 import vedo
 from scipy.interpolate import splprep, splev
-from scipy.optimize import fmin
+from scipy.optimize import fmin, minimize
 from utility.calculation import find_closest_point_between_a_point_and_a_line, find_distance_between_two_points
 class SplineKu(Line):
     """
@@ -109,11 +109,13 @@ class SplineKu(Line):
         return (self.temp_distance_to_point**2).sum()
     
     def closestPoint(self,point, return_u=False):
-        self.temp_distance_to_point=0
+        self.temp_distance_to_point=1000
         self.point_target=np.array(point).reshape(3,1)
         # self.point_target=point
-        closestu = fmin(self.calculateToPoint_, np.mean(point), disp=False)
+        closestu = fmin(self.calculateToPoint_, np.mean(point*10), disp=False)
+        # closestu = minimize(self.calculateToPoint_, np.mean(point), method='Nelder-Mead', options={'disp':False})
         # print(closestu,"closestu")
+        # print(np.mean(point-10), np.mean(point*10), np.mean(point))
         closest = np.array(splev(closestu, self.tckp)).reshape(3)
         
         if return_u==True:
@@ -217,4 +219,3 @@ if __name__ == '__main__':
     ptg = Point(hitp)
     ptgspl = Point(hitpspl).c("yellow")
     plt.show(g,l,pp, ptg,ptgspl)
-    
