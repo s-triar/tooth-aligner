@@ -6,7 +6,7 @@ import os
 from constant.enums import ToothType, LandmarkType
 from vedo import vtk2numpy, Mesh, Point
 from utility import landmarking_lib as ll
-from app_tool import find_neighborhood_point_index
+from utility.app_tool import find_neighborhood_point_index
 class Tooth():    
 
     def __init__(self, 
