@@ -48,10 +48,10 @@ def get_closest_possible_rotations(tooth,spl,B, line_center, eigenvec,is_upper,i
                 # tooth_clone.update_landmark_rotation("roll", vz, tx_center)
                 tooth_clone.update_landmark_rotation_quarternion("roll", vz, tx_center, eigenvec[2])
                 
-                # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone, A, destination_belt[1])
+                error_top_viewold = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone, A, destination_belt[1])
                 error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
                 error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone, A, trianglemesh)
-                error_total = error_top_view+error_side_view
+                error_total = error_top_view+error_side_view+error_top_viewold
                 if(error > error_total):
                     error = error_total
                     rot_x=vx
@@ -141,14 +141,14 @@ def get_closest_possible_rotations_and_movements(tooth,spl, trianglemesh,B, line
                 # tooth_clone.points(tooth_clone.points()+val_direction)
                 tooth_clone.update_landmark_moving(val_direction)
                 
-                # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone,A, destination_pts)
+                error_top_viewold = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone,A, destination_belt[1])
                 error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
                 error_side_view = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(tooth_clone, spl, eigenvec, is_upper, is_standalone,A, trianglemesh)
                 
                 # error_top_view_move = calculate_buccallabial_to_bonwill_line(tooth_clone, spl,eigenvec, is_upper, A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(tooth_clone, trianglemesh,eigenvec, is_upper)
                 
-                error_total = error_top_view+error_side_view+error_side_view_move
+                error_total = error_top_view+error_side_view+error_side_view_move+error_top_viewold
                 
                 if(error > error_total):
                     error = error_total

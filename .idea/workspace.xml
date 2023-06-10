@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="fix change to optimization with belt3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coba_bontwill.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bontwill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="pisah/main_quarternion" />
+        <entry key="$PROJECT_DIR$" value="gigi_pisah/main_quarternion" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,14 +42,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;pisah__belt/main__quarternion&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Code/tooth-aligner/landmark_training/w_manual&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "pisah__belt__gabungan/main__quarternion",
+    "last_opened_file_path": "D:/Code/tooth-aligner/landmark_training/w_manual"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Code\tooth-aligner\landmark_training\w_manual" />
@@ -562,7 +562,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="branch/landmark_training" />
+                        <option value="pisah_belt_gabungan/main_quarternion" />
                       </list>
                     </value>
                   </entry>

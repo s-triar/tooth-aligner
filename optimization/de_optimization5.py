@@ -167,7 +167,7 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
                 
-                # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts)
+                error_top_viewold = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts)
                 error_top_view, error_top_view_move = calculate_tooth_balance_to_bonwill_belt(teeth[tooth_type],
                                                                                                    destination_belt,
                                                                                                    for_cr=True)
@@ -175,7 +175,9 @@ def minimize_function_using_delta_current_to_the_first_studi_model_calculation2(
                 
                 # error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
-                
+
+
+                tot_error_top_view += error_top_viewold ** 2
                 tot_error_top_view+=error_top_view**2
                 tot_error_side_view+=error_side_view**2
                 
@@ -477,15 +479,15 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
         dst_error={}
         for tooth_type in teeth:
             if tooth_type != ToothType.GINGIVA.value and tooth_type != ToothType.DELETED.value:
-                # error_top_view_angle, error_top_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True)
+                error_top_view_angleold, error_top_view_dstold = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(teeth[tooth_type], B,line_center,summary_line,eigenvec, False, True,  A, destination_pts,True)
                 error_top_view_angle, error_top_view_dst = calculate_tooth_balance_to_bonwill_belt(teeth[tooth_type],
                                                                                                    destination_belt,
                                                                                                    for_cr=True)
                 error_side_view_angle, error_side_view_dst = calculate_mesiodistal_balance_to_bonwill_line_from_side_view(teeth[tooth_type], summary_line, eigenvec, False, True,  A, flat_mesh,True)
                 # error_top_view_move = calculate_buccallabial_to_bonwill_line(teeth[tooth_type], summary_line,eigenvec, False,  A, destination_pts)
                 error_side_view_move = calculate_cusp_to_flat_level_line(teeth[tooth_type], flat_mesh,eigenvec, False)
-                angle_error[tooth_type] = error_top_view_angle+error_side_view_angle
-                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_side_view_move
+                angle_error[tooth_type] = error_top_view_angle+error_top_view_angleold+error_side_view_angle
+                dst_error[tooth_type] = error_top_view_dst+error_side_view_dst+error_side_view_move+error_top_view_dstold
         teeth_err_target_angle[model_cp.arch_type] = angle_error
         teeth_err_target_dst[model_cp.arch_type] = dst_error
     ArchCopy._clear()
