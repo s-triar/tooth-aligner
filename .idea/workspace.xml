@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="fix change to optimization with belt3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coba_bontwill.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bontwill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

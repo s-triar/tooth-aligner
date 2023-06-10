@@ -46,7 +46,7 @@ def create_optimization_menu(self, parent_layout):
 def is_arch_need_continue(last_three_errors):
     if len(last_three_errors) < 3:
         return True
-    check_decrease = math.floor(last_three_errors[0]) - math.floor(last_three_errors[2]) # harus > 1 untuk lanjut
+    check_decrease = (last_three_errors[0]) - math.floor(last_three_errors[2]) # harus > 1 untuk lanjut
     # check_increase = last_three_errors[0] - last_three_errors[2] # harus < -1 untuk lanjut
     if check_decrease <= 1:
         return False
