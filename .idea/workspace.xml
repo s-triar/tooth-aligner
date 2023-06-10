@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="fix change to optimization with belt3">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimization/de_optimization5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/de_optimization5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="add old top vieew">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,13 +187,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00004" summary="add trying rotate">
-      <created>1683682607411</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1683682607411</updated>
     </task>
     <task id="LOCAL-00005" summary="update landmark_lib">
       <created>1683740611074</created>
@@ -533,7 +524,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686376670472</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="add old top vieew">
+      <created>1686394815544</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1686394815544</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -575,7 +573,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="eval ld" />
     <MESSAGE value="eval ld no candidate" />
     <MESSAGE value="change flat target" />
     <MESSAGE value="change flat target no incisors in ins" />
@@ -600,6 +597,7 @@
     <MESSAGE value="chnage to optimization with belt" />
     <MESSAGE value="fix change to optimization with belt" />
     <MESSAGE value="fix change to optimization with belt3" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix change to optimization with belt3" />
+    <MESSAGE value="add old top vieew" />
+    <option name="LAST_COMMIT_MESSAGE" value="add old top vieew" />
   </component>
 </project>
