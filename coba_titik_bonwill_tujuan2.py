@@ -61,38 +61,38 @@ def calculate_flat_plane_points(model):
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN.value],
-                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                #
+                # teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
             ], axis=0),
             np.mean([
-                teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
                 teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
                 teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
             ], axis=0),
             np.mean([
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN.value],
-                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                #
+                # teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
             ], axis=0),
         ])
     if i.value == ArchType.LOWER.value:
@@ -102,42 +102,42 @@ def calculate_flat_plane_points(model):
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
                 teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.MOLAR_UL6_LR6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                #
+                # teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                # teeth[ToothType.PREMOLAR_UL5_LR5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UL4_LR4.value].landmark_pt[LandmarkType.CUSP_IN.value],
             ], axis=0),
             np.mean([
-                teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.CANINE_UL3_LR3.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.INCISOR_UL2_LR2.value].landmark_pt[LandmarkType.CUSP.value],
                 teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
                 teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
-                teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.INCISOR_UR2_LL2.value].landmark_pt[LandmarkType.CUSP.value],
+                # teeth[ToothType.CANINE_UR3_LL3.value].landmark_pt[LandmarkType.CUSP.value],
             ], axis=0),
             np.mean([
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
                 teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-
-                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
-                teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.MOLAR_UR6_LL6.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                #
+                # teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                # teeth[ToothType.PREMOLAR_UR5_LL5.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                # teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_OUT.value],
+                # teeth[ToothType.PREMOLAR_UR4_LL4.value].landmark_pt[LandmarkType.CUSP_IN.value],
             ], axis=0),
         ])
 
@@ -625,9 +625,9 @@ ptd = cls_distal[14]
 
 # sph.alpha(0.3)
 
-destinations_pts = get_destination_points(model4, spl, A, model4.right_left_vec)
+destinations_pts = get_destination_points(model, spl, A, model.right_left_vec)
 
-destinations_pts_belt, destinations_pts_belt_gum = calculate_flat_plane_points_belt(model4, destinations_pts)
+destinations_pts_belt, destinations_pts_belt_gum = calculate_flat_plane_points_belt(model, destinations_pts)
 
 destinations_line = []
 i = 0
@@ -684,7 +684,7 @@ pts, coords = calculate_flat_plane_points(model)
 new_coords_out = coords[model.arch_type][0]
 new_coords_in = coords[model.arch_type][1]
 
-mm = Mesh([pts, [[0, 1, 2]]], c='red')
+mm = Mesh([pts, [[0, 1, 2]]], c='red5').alpha(0.7)
 
 
 def is_point_in_triangle_3d(point, triangle):
@@ -746,13 +746,21 @@ print("in tri", opopop)
 
 hj = find_closest_point_between_a_point_and_a_line(trip, np.array([tri[1], tri[2]]))
 
+ttty = []
+for lbl in model.teeth:
+    if lbl != ToothType.DELETED.value and lbl != ToothType.GINGIVA.value:
+        pts = find_neighborhood_point(model.teeth[lbl].get_mesh(), model.teeth[lbl].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
+        ttty.extend(pts)
+
+
+
 # ff= Point(ptd.points()[0],c="black",r=20)
 # ln.rotate(45, axis=ln.points()[0], point=ln.points()[0])
 # ln.c("yellow").lw(10)
 # lp = Line(-ln.points()[0]+ln.points()[0],ln.points()[0]+ln.points()[0], c="orange",lw=10)
 eigdraw = draw_eigen_vec(model.orientatin_vec, model.mesh.centerOfMass())
 plt = Plotter(N=4, axes=1)
-plt.show(model.mesh, spl, cls_mesial, cls_distal, at=0)
+plt.show(model.mesh, Points(ttty), at=0)
 plt.show(model4.mesh, spl, cls_mesial4, cls_distal4, at=1)
 plt.show(model.mesh, spl, destinations_line, eigdraw, at=2)
 plt.show(model.mesh, eigdraw, mm, trgt_pts_out, trgt_pts_in, spl_out, spl_in, at=3)
