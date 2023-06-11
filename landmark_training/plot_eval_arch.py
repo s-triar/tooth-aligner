@@ -9,10 +9,11 @@ filenames=[
 
 # "hasil_evaluation_ld_based_on_arch_w_manual.csv"
 
-"popiter\\hasil_evaluation_ld_based_on_arch_popiter_with_candidate_v2.csv",
-"popiter\\hasil_evaluation_ld_based_on_arch_popiter_no_candidate_v2.csv",
-
-"wmanual\\hasil_evaluation_ld_based_on_arch_manual_w_with_v2.csv"
+# "popiter\\hasil_evaluation_ld_based_on_arch_popiter_with_candidate_v2.csv",
+# "popiter\\hasil_evaluation_ld_based_on_arch_popiter_no_candidate_v2.csv",
+#
+# "wmanual\\hasil_evaluation_ld_based_on_arch_manual_w_with_v2.csv"
+"hasil_evaluation_ld_based_on_arch_popiter_with_new_data.csv"
 ]
 # folder='popiter'
 # folder='f_cr'
@@ -63,8 +64,8 @@ def create_label_from_file(filename: str):
     if len(names) == 2 or len(names)==1:
         return names[-1]
     if "0." in filename:
-        return names[6]+" "+names[7]+("" if "no_candidate" not in filename else " NC")+("" if "v2" not in filename else " v2")
-    return names[3]+" "+names[4]+("" if "no_candidate" not in filename else " NC")+("" if "v2" not in filename else " v2")
+        return names[6]+" "+names[7]+("WC" if "nc" not in filename else " NC")+("" if "v2" not in filename else " v2")
+    return names[3]+" "+names[4]+("WC" if "nc" not in filename else " NC")+("" if "v2" not in filename else " v2")
 
 x_labels = [f"{create_label_from_file(c1)} - {c2}" for c1, c2 in zip(df_arch[:]['FILE'], df_arch[:]['Rahang'])]
 

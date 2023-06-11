@@ -10,16 +10,24 @@ import math
 
 from utility.calculation import find_distance_between_two_points
 
+# exception_path = [
+#     "1 MNF",
+#     "4. SN",
+#     "7. GSF",
+#     "8. UR"
+# ]
+
 exception_path = [
     "1 MNF",
-    "4. SN",
-    "7. GSF",
-    "8. UR"
+    "24. GS",
+    "21. MRAI",
+    "18. WPP",
+    "10. CPL",
 ]
 
 path_data_csv=[
-"D:\\tesis\\fix\\10. CPL\\CPL_LOWER.csv",
-"D:\\tesis\\fix\\10. CPL\\CPL_UPPER.csv",
+# "D:\\tesis\\fix\\10. CPL\\CPL_LOWER.csv",
+# "D:\\tesis\\fix\\10. CPL\\CPL_UPPER.csv",
 "D:\\tesis\\fix\\11. SS\\SS_LOWER.csv",
 "D:\\tesis\\fix\\11. SS\\SS_UPPER.csv",
 "D:\\tesis\\fix\\12. KEC\\KEC_LOWER.csv",
@@ -32,28 +40,34 @@ path_data_csv=[
 "D:\\tesis\\fix\\15. YS\\YS_landmark_UPPER.csv",
 "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.csv",
 "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.csv",
-"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
-"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
+# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.csv",
+# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.csv",
 "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.csv",
 "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.csv",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.csv",
 "D:\\tesis\\fix\\2. MJK\\MJK_UPPER.csv",
-"D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.csv",
-"D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.csv",
+# "D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.csv",
+# "D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.csv",
 "D:\\tesis\\fix\\22. NS\\NS_LOWER.csv",
 "D:\\tesis\\fix\\22. NS\\NS_UPPER.csv",
 "D:\\tesis\\fix\\23. AP\\AP_landmark_LOWER.csv",
 "D:\\tesis\\fix\\23. AP\\AP_landmark_UPPER.csv",
-"D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.csv",
-"D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.csv",
+# "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.csv",
+# "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.csv",
+"D:\\tesis\\fix\\4. SN\\SN._LOWER.csv",
+"D:\\tesis\\fix\\4. SN\\SN._UPPER.csv",
 "D:\\tesis\\fix\\5. BA\\BA_LOWER.csv",
 "D:\\tesis\\fix\\5. BA\\BA_UPPER.csv",
 "D:\\tesis\\fix\\6. NR\\NR_LOWER.csv",
 "D:\\tesis\\fix\\6. NR\\NR_UPPER.csv",
+"D:\\tesis\\fix\\7. GSF\\GSF_LOWER.csv",
+"D:\\tesis\\fix\\7. GSF\\GSF_UPPER.csv",
+"D:\\tesis\\fix\\8. UR\\UR_LOWER.csv",
+"D:\\tesis\\fix\\8. UR\\UR_UPPER.csv",
 ]
 path_data_vtp = [
-"D:\\tesis\\fix\\10. CPL\\CPL_LOWER.vtp",
-"D:\\tesis\\fix\\10. CPL\\CPL_UPPER.vtp",
+# "D:\\tesis\\fix\\10. CPL\\CPL_LOWER.vtp",
+# "D:\\tesis\\fix\\10. CPL\\CPL_UPPER.vtp",
 "D:\\tesis\\fix\\11. SS\\SS_LOWER.vtp",
 "D:\\tesis\\fix\\11. SS\\SS_UPPER.vtp",
 "D:\\tesis\\fix\\12. KEC\\KEC_LOWER.vtp",
@@ -66,24 +80,30 @@ path_data_vtp = [
 "D:\\tesis\\fix\\15. YS\\YS_UPPER_.vtp",
 "D:\\tesis\\fix\\16. FAW\\FAW_LOWER.vtp",
 "D:\\tesis\\fix\\16. FAW\\FAW_UPPER.vtp",
-"D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
-"D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
+# "D:\\tesis\\fix\\18. WPP\\WPP_LOWER.vtp",
+# "D:\\tesis\\fix\\18. WPP\\WPP_UPPER.vtp",
 "D:\\tesis\\fix\\19. Sam\\Sam_LOWER.vtp",
 "D:\\tesis\\fix\\19. Sam\\Sam_UPPER.vtp",
 "D:\\tesis\\fix\\2. MJK\\MJK_LOWER.vtp",
 "D:\\tesis\\fix\\2. MJK\\MJK_UPPER.vtp",
-"D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.vtp",
-"D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.vtp",
+# "D:\\tesis\\fix\\21. MRAI\\MRAI_LOWER.vtp",
+# "D:\\tesis\\fix\\21. MRAI\\MRAI_UPPER.vtp",
 "D:\\tesis\\fix\\22. NS\\NS_LOWER.vtp",
 "D:\\tesis\\fix\\22. NS\\NS_UPPER.vtp",
 "D:\\tesis\\fix\\23. AP\\AP_LOWER.vtp",
 "D:\\tesis\\fix\\23. AP\\AP_UPPER.vtp",
-"D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.vtp",
-"D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.vtp",
+# "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_LOWER.vtp",
+# "D:\\tesis\\fix\\24. GS\\Gerry Sihaj_UPPER.vtp",
+"D:\\tesis\\fix\\4. SN\\SN._LOWER.vtp",
+"D:\\tesis\\fix\\4. SN\\SN._UPPER.vtp",
 "D:\\tesis\\fix\\5. BA\\BA_LOWER.vtp",
 "D:\\tesis\\fix\\5. BA\\BA_UPPER.vtp",
 "D:\\tesis\\fix\\6. NR\\NR_LOWER.vtp",
 "D:\\tesis\\fix\\6. NR\\NR_UPPER.vtp",
+"D:\\tesis\\fix\\7. GSF\\GSF_LOWER.vtp",
+"D:\\tesis\\fix\\7. GSF\\GSF_UPPER.vtp",
+"D:\\tesis\\fix\\8. UR\\UR_LOWER.vtp",
+"D:\\tesis\\fix\\8. UR\\UR_UPPER.vtp",
 ]
 print(len(path_data_vtp), len(path_data_csv))
 ld_def = LandmarkDefinition().archs
@@ -147,10 +167,15 @@ def import_landmark_def(landmark_def_path):
             landmark_definition[arch][tooth][landmark] = coors
     return  landmark_definition
 
-def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth):
-    # candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
-    # vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
-    # print(arch_type, tooth_type, landmark_type)
+def get_landmark_point(parameter, arch_type, tooth_type, landmark_type, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth, vertices_tooth, is_wc):
+    if is_wc:
+        candidate_def = candidate_definition[arch_type][tooth_type][landmark_type]
+        vertices_tooth_new = get_candidate_points(candidate_def, eigen_vec_mesh, norm_center_tooth, norm_vertices_tooth)
+        # print(arch_type, tooth_type, landmark_type)
+        normalized_point = get_point_landmark_normalized(eigen_vec_mesh, vertices_tooth_new, parameter)
+        landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
+        return vertices_tooth[landmark_index]
+
     normalized_point = get_point_landmark_normalized(eigen_vec_mesh, norm_vertices_tooth, parameter)
     landmark_index = np.argwhere(np.isin(norm_vertices_tooth, normalized_point).all(axis=1))[0][0]
     return vertices_tooth[landmark_index]
@@ -186,7 +211,8 @@ def extract_mesh_tooth(mesh, label):
     return points_tooth, points_tooth_normalized, center_tooth_normalized
 
 # folder = 'f_cr'
-folder = 'popiter'
+# folder = 'popiter'
+folder = 'new_data'
 path_landmark_files =[
     # folder = f_cr
     # folder+"\\"+"ld_saved_de_pop1000_iter10_f0.5_cr0.3_no_candidate.csv",
@@ -201,13 +227,13 @@ path_landmark_files =[
 
 
     # folder = popiter
-    folder+"\\"+"ld_saved_de_iter10_pop1000_f05_cr07.csv",
-    folder+"\\"+"ld_saved_de_iter100_pop100_f05_cr07.csv",
-    folder+"\\"+"ld_saved_de_iter1000_pop10_f05_cr07.csv",
+    folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_v2_new_data_nc.csv",
+    folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_v2_new_data_nc.csv",
+    folder+"\\"+"ld_saved_de_pop1000_iter10_f05_cr07_v2_new_data_nc.csv",
 
-    folder+"\\"+"ld_saved_de_pop1000_iter10_f05_cr07_v2.csv",
-    folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_v2.csv",
-    folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_v2.csv",
+    folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_v2_new_data_wc.csv",
+    folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_v2_new_data_wc.csv",
+    folder+"\\"+"ld_saved_de_pop1000_iter10_f05_cr07_v2_new_data_wc.csv",
 
     # folder+"\\"+"ld_saved_de_pop10_iter1000_f05_cr07_no_candidate.csv",
     # folder+"\\"+"ld_saved_de_pop100_iter100_f05_cr07_no_candidate.csv",
@@ -266,7 +292,7 @@ for path_landmark_file in path_landmark_files:
                                                     eigen_vec_mesh,
                                                     norm_center_tooth,
                                                     norm_vertices_tooth,
-                                                    vertices_tooth)
+                                                    vertices_tooth, 'wc' in path_landmark_file)
                 eu_error = find_distance_between_two_points(landmark_point_gt,landmark_point)
                 se = math.pow(eu_error, 2)
                 data[arch_type][tooth_type][landmark_type]['total'] = data[arch_type][tooth_type][landmark_type]['total'] + se
@@ -333,7 +359,7 @@ for path_landmark_file in path_landmark_files:
         'RMSE':[both_rmse_final, upper_rmse_final, lower_rmse_final]
     })
     df_res = pd.concat([df_res, df_arch], ignore_index=True)
-df_res.to_csv("hasil_evaluation_ld_based_on_arch_popiter_with_v2.csv",encoding='utf-8')
-df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_popiter_with_v2.csv",encoding='utf-8')
+df_res.to_csv("hasil_evaluation_ld_based_on_arch_popiter_with_new_data.csv",encoding='utf-8')
+df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_popiter_with_new_data.csv",encoding='utf-8')
 # df_res.to_csv("hasil_evaluation_ld_based_on_arch_fcr_variation_no_candidate.csv",encoding='utf-8')
 # df_res_ld.to_csv("hasil_evaluation_ld_based_on_ld_fcr_variation_no_candidate.csv",encoding='utf-8')
