@@ -61,7 +61,7 @@ def create_label_from_file(filename: str):
     # print(filename, names)
     if len(names)==1 or len(names)==2:
         return names[-1]
-    return names[3]+" "+names[4]+("WC" if "nc" not in filename else " NC")
+    return names[3]+" "+names[4]+(" WC" if "nc" not in filename else " NC")
 
 for a in archs:
     df_arch_cp = df_arch[df_arch['Rahang'] == a]
@@ -93,19 +93,19 @@ for a in archs:
                 colors.append([0.4, 0.4, 1, 1])
     plt.rcParams["figure.figsize"] = [8, 10]
     # # Plot based on nested x-axis (column 1 and column 2), and column 4 on the y-axis
-    plt.bar(range(len(df_arch_cp)), df_arch_cp[:]['RMSE'], color=colors)
-    plt.xticks(range(len(df_arch_cp)), x_labels, rotation='vertical')
+    plt.barh(range(len(df_arch_cp)), df_arch_cp[:]['RMSE'], color=colors)
+    plt.yticks(range(len(df_arch_cp)), x_labels, rotation='horizontal')
 
     # # Add label values on top of each bar
     for i, v in enumerate(df_arch_cp[:]['RMSE']):
-        plt.text(i, v/2, str(round(v, 2)), ha='center', va='bottom', rotation='vertical')
+        plt.text(v/2, i, str(round(v, 2)), ha='center', va='center', rotation='horizontal')
     #
     # plt.legend(x_labels)
-    plt.xlabel('Parameter - Arch')
-    plt.ylabel('RMSE')
+    plt.ylabel('Parameter - Arch')
+    plt.xlabel('RMSE')
 
     # plt.title('Comparison RMSE value Landmark based on number of iteration and number of population (cr=0.7 & f=0.5)')
     # plt.title('Comparison RMSE value Arch based on CR and F (iter=10 & popsize=1000)')
-    plt.title('Comparison RMSE value landmark manual vs pop_iter DE')
+    plt.title('Comparison RMSE value DE')
     plt.tight_layout()
     plt.show()

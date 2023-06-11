@@ -350,8 +350,8 @@ for path_landmark_file in path_landmark_files:
             })
             df_res_ld = pd.concat([df_res_ld, df_res_ld_temp], ignore_index=True)
     both_rmse_final = math.sqrt(both_rmse / both_n)
-    upper_rmse_final = math.sqrt(upper_rmse / both_n)
-    lower_rmse_final = math.sqrt(lower_rmse / both_n)
+    upper_rmse_final = math.sqrt(upper_rmse / upper_n)
+    lower_rmse_final = math.sqrt(lower_rmse / lower_n)
     df_arch = pd.DataFrame.from_dict({
         'FILE':[path_landmark_file,path_landmark_file,path_landmark_file],
         'Rahang':["BOTH","UPPER","LOWER"],
