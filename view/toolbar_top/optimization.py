@@ -98,6 +98,12 @@ def click_btn_de_optimization(self, e):
             last_three_errors_lower.append(error_opt[1])
             last_three_errors_lower = last_three_errors_lower[1:]
 
+        if not is_arch_need_continue(last_three_errors_upper):
+            is_arch_finish[0] = True
+
+        if not is_arch_need_continue(last_three_errors_lower):
+            is_arch_finish[1] = True
+
         if error_opt[0] < error_upper:
             is_arch_finish[0] = True
         if error_opt[1] < error_lower:

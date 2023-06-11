@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="change helper to use average distance">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="change stop cond">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
     </list>
@@ -188,13 +188,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00008" summary="update landmark_lib">
-      <created>1683740760384</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1683740760384</updated>
     </task>
     <task id="LOCAL-00009" summary="update landmark_lib">
       <created>1683740813084</created>
@@ -532,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686397839100</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="change stop cond">
+      <created>1686447771326</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1686447771326</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -574,7 +574,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change flat target no incisors in ins" />
     <MESSAGE value="change flat target no incisors add if upper" />
     <MESSAGE value="change flat error" />
     <MESSAGE value="change flat error co" />
@@ -599,6 +598,7 @@
     <MESSAGE value="is_arch_need_continue remove math floot" />
     <MESSAGE value="is_arch_need_continue change threshold" />
     <MESSAGE value="change helper to use average distance" />
-    <option name="LAST_COMMIT_MESSAGE" value="change helper to use average distance" />
+    <MESSAGE value="change stop cond" />
+    <option name="LAST_COMMIT_MESSAGE" value="change stop cond" />
   </component>
 </project>
