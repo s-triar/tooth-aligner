@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="change stop cond">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/view/toolbar_top/optimization.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/toolbar_top/optimization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/summary_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/summary_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,13 +188,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00009" summary="update landmark_lib">
-      <created>1683740813084</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1683740813084</updated>
     </task>
     <task id="LOCAL-00010" summary="update landmark_lib">
       <created>1683740845462</created>
@@ -532,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686447771326</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="change stop cond">
+      <created>1686448179670</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1686448179670</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

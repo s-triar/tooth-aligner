@@ -326,25 +326,24 @@ def calculate_flat_plane_points(self):
             idx = Arch._get_index_arch_type(i.value)
             # mesh = self.models[idx].mesh
             teeth = self.models[idx].teeth
-            if i.value == ArchType.UPPER.value:
-                pts = np.array([
-                    np.mean([
-                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                        teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                    ], axis=0),
-                    np.mean([
-                        teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
-                        teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
-                    ], axis=0),
-                    np.mean([
-                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
-                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
-                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
-                        teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
-                    ], axis=0),
-                ])
+            pts = np.array([
+                np.mean([
+                    teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                    teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                    teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                    teeth[ToothType.MOLAR_UL7_LR7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                ], axis=0),
+                np.mean([
+                    teeth[ToothType.INCISOR_UL1_LR1.value].landmark_pt[LandmarkType.CUSP.value],
+                    teeth[ToothType.INCISOR_UR1_LL1.value].landmark_pt[LandmarkType.CUSP.value],
+                ], axis=0),
+                np.mean([
+                    teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                    teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value],
+                    teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_MESIAL.value],
+                    teeth[ToothType.MOLAR_UR7_LL7.value].landmark_pt[LandmarkType.CUSP_IN_DISTAL.value],
+                ], axis=0),
+            ])
             coords[i.value] = pts
         return coords
     else:
