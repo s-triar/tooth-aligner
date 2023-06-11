@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="change stop cond">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/summary_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/summary_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coba_angle.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_angle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optimization/optimization_helper5.py" beforeDir="false" afterPath="$PROJECT_DIR$/optimization/optimization_helper5.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +65,28 @@
       <recent name="D:\Code\tooth-aligner\landmark_training" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.coba_bonwill_hawley_studi_model_simulation_standalone">
+  <component name="RunManager" selected="Python.coba_angle">
+    <configuration name="coba_angle" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="tooth-aligner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/coba_angle.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="coba_bontwill" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tooth-aligner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -128,27 +150,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="param_landmark_area (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="tooth-aligner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/landmark_training" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/landmark_training/param_landmark_area.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="param_landmark_position" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tooth-aligner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -172,11 +173,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.coba_angle" />
         <item itemvalue="Python.coba_bonwill_hawley_studi_model_simulation_standalone" />
         <item itemvalue="Python.coba_bontwill" />
         <item itemvalue="Python.coba_titik_bonwill_tujuan2" />
         <item itemvalue="Python.param_landmark_position" />
-        <item itemvalue="Python.param_landmark_area (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -188,13 +189,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00010" summary="update landmark_lib">
-      <created>1683740845462</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1683740845462</updated>
     </task>
     <task id="LOCAL-00011" summary="update bound">
       <created>1683769303212</created>
@@ -532,7 +526,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686448179670</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="change stop cond">
+      <created>1686461574534</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1686461574534</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

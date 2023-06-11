@@ -45,13 +45,13 @@ def get_angle_from_2_2d_lines2(lineA, lineB, is_return_degree=False):
     
 
 line1 = [
-    [0,2],
-    [4,2]
+    [0,0],
+    [4,0]
 ]
 
 line2 = [
-    [0,2],
-    [-1,-100]
+    [-2, -1],
+    [5, 0.6]
 ]
 
 r = get_angle_from_2_2d_lines(line1,line2,True)
