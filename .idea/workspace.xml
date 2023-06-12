@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a07cb00-de95-4577-b659-3ed98f68a6fb" name="Changes" comment="add bonwill belt">
+    <list default="true" id="4a07cb00-de95-4577-b659-3ed98f68a6fb" name="Changes" comment="edit eval arch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coba_titik_bonwill_tujuan_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_titik_bonwill_tujuan_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/splineku.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/splineku.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

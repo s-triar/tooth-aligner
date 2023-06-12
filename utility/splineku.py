@@ -112,7 +112,7 @@ class SplineKu(Line):
         self.temp_distance_to_point=1000
         self.point_target=np.array(point).reshape(3,1)
         # self.point_target=point
-        closestu = fmin(self.calculateToPoint_, np.mean(point*10), disp=False)
+        closestu = fmin(self.calculateToPoint_, np.mean(point+10), disp=False)
         # closestu = minimize(self.calculateToPoint_, np.mean(point), method='Nelder-Mead', options={'disp':False})
         # print(closestu,"closestu")
         # print(np.mean(point-10), np.mean(point*10), np.mean(point))
