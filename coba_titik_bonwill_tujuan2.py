@@ -29,7 +29,7 @@ from utility.colors import map_label_color
 from sklearn.cluster import KMeans
 import pandas as pd
 from utility.landmarking_lib import draw_eigen_vec
-
+from utility import landmarking_lib as ll
 
 def load_ld(model, filename, typearch):
     df = pd.read_csv(filename, index_col=0)
@@ -630,6 +630,7 @@ destinations_pts = get_destination_points(model, spl, A, model.right_left_vec)
 destinations_pts_belt, destinations_pts_belt_gum = calculate_flat_plane_points_belt(model, destinations_pts)
 
 destinations_line = []
+destinations_pts_all = []
 i = 0
 pm = []
 pd = []
@@ -642,8 +643,9 @@ for lbl in destinations_pts:
     #     c="blue"
     # elif(i%3==2):
     #     c="green"
-    l = Line(temp[0], temp[1], lw=13, c=c)
+    l = Line(temp[0], temp[1], lw=4, c=c)
     destinations_line.append(l)
+    destinations_pts_all.append([temp[0], temp[1]])
     # pm.append(Point(temp[0],r=20))
     # pd.append(Point(temp[1],r=20))
     i += 1
@@ -657,8 +659,9 @@ for lbl in destinations_pts_belt:
     #     c="blue"
     # elif(i%3==2):
     #     c="green"
-    l = Line(temp[0], temp[1], lw=10, c=c)
+    l = Line(temp[0], temp[1], lw=4, c=c)
     destinations_line.append(l)
+    destinations_pts_all.append([temp[0], temp[1]])
     # pm.append(Point(temp[0],r=20))
     # pd.append(Point(temp[1],r=20))
     i += 1
@@ -671,8 +674,9 @@ for lbl in destinations_pts_belt_gum:
     #     c="blue"
     # elif(i%3==2):
     #     c="green"
-    l = Line(temp[0], temp[1], lw=10, c=c)
+    l = Line(temp[0], temp[1], lw=4, c=c)
     destinations_line.append(l)
+    destinations_pts_all.append([temp[0], temp[1]])
     # pm.append(Point(temp[0],r=20))
     # pd.append(Point(temp[1],r=20))
     i += 1
@@ -752,6 +756,62 @@ for lbl in model.teeth:
         pts = find_neighborhood_point(model.teeth[lbl].get_mesh(), model.teeth[lbl].landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value])
         ttty.extend(pts)
 
+def changecolor(mesh):
+    new_colors =np.zeros((len(mesh.celldata['Label']), 3),dtype=np.uint8)
+    for l in range(len(mesh.celldata['Label'])):
+        if mesh.celldata['Label'][l] == 0:
+            new_colors[l] =[0,0,0]
+        else:
+            new_colors[l] = [255, 255, 255]
+    mesh.celldata['Color'] = new_colors
+    mesh.celldata.select('Color')
+    return mesh
+
+def changecolor2(mesh, cl):
+    g = np.unique(mesh.cells())
+    print(g)
+    new_colors =np.zeros((len(cl), 3),dtype=np.uint8)
+    for l in range(len(cl)):
+        new_colors[l] = [255, 255, 255]
+    mesh.celldata['Color'] = new_colors
+    mesh.celldata.select('Color')
+    return mesh
+def excludegum(mesh):
+    labels = np.array(mesh.celldata['Label'])
+    idxlabel0 = np.where(labels==0)
+    hh = np.where(np.isin(mesh.cells(), idxlabel0))[0]
+    print(idxlabel0)
+    print(hh, len(hh))
+    # print(mesh.cells())
+    jj = np.delete(mesh.cells(), hh, 0)
+    print(jj)
+    k = mesh.cells()[hh[1]]
+    if( np.any([k, idxlabel0])):
+        print('benar')
+    print(k)
+    mhg = Mesh([mesh.points(), jj])
+    return mhg
+mbn = []
+for t in model.teeth:
+    point_tooth_index_map = ll.map_point_index(np.unique(model.teeth[t].index_vertice_cells))
+    cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, model.teeth[t].index_vertice_cells)
+    tooth_mesh = Mesh([model.teeth[t].vertices, cells_tooth_mapped])
+    mbn.append(changecolor2(tooth_mesh, cells_tooth_mapped).lighting(style='glossy'))
+
+
+rect = []
+for i in range(14):
+    fp = []
+    a = destinations_pts_all[i]
+    b = destinations_pts_all[((i)*1)+14]
+    c = destinations_pts_all[((i) * 1) + 28]
+    fp.extend(a)
+    fp.extend(b)
+    fp.extend(c)
+    lbl = (7-i) if i < 7 else i+1
+    clr = map_label_color(lbl)
+    mt = Mesh([fp, [[2,3,1,5,4,0]]], c=clr).alpha(0.6)
+    rect.append(mt)
 
 
 # ff= Point(ptd.points()[0],c="black",r=20)
@@ -759,10 +819,10 @@ for lbl in model.teeth:
 # ln.c("yellow").lw(10)
 # lp = Line(-ln.points()[0]+ln.points()[0],ln.points()[0]+ln.points()[0], c="orange",lw=10)
 eigdraw = draw_eigen_vec(model.orientatin_vec, model.mesh.centerOfMass())
-plt = Plotter(N=4, axes=1)
-plt.show(model.mesh, Points(ttty), at=0)
+plt = Plotter(N=4)
+plt.show(mbn, Points(ttty,c='red'), at=0)
 plt.show(model4.mesh, spl, cls_mesial4, cls_distal4, at=1)
-plt.show(model.mesh, spl, destinations_line, eigdraw, at=2)
-plt.show(model.mesh, eigdraw, mm, trgt_pts_out, trgt_pts_in, spl_out, spl_in, at=3)
+plt.show( mbn, spl, destinations_line, rect, at=2)
+plt.show(mbn, mm, at=3)
 # plt.show(Point(trip, c='red', r=16), meshtri, Points(tri), Point(gh, c='green', r=15), Line(trip, hj), at=4)
 plt.interactive()

@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="EVAL new data">
+      <change beforePath="$PROJECT_DIR$/.idea/tooth-aligner.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_bonwill_hawley_studi_model_simulation_standalone.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/coba_titik_bonwill_tujuan2.py" beforeDir="false" afterPath="$PROJECT_DIR$/coba_titik_bonwill_tujuan2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +66,7 @@
       <recent name="D:\Code\tooth-aligner\landmark_training" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.coba_titik_bonwill_tujuan2">
+  <component name="RunManager" selected="Python.coba_bonwill_hawley_studi_model_simulation_standalone">
     <configuration name="coba_angle" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="tooth-aligner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -172,9 +174,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.coba_bonwill_hawley_studi_model_simulation_standalone" />
         <item itemvalue="Python.coba_titik_bonwill_tujuan2" />
         <item itemvalue="Python.coba_angle" />
-        <item itemvalue="Python.coba_bonwill_hawley_studi_model_simulation_standalone" />
         <item itemvalue="Python.coba_bontwill" />
         <item itemvalue="Python.param_landmark_position" />
       </list>
@@ -541,6 +543,16 @@
         <entry key="Branch">
           <value>
             <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="pisah_belt/main_quarternion" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="pisah_belt_gabungan/main_quarternion" />
+                </option>
+              </RecentGroup>
               <RecentGroup>
                 <option name="FILTER_VALUES">
                   <option value="dev/main_quarternion" />

@@ -30,7 +30,7 @@ from utility.calculation import (
 import math
 import pandas as pd
 import copy
-
+from utility import landmarking_lib as ll
 def load_ld(model, filename, typearch):
     df = pd.read_csv(filename, index_col=0)
     print(df.head())
@@ -41,7 +41,15 @@ def load_ld(model, filename, typearch):
         tooth = arch.teeth[row['label']]
         tooth.landmark_pt[row['landmark']]=np.array([row['x'],row['y'],row['z']])
         
-    
+def changecolor2(mesh, cl):
+    g = np.unique(mesh.cells())
+    print(g)
+    new_colors =np.zeros((len(cl), 3),dtype=np.uint8)
+    for l in range(len(cl)):
+        new_colors[l] = [255, 255, 255]
+    mesh.celldata['Color'] = new_colors
+    mesh.celldata.select('Color')
+    return mesh
 def get_mesial_distal_as_R(model):
     teeth = [
         ToothType.CANINE_UL3_LR3.value,
@@ -179,10 +187,16 @@ def get_bonwill(u, model):
 
     spl = SplineKu(titiks)
 
+    mbn = []
+    for t in model.teeth:
+        point_tooth_index_map = ll.map_point_index(np.unique(model.teeth[t].index_vertice_cells))
+        cells_tooth_mapped = ll.mapping_point_index(point_tooth_index_map, model.teeth[t].index_vertice_cells)
+        tooth_mesh = Mesh([model.teeth[t].vertices, cells_tooth_mapped])
+        mbn.append(changecolor2(tooth_mesh, cells_tooth_mapped).lighting(style='glossy'))
 
     msh = [
-        u,
-        centermeshPT,
+        # u,
+        # centermeshPT,
         # l.alpha(0.4),
         Point(A,r=25),
         spr0,
@@ -226,6 +240,7 @@ def get_bonwill(u, model):
         spr3,
         spl.lw(10).c('yellow'),
     ]
+    msh.extend(mbn)
     return msh, [AA,GG], B
 
 # l = load('D:\\NyeMan\\KULIAH S2\\Thesis\\MeshSegNet-master\\MeshSegNet-master\\down_segement_refine_manual\\Gerry Sihaj LowerJawScan _d_predicted_refined.vtp')
@@ -261,5 +276,5 @@ msh_l, ln_center, B =get_bonwill(l,model_lw)
 
 # plt.interactive().close()
 
-plt = Plotter(axes=1)
-plt.show(msh_u, msh_l)
+plt = Plotter(axes=0)
+plt.show(msh_u)
