@@ -155,3 +155,20 @@ Lower Arch Side View - 23 | ![ground truth - Lower Arch Side View 23](https://gi
 Lower Arch Side View - 24 | ![ground truth - Lower Arch Side View 24](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20BAWAH%20-%2024.png?raw=true) | -
 Lower Arch Side View - 25 | ![ground truth - Lower Arch Side View 25](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20BAWAH%20-%2025.png?raw=true) | -
 Lower Arch Side View - 26 | ![ground truth - Lower Arch Side View 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20BAWAH%20-%2026.png?raw=true) | -
+
+
+## Comparison Result
+Front View - init | ![ground truth - front 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DEPAN%20-%2000.png?raw=true) | ![result - front 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DEPAN%20-%2000.png)
+Front View - last | ![ground truth - Left Side View - 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DEPAN%20-%2026.png?raw=true) | ![result - front 15](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DEPAN%20-%2015.png)
+
+Left Side View - init | ![ground truth - Left Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DARI%20KIRI%20-%2000.png?raw=true) | ![result - Left Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DARI%20KIRI%20-%2000.png)
+Left Side View - last | ![ground truth - Left Side View 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DARI%20KIRI%20-%2026.png?raw=true) | ![result - Left Side View 15](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DARI%20KIRI%20-%2015.png)
+
+Right Side View - init | ![ground truth - Right Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DARI%20KANAN%20-%2000.png?raw=true) | ![result - Right Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DARI%20KANAN%20-%2000.png)
+Right Side View - last | ![ground truth - Right Side View 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/DARI%20KANAN%20-%2026.png?raw=true) | ![result - Right Side View 15](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/DARI%20KANAN%20-%2015.png)
+
+Upper Arch Side View - 00 | ![ground truth - Upper Arch Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20ATAS%20-%2000.png?raw=true) | ![result - Upper Arch Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/RAHANG%20ATAS%20-%2000.png)
+Upper Arch Side View - last | ![ground truth - Upper Arch Side View 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20ATAS%20-%2026.png?raw=true) | ![result - Upper Arch Side View 15](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/RAHANG%20ATAS%20-%2015.png)
+
+Lower Arch Side View - init | ![ground truth - Lower Arch Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20BAWAH%20-%2000.png?raw=true) | ![result - Lower Arch Side View 00](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/RAHANG%20BAWAH%20-%2000.png)
+Lower Arch Side View - last | ![ground truth - Lower Arch Side View 26](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/GT/KEC/RAHANG%20BAWAH%20-%2026.png?raw=true) | ![result - Lower Arch Side View 15](https://github.com/s-triar/tooth-aligner/blob/main/comparison_image/TOOTH_MOTION/KEC/SC/KEC/RAHANG%20BAWAH%20-%2015.png)
