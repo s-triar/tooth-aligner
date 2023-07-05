@@ -37,33 +37,38 @@ def de_rotation_and_moving(model, chrs):
                 for jb in np.unique(itemp[0]):
                     idx_for_faces.append(jb)
             faces_unique = np.delete(faces_unique, idx_for_faces)
+
+            # ______________________________________________________
+            # movement
+            val_direction = [chr[0], chr[1], chr[2]]
+            mesh.points(mesh.points() + val_direction)
+
+            # end moving
+
+            temp_p = model.mesh.points()
+            temp_p[faces_unique] = mesh.points()[faces_unique]
+            model.mesh.points(temp_p)
+            model.update_teeth_point_moving(i.value, val_direction)
+            # ______________________________________________________
+
             teeth_center = model.teeth[i.value].center
             arch_orientation_vec = model.orientatin_vec
             # rotation
             # mesh.rotateX(chr[0], False, teeth_center)
             # model.update_teeth_point_rotation(i.value, "pitch", chr[0], teeth_center)
             mesh.rotate(chr[0], axis=arch_orientation_vec[0], point=teeth_center)
-            model.update_teeth_point_rotation_quarrternion(i.value, "pitch", chr[0], teeth_center,arch_orientation_vec[0])
+            model.update_teeth_point_rotation_quarrternion(i.value, "pitch", chr[3], teeth_center,arch_orientation_vec[0])
             # mesh.rotateY(chr[1], False, teeth_center)
             # model.update_teeth_point_rotation(i.value, "yaw", chr[1], teeth_center)
             mesh.rotate(chr[1], axis=arch_orientation_vec[1], point=teeth_center)
-            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[1], teeth_center,arch_orientation_vec[1])
+            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[4], teeth_center,arch_orientation_vec[1])
             # mesh.rotateZ(chr[2], False, teeth_center)
             # model.update_teeth_point_rotation(i.value, "roll", chr[2], teeth_center)
             mesh.rotate(chr[2], axis=arch_orientation_vec[2], point=teeth_center)
-            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[2], teeth_center,arch_orientation_vec[2])
+            model.update_teeth_point_rotation_quarrternion(i.value, "yaw", chr[5], teeth_center,arch_orientation_vec[2])
             # end rotation
             
-            # movement
-            val_direction=[chr[3],chr[4],chr[5]]
-            mesh.points(mesh.points()+val_direction)
-            
-            # end moving
-            
-            temp_p = model.mesh.points()
-            temp_p[faces_unique] = mesh.points()[faces_unique]
-            model.mesh.points(temp_p)
-            model.update_teeth_point_moving(i.value, val_direction)
+
     return model
         
     
@@ -257,9 +262,7 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
         for i in ToothType:    
             if i.value != ToothType.GINGIVA.value and i.value != ToothType.DELETED.value:
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
-                tempGen.append(chr[0])
-                tempGen.append(chr[1])
-                tempGen.append(chr[2])
+
                 
                 
                 if(i.value in toCenterArch):
@@ -275,7 +278,10 @@ def indvCreate2(models, summary_pts, chrs): #using bonwill
                 tempGen.append(pt_in_line[0]-teeth[i.value].center[0])
                 tempGen.append(pt_in_line[1]-teeth[i.value].center[1])
                 tempGen.append(pt_in_line[2]-teeth[i.value].center[2])
-                
+
+                tempGen.append(chr[0])
+                tempGen.append(chr[1])
+                tempGen.append(chr[2])
                 
                     
                 
@@ -307,12 +313,12 @@ def indv_create_rot(models, summary_pts, Bs, line_centers, chrs,  As, destinatio
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
                 rx,ry,rz = get_closest_possible_rotations(teeth[i.value],summary_line,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True, A, destination_belt, flat_mesh)
+                tempGen.append(chr[0])
+                tempGen.append(chr[1])
+                tempGen.append(chr[2])
                 tempGen.append(rx)
                 tempGen.append(ry)
                 tempGen.append(rz)
-                tempGen.append(chr[3])
-                tempGen.append(chr[4])
-                tempGen.append(chr[5])
     ArchCopy._clear()
     
     return np.array(tempGen)
@@ -343,12 +349,12 @@ def indv_create_move(models, summary_pts,flat_pts, chrs,  As, destination_tooth_
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
                 mx,my,mz = get_closest_possible_movements(teeth[i.value],summary_line, flat_mesh,eigenvec,False,True,  A, destination_belt)
-                tempGen.append(chr[0])
-                tempGen.append(chr[1])
-                tempGen.append(chr[2])
                 tempGen.append(mx)
                 tempGen.append(my)
                 tempGen.append(mz)
+                tempGen.append(chr[3])
+                tempGen.append(chr[4])
+                tempGen.append(chr[5])
     ArchCopy._clear()
     
     return np.array(tempGen)
@@ -380,12 +386,12 @@ def indv_create_rot_and_move(models, summary_pts, flat_pts, Bs, line_centers, ch
                 chr=chrs[(i.value-1)*6:((i.value-1)+1)*6]
                 eigenvec = [model_cp.right_left_vec, model_cp.forward_backward_vec, model_cp.upward_downward_vec]
                 rx,ry,rz,mx,my,mz = get_closest_possible_rotations_and_movements(teeth[i.value],summary_line, flat_mesh,Bs[model_cp.arch_type],line_centers[model_cp.arch_type],eigenvec,False,True,  A, destination_belt)
-                tempGen.append(rx)
-                tempGen.append(ry)
-                tempGen.append(rz)
                 tempGen.append(mx)
                 tempGen.append(my)
                 tempGen.append(mz)
+                tempGen.append(rx)
+                tempGen.append(ry)
+                tempGen.append(rz)
     ArchCopy._clear()
     
     return np.array(tempGen)
@@ -493,7 +499,8 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
     i=0
     for arctype in teeth_err_target_angle:
         for k in teeth_err_target_angle[arctype]:
-            if(teeth_err_mutated_angle[arctype][k]<teeth_err_target_angle[arctype][k]):
+
+            if(teeth_err_mutated_dst[arctype][k]<teeth_err_target_dst[arctype][k]):
                 res.append(mutated[i])
                 res.append(mutated[i+1])
                 res.append(mutated[i+2])
@@ -501,14 +508,16 @@ def custom_crossover(models, mutated, target,  flat_pts, summary_pts, Bs, line_c
                 res.append(target[i])
                 res.append(target[i+1])
                 res.append(target[i+2])
-            if(teeth_err_mutated_dst[arctype][k]<teeth_err_target_dst[arctype][k]):
+
+            if (teeth_err_mutated_angle[arctype][k] < teeth_err_target_angle[arctype][k]):
                 res.append(mutated[i+3])
-                res.append(mutated[i+4])
-                res.append(mutated[i+5])
+                res.append(mutated[i + 4])
+                res.append(mutated[i + 5])
             else:
                 res.append(target[i+3])
-                res.append(target[i+4])
-                res.append(target[i+5])
+                res.append(target[i + 4])
+                res.append(target[i + 5])
+
             i+=6
     # print("hasil untuk trial (custom_crossover)",res)
     return res
@@ -651,12 +660,12 @@ def start_de(models, flats, summaries, line_centers, Bs, gen, As, destination_to
     n_chromosome = 6
     # individu_bounds= [[-0.5, 0.5]]*n_tooth*2*n_chromosome
     individu_bounds= [
-                [-1, 1],
-                [-1, 1],
-                [-1, 1],
                 [-0.3, 0.3],
                 [-0.3, 0.3],
-                [-0.3, 0.3]]*n_tooth*2
+                [-0.3, 0.3],
+                 [-1, 1],
+                 [-1, 1],
+                 [-1, 1],]*n_tooth*2
     bounds = np.asarray(individu_bounds)
     
     # define number of iterations

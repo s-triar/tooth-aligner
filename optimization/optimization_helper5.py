@@ -105,8 +105,30 @@ def get_closest_possible_rotations_and_movements(tooth,spl, trianglemesh,B, line
         for vy in candidate_chr_rot:
             for vz in candidate_chr_rot:
                 
-                tooth_clone =  copy.deepcopy(tooth)
-                tx_center = tooth_clone.center
+                tooth_clone = copy.deepcopy(tooth)
+
+                buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
+                closest_buccallabial_to_spl = spl.closestPoint(buccal_labial)
+
+                cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
+                if (cusp is None):
+                    cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT.value]
+                if (cusp is None):
+                    cusp = tooth.landmark_pt[LandmarkType.CUSP.value]
+                if (cusp is None):
+                    cusp = np.mean([tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],
+                                    tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]], axis=0)
+
+                closest_cusp_to_spl = spl.closestPoint(cusp)
+
+                mx = (closest_buccallabial_to_spl[0] + closest_cusp_to_spl[0]) / 2
+                my = (closest_buccallabial_to_spl[1] + closest_cusp_to_spl[1]) / 2
+                mz = (closest_buccallabial_to_spl[2] + closest_cusp_to_spl[2]) / 2
+
+                val_direction = [mx, my, mz]
+                # tooth_clone.points(tooth_clone.points()+val_direction)
+                tooth_clone.update_landmark_moving(val_direction)
+                tx_center = tooth_clone.center + val_direction
                 # tooth_clone.rotateX(vx, False, tx_center)
                 # tooth_clone.update_landmark_rotation("pitch", vx, tx_center)
                 tooth_clone.update_landmark_rotation_quarternion("pitch", vx, tx_center, eigenvec[0])
@@ -117,29 +139,7 @@ def get_closest_possible_rotations_and_movements(tooth,spl, trianglemesh,B, line
                 # tooth_clone.update_landmark_rotation("roll", vz, tx_center)
                 tooth_clone.update_landmark_rotation_quarternion("roll", vz, tx_center, eigenvec[2])
                 
-                buccal_labial = tooth.landmark_pt[LandmarkType.BUCCAL_OR_LABIAL.value]
-                closest_buccallabial_to_spl = spl.closestPoint(buccal_labial)
-                
-                
-    
-                cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT_MIDDLE.value]
-                if(cusp is None):
-                    cusp = tooth.landmark_pt[LandmarkType.CUSP_OUT.value]
-                if(cusp is None):
-                    cusp = tooth.landmark_pt[LandmarkType.CUSP.value]
-                if(cusp is None):
-                    cusp = np.mean([tooth.landmark_pt[LandmarkType.CUSP_OUT_MESIAL.value],tooth.landmark_pt[LandmarkType.CUSP_OUT_DISTAL.value]],axis=0)
-                                    
-                closest_cusp_to_spl = spl.closestPoint(cusp)
-                
-                mx = (closest_buccallabial_to_spl[0]+closest_cusp_to_spl[0])/2
-                my = (closest_buccallabial_to_spl[1]+closest_cusp_to_spl[1])/2
-                mz = (closest_buccallabial_to_spl[2]+closest_cusp_to_spl[2])/2
-                
-                
-                val_direction=[mx,my,mz]
-                # tooth_clone.points(tooth_clone.points()+val_direction)
-                tooth_clone.update_landmark_moving(val_direction)
+
                 
                 # error_top_view = calculate_mesiodistal_balance_to_bonwill_line_from_top_view(tooth_clone, B,line_center,spl,eigenvec, is_upper, is_standalone,A, destination_pts)
                 error_top_view = calculate_tooth_balance_to_bonwill_belt(tooth_clone, destination_belt)
