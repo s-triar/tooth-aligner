@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="reverse motion">
+    <list default="true" id="d5a1ab87-aa6e-49b6-8c1d-353476bc6fe0" name="Changes" comment="xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -188,13 +188,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683635926536</updated>
-    </task>
-    <task id="LOCAL-00012" summary="update import">
-      <created>1683773479204</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1683773479204</updated>
     </task>
     <task id="LOCAL-00013" summary="investigate UR">
       <created>1683783533749</created>
@@ -532,7 +525,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688550563911</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="xml">
+      <created>1688613667638</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1688613667638</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -584,7 +584,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change flat error" />
     <MESSAGE value="change flat error co" />
     <MESSAGE value="create plor comparison arch" />
     <MESSAGE value="ff" />
@@ -609,6 +608,7 @@
     <MESSAGE value="change helper to use average distance" />
     <MESSAGE value="change stop cond" />
     <MESSAGE value="reverse motion" />
-    <option name="LAST_COMMIT_MESSAGE" value="reverse motion" />
+    <MESSAGE value="xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="xml" />
   </component>
 </project>
